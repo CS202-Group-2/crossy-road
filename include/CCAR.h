@@ -9,5 +9,7 @@ class CCAR : public CVEHICLE {
 private:
 
 public:
-    void move(int x, int y);
+    void move(int x, int y) {
+        CVEHICLE::move(x, y);
+    }
 };
