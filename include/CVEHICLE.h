@@ -5,8 +5,9 @@
 using namespace std;
 
 class CVEHICLE {
-private:
-    int mX, mY;
+protected:
+    int mX = 0, mY = 0;
+    friend class CGAME;
 public:
     virtual void move(int x, int y);
 };

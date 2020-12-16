@@ -8,9 +8,26 @@
 #include "include/CDINAUSOR.h"
 #include "include/CBIRD.h"
 
+
+
+
+
 using namespace std;
 
+
+
 int main() {
+    
+    CGAME game;
+
+
+    while (game.running())
+    {
+        
+        game.update();
+        game.render();
+    }
+
     
     return 0;
 }
