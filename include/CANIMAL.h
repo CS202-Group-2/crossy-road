@@ -5,8 +5,10 @@
 using namespace std;
 
 class CANIMAL {
-private:
+protected:
     int mX, mY;
+    friend class CGAME;
+
 public:
     virtual void move(int x, int y);
     virtual void tell();

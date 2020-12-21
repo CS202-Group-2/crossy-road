@@ -10,4 +10,6 @@ protected:
     friend class CGAME;
 public:
     virtual void move(int x, int y);
+    virtual void tell () = 0;
+    virtual void crash ();
 };

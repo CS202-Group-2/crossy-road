@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "CVEHICLE.h"
+#include <SFML/audio.hpp>
 
 using namespace std;
 
@@ -11,4 +12,6 @@ private:
 public:
     CTRUCK(int x, int y);
     void move(int x, int y);
+    void tell ();
+    void crash ();
 };
