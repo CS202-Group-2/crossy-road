@@ -61,6 +61,15 @@ void CGAME::updatePosPeople(char) {
 
 }
 
+void CGAME::drawBackground(const string& backgroundIMG) {
+    if (!texture.loadFromFile(backgroundIMG)) {
+        return;
+    }
+    background.setTexture(texture);
+    resizeImage(background);
+    
+}
+
 void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < rowCount; ++i) {
@@ -95,20 +104,46 @@ void CGAME::update() {
 void CGAME::render() {
     window->clear();
     sprites.clear();
-    updatePosVehicle();
-    for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
+    
+    switch (gameState) {
+    case GAME_STATE::MENU: {
+        sf::RectangleShape rectangle(sf::Vector2f(250, 350));
+        rectangle.setOrigin(rectangle.getLocalBounds().left + rectangle.getLocalBounds().width / 2,
+            rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
+        rectangle.setPosition(window->getSize().x / 2, (window->getSize().y - menu->titlePadding) / 2 + menu->titlePadding);
+        rectangle.setFillColor(sf::Color(0, 0, 0, 200));
+        
+        window->draw(background);
+        window->draw(rectangle);
+        menu->draw(*window);
+        break;
+    }
+    case GAME_STATE::LEVEL_1: {
+        updatePosVehicle();
+        for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
+        break;
+    }
+    default: {
+        break;
+    }
+    }
+    
     window->display();
 }
 
 void CGAME::initVariables() {
     this->window = nullptr;
     vehicles.assign(rowCount, vector<CVEHICLE*>(maxVehicle, nullptr));
+    
 
 }
 void CGAME::initWindow() {
     GetDesktopResolution();
     this->window = new sf::RenderWindow(this->videoMode, "Crossy Road");
     window->setFramerateLimit(60);
+    menu = new Menu(window->getSize().x, window->getSize().y);
+    drawBackground("menu.jpg");
+    
 }
 
 void CGAME::GetDesktopResolution()
@@ -137,7 +172,40 @@ void CGAME::pollEvents() {
                     window->close();
                 break;
             }
-        }
+            case sf::Event::KeyReleased: {
+                switch (event.key.code) {
+                case sf::Keyboard::Up: {
+                    cout << "Pressed" << endl;
+                    if (gameState == GAME_STATE::MENU) menu->MoveUp();
+                    break;
+                }
+                case sf::Keyboard::Down: {
+                    if (gameState == GAME_STATE::MENU) menu->MoveDown();
+                    break;
+                }
+                case sf::Keyboard::Return: {
+                    if (gameState == GAME_STATE::MENU)
+                        switch (menu->getPressedItem()) {
+                        case 0: {
+                            cout << "Started the game" << endl;
+                            gameState = GAME_STATE::LEVEL_1;
+                            break;
+                        }
+                        case 1: {
+                            cout << "Load the game" << endl;
+                            break;
+                        }
+                        case 2: {
+                            cout << "Exited the game" << endl;
+                            window->close();
+                            break;
+                        }
+                        }
+                }
+                }
+                }
+            }
+            
 
     }
 }
@@ -148,4 +216,9 @@ void CGAME::initVehicle() {
         vehicles[i][1] = new CTRUCK(0, 100*i);
     }
     
+}
+
+void CGAME::resizeImage(sf::Sprite& sprite) {
+    sprite.scale((float)window->getSize().x / (float)sprite.getTexture()->getSize().x,
+        (float)window->getSize().y / (float)sprite.getTexture()->getSize().y);
 }

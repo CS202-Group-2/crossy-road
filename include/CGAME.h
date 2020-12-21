@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include <iostream>
 #include "CPEOPLE.h"
@@ -8,6 +8,7 @@
 #include "CANIMAL.h"
 #include "CDINAUSOR.h"
 #include "CBIRD.h"
+#include "Menu.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -20,6 +21,8 @@
 #include <vector>
 
 using namespace std;
+
+enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER};
 
 typedef void* HANDLE;
 
@@ -36,8 +39,9 @@ private:
     const int maxVehicle = 5;
     vector<vector<CVEHICLE*>> vehicles;
     vector<sf::Sprite> sprites;
-
-
+    GAME_STATE gameState = GAME_STATE::MENU;
+    Menu *menu = nullptr;
+        
     void initVariables();
     void initWindow();
     void initVehicle();
@@ -48,6 +52,7 @@ private:
 
     sf::RectangleShape enemy;
     sf::Texture texture;
+    sf::Sprite background;
 
 public:
     CGAME(); 
@@ -66,6 +71,8 @@ public:
     void updatePosPeople(char);
     void updatePosVehicle(); 
     void updatePosAnimal();
+    void drawBackground(const string &backgroundIMG);
+    void resizeImage(sf::Sprite& sprite);
 
     void update();
     void render();

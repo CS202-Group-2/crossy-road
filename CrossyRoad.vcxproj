@@ -120,6 +120,7 @@
     <ClCompile Include="src\CPEOPLE.cpp" />
     <ClCompile Include="src\CTRUCK.cpp" />
     <ClCompile Include="src\CVEHICLE.cpp" />
+    <ClCompile Include="src\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CANIMAL.h" />
@@ -130,6 +131,7 @@
     <ClInclude Include="include\CPEOPLE.h" />
     <ClInclude Include="include\CTRUCK.h" />
     <ClInclude Include="include\CVEHICLE.h" />
+    <ClInclude Include="include\Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
