@@ -16,4 +16,5 @@ public:
     CDINAUSOR(float x, float y);
     void move(float x, float y, sf::RenderWindow& window);
     void drawAnimal(sf::RenderWindow& window);
+    void tell();
 };

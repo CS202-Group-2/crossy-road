@@ -21,5 +21,6 @@ public:
     int checkCollision(vector<CVEHICLE*>& vehicles);
     virtual void move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC> traffics);
     virtual void drawVehicle(sf::RenderWindow& window);
-    
+    virtual void tell () = 0;
+    virtual void crash ();
 };

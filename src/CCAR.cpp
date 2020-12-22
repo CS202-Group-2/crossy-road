@@ -24,3 +24,18 @@ CCAR::CCAR(float x, float y) : CVEHICLE(x, y) {
 	sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
+
+void CCAR::tell () {
+	cout << "Car sound" << endl;
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile ("assets/sound/car+driveby2.wav")) {
+		cout << "Cannot load car sound" << endl;
+	}
+	sf::Sound sound;
+	sound.setBuffer (buffer);
+	sound.play ();
+}
+
+void CCAR::crash () {
+	CVEHICLE::crash ();
+}

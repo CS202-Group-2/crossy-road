@@ -24,3 +24,7 @@ CDINAUSOR::CDINAUSOR(float x, float y) : CANIMAL(x, y) {
 	//sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
+
+void CDINAUSOR::tell() {
+    //play sound
+}

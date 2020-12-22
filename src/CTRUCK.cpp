@@ -24,3 +24,18 @@ CTRUCK::CTRUCK(float x, float y) : CVEHICLE(x, y) {
 	sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
+
+void CTRUCK::tell () {
+	cout << "Truck sound" << endl;
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile ("assets/sound/truck-sound.wav")) {
+		cout << "Cannot load truck" << endl;
+	}
+	sf::Sound sound;
+	sound.setBuffer (buffer);
+	sound.play ();
+}
+
+void CTRUCK::crash () {
+	CVEHICLE::crash ();
+}

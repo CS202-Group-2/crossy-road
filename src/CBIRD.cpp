@@ -24,3 +24,11 @@ CBIRD::CBIRD(float x, float y) : CANIMAL(x, y) {
 	//sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
+
+void CBIRD::move(int x, int y) {
+    CANIMAL::move (x, y);
+}
+
+void CBIRD::tell() {
+    //play sound
+}
