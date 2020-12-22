@@ -3,6 +3,7 @@
 
 
 CGAME::CGAME() {
+    srand(time(NULL));
     this->initVariables();
     this->initWindow();
     this->initVehicle();
@@ -72,29 +73,22 @@ void CGAME::drawBackground(const string& backgroundIMG) {
 
 void CGAME::updatePosVehicle() {
     srand(time(NULL));
-    for (int i = 0; i < rowCount; ++i) {
-        for (int j = 0; j < maxVehicle; ++j) {
-            if (vehicles[i][j] != nullptr) {
-                vehicles[i][j]->move(vehicles[i][j]->mX, vehicles[i][j]->mY);
-                
-                if (!texture.loadFromFile("image.jpg")) {
-                    cout << "Not found! " << endl;
-                }
-                sf::Sprite sprite;
-                sprite.setPosition(vehicles[i][j]->mX, vehicles[i][j]->mY);
-                //sprite.setSize(sf::Vector2f(20.f, 20.f));
-                sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-                sprite.rotate(-90);
-                //sprite.setOutlineThickness(1.f);
-                sprite.setTexture(texture);
-                sprites.push_back(sprite);
-            }
+    for (int i = 0; i < vehicles.size(); ++i) {
+        if (vehicles[i] != nullptr) {
+            vehicles[i]->update(1, 0, *window, vehicles, traffics);
+            //cout << "Moving" << endl;
         }
     }
 }
 
 void CGAME::updatePosAnimal() {
-    
+    srand(time(NULL));
+    for (int i = 0; i < animals.size(); ++i) {
+        if (animals[i] != nullptr) {
+            animals[i]->update(1, 0, *window, animals);
+            //cout << "Moving" << endl;
+        }
+    }
 }
 
 void CGAME::update() {
@@ -120,7 +114,8 @@ void CGAME::render() {
     }
     case GAME_STATE::LEVEL_1: {
         updatePosVehicle();
-        for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
+        updatePosAnimal();
+        //for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
         break;
     }
     default: {
@@ -133,9 +128,10 @@ void CGAME::render() {
 
 void CGAME::initVariables() {
     this->window = nullptr;
-    vehicles.assign(rowCount, vector<CVEHICLE*>(maxVehicle, nullptr));
-    
-
+    srand(time(NULL));
+    for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
+        traffics.push_back(CTRAFFIC(rand() % 10 + 1));
+    }
 }
 void CGAME::initWindow() {
     GetDesktopResolution();
@@ -211,11 +207,37 @@ void CGAME::pollEvents() {
 }
 
 void CGAME::initVehicle() {
+    CVEHICLE* v = nullptr;
+    CANIMAL* a = nullptr;
     
-    for (int i = 0; i < rowCount; ++i) {
-        vehicles[i][1] = new CTRUCK(0, 100*i);
+    for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
+        for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
+            if (i % 4 == 0) {
+                v = new CCAR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
+                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
+                    + Constants::GetInstance().PADDING_TOP);
+                vehicles.push_back(v);
+            }
+            else if (i % 4 == 1) {
+                a = new CDINAUSOR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
+                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
+                    + Constants::GetInstance().PADDING_TOP);
+                animals.push_back(a);
+            }
+            else if (i % 4 == 2) {
+                v = new CTRUCK(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j 
+                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
+                    + Constants::GetInstance().PADDING_TOP);
+                vehicles.push_back(v);
+            }
+            else if (i % 4 == 3) {
+                a = new CBIRD(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
+                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
+                    + Constants::GetInstance().PADDING_TOP);
+                animals.push_back(a);
+            }
+        }
     }
-    
 }
 
 void CGAME::resizeImage(sf::Sprite& sprite) {

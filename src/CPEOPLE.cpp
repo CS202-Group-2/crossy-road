@@ -1,7 +1,11 @@
 #include "../include/CPEOPLE.h"
 
 CPEOPLE::CPEOPLE() {
-
+    if (!texture.loadFromFile(textureFile)) {
+        cout << "Cannot find texture file" << endl;
+        return;
+    }
+    sprite.setTexture(texture);
 }
 
 void CPEOPLE::moveUp(int) {

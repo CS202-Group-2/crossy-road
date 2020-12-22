@@ -118,6 +118,7 @@
     <ClCompile Include="src\CDINAUSOR.cpp" />
     <ClCompile Include="src\CGAME.cpp" />
     <ClCompile Include="src\CPEOPLE.cpp" />
+    <ClCompile Include="src\CTRAFFIC.cpp" />
     <ClCompile Include="src\CTRUCK.cpp" />
     <ClCompile Include="src\CVEHICLE.cpp" />
     <ClCompile Include="src\Menu.cpp" />
@@ -128,7 +129,9 @@
     <ClInclude Include="include\CCAR.h" />
     <ClInclude Include="include\CDINAUSOR.h" />
     <ClInclude Include="include\CGAME.h" />
+    <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\CPEOPLE.h" />
+    <ClInclude Include="include\CTRAFFIC.h" />
     <ClInclude Include="include\CTRUCK.h" />
     <ClInclude Include="include\CVEHICLE.h" />
     <ClInclude Include="include\Menu.h" />

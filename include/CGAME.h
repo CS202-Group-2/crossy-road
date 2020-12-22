@@ -9,6 +9,8 @@
 #include "CDINAUSOR.h"
 #include "CBIRD.h"
 #include "Menu.h"
+#include "Constants.h"
+#include "CTRAFFIC.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -34,9 +36,8 @@ private:
     CPEOPLE cn;
 
     vector<CANIMAL*> animals;
-    const int rowCount = 7;
-    const int maxVehicle = 5;
-    vector<vector<CVEHICLE*>> vehicles;
+    vector<CVEHICLE*> vehicles;
+    vector<CTRAFFIC> traffics;
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;

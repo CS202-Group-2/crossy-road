@@ -1,7 +1,7 @@
 
 #include <SFML/Graphics.hpp>
+#include "Constants.h"
 
-#define MAX_NUMBER_OF_ITEMS 3
 
 class Menu {
 public:
@@ -9,6 +9,7 @@ public:
 	~Menu();
 
 	const float titlePadding = 300;
+	
 
 	void draw(sf::RenderWindow& window);
 	void MoveUp();
@@ -18,5 +19,5 @@ private:
 	int selectedItemIndex = 0;
 	sf::Texture title;
 	sf::Font font;
-	sf::Text menu[MAX_NUMBER_OF_ITEMS];
+	sf::Text* menu = new sf::Text[Constants::GetInstance().NUMBER_OF_MENU_ITEMS];
 };

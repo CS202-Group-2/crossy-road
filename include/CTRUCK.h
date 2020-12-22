@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include "CVEHICLE.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h> 
 
 using namespace std;
 
@@ -9,6 +11,7 @@ class CTRUCK : public CVEHICLE {
 private:
     friend class CGAME;
 public:
-    CTRUCK(int x, int y);
-    void move(int x, int y);
+    CTRUCK(float x, float y);
+    void move(float x, float y, sf::RenderWindow& window, vector<CTRAFFIC> traffics);
+    void drawVehicle(sf::RenderWindow& window);
 };

@@ -2,12 +2,18 @@
 
 #include <iostream>
 #include "CVEHICLE.h"
+#include <stdlib.h>     /* srand, rand */
+#include <time.h> 
+#include <SFML/Graphics.hpp>
 
 using namespace std;
 
 class CCAR : public CVEHICLE {
 private:
     friend class CGAME;
+    
 public:
-    void move(int x, int y);
+    CCAR(float x, float y);
+    void move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC> traffics);
+    void drawVehicle(sf::RenderWindow &window);
 };

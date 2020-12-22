@@ -12,15 +12,16 @@ Menu::Menu(float width, float height) {
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
 	menu[1].setString("Load game");
-	menu[1].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 2));
+	menu[1].setPosition(sf::Vector2f(width / 2, height / (Constants::GetInstance().NUMBER_OF_MENU_ITEMS + 1) * 2));
 
 	menu[2].setFont(font);
 	menu[2].setColor(sf::Color::White);
 	menu[2].setString("Exit");
-	menu[2].setPosition(sf::Vector2f(width / 2, height / (MAX_NUMBER_OF_ITEMS + 1) * 3));
+	menu[2].setPosition(sf::Vector2f(width / 2, height / (Constants::GetInstance().NUMBER_OF_MENU_ITEMS + 1) * 3));
 }
 
 Menu::~Menu() {
+	delete[] menu;
 
 }
 
@@ -34,11 +35,14 @@ void Menu::draw(sf::RenderWindow& window) {
 	titleText.setScale(sf::Vector2f(1.25, 1.25));
 	titleText.setPosition(window.getSize().x / 2, titlePadding/2 + 50);
 	window.draw(titleText);
-	for (int i = 0; i < MAX_NUMBER_OF_ITEMS; ++i) {
+	for (int i = 0; i < Constants::GetInstance().NUMBER_OF_MENU_ITEMS; ++i) {
 		sf::FloatRect textRect = menu[i].getLocalBounds();
 		menu[i].setOrigin(textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f);
-		menu[i].setPosition(sf::Vector2f(window.getSize().x / 2.0f, (window.getSize().y-titlePadding) / (MAX_NUMBER_OF_ITEMS + 1) * (i+1) + titlePadding));
+		menu[i].setPosition(sf::Vector2f(window.getSize().x / 2.0f, 
+			(window.getSize().y-titlePadding) / 
+			(Constants::GetInstance().NUMBER_OF_MENU_ITEMS + 1) * 
+			(i+1) + titlePadding));
 		window.draw(menu[i]);
 	}
 }
@@ -50,13 +54,13 @@ void Menu::MoveUp() {
 	}
 	else {
 		menu[selectedItemIndex].setColor(sf::Color::White);
-		menu[MAX_NUMBER_OF_ITEMS-1].setColor(sf::Color::Yellow);
-		selectedItemIndex = MAX_NUMBER_OF_ITEMS - 1;
+		menu[Constants::GetInstance().NUMBER_OF_MENU_ITEMS -1].setColor(sf::Color::Yellow);
+		selectedItemIndex = Constants::GetInstance().NUMBER_OF_MENU_ITEMS - 1;
 	}
 }
 
 void Menu::MoveDown() {
-	if (selectedItemIndex + 1 < MAX_NUMBER_OF_ITEMS) {
+	if (selectedItemIndex + 1 < Constants::GetInstance().NUMBER_OF_MENU_ITEMS) {
 		menu[selectedItemIndex++].setColor(sf::Color::White);
 		menu[selectedItemIndex].setColor(sf::Color::Yellow);
 	}
