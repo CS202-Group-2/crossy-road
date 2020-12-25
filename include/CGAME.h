@@ -32,7 +32,7 @@ private:
     CCAR* axh;
     CDINAUSOR* akl;
     CBIRD* ac;
-    CPEOPLE cn;
+    CPEOPLE* player;
 
     vector<CANIMAL*> animals;
     const int rowCount = 7;
@@ -58,7 +58,7 @@ public:
     CGAME(); 
     void drawGame(); 
     ~CGAME(); 
-    CPEOPLE getPeople();
+    CPEOPLE* getPlayer();
     CVEHICLE* getVehicle();
     CANIMAL* getAnimal(); 
     void resetGame(); 
