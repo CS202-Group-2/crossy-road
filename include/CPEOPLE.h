@@ -16,10 +16,8 @@ private:
     int mX, mY;
     bool mState; 
     string textureFile = "Player.png";
-    sf::Texture texture;
-    sf::Sprite sprite;
     int gender, side;
-    bool mState;
+
     sf::Texture mTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;
@@ -52,7 +50,7 @@ public:
     bool isFinish();
     bool isDead();
     sf::Sprite& getSprite() {
-        return sprite;
+        return mSprite;
     }
 
     void savePlayer();

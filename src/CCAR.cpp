@@ -20,8 +20,8 @@ CCAR::CCAR(float x, float y) : CVEHICLE(x, y) {
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 	
-	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	sprite.rotate(-90);
+	sprite.setScale(sf::Vector2f(0.3f, 0.3f));
+	sprite.rotate(-50);
 	//speedMult = rand() % 2 + 1;
 }
 

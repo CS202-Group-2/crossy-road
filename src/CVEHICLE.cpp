@@ -5,8 +5,8 @@
 #include <SFML/Audio.hpp>
 
 CVEHICLE::CVEHICLE(float x, float y) {
-	mX = x; mY = y;
-	
+	mX = x; mY = initY = y;
+	sprite.setPosition(sf::Vector2f(mX, mY));
 }
 
 void CVEHICLE::move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC> traffics) {
@@ -14,14 +14,26 @@ void CVEHICLE::move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC>
 	for (int i = 0; i < traffics.size(); ++i) {
 		if (traffics[i].checkStop());
 	}
-	mX = fmod((mX + x * speedMult), window.getSize().x);
-	mY = fmod((mY + y * speedMult), window.getSize().y);
+	//mX = clamp(mX + x * speedMult * 0.766 + y * speedMult * 0.643, 0, )
+	//mY = fmod((mY + x * speedMult * 0.866 + y * speedMult * 0.5), window.getSize().y);
 	//cout << mX << endl;
+	if (sprite.getPosition().x > window.getSize().x || sprite.getPosition().y > window.getSize().y) {
+		// cout << "Vehicle destroyed" << endl;
+		isOutOfBound = true;
+		return;
+	}
+	sprite.move(x * speedMult * 0.766 + y * speedMult * 0.643, 
+		x * speedMult * 0.866 + y * speedMult * 0.5);
+	//mX += x * speedMult;
+	//mY += y * speedMult;
+	//if (mX >= window.getSize().x) sprite.setPosition(0, initY);
+
+	//cout << x * speedMult * sin(ALPHA) << " : " << y * speedMult * cos(ALPHA) << endl;
 	
 }
 
 void CVEHICLE::drawVehicle(sf::RenderWindow &window) {
-	sprite.setPosition(sf::Vector2f(mX, mY));
+	//sprite.setPosition(sf::Vector2f(mX, mY));
 	window.draw(sprite);
 }
 //  0: no collision
@@ -55,10 +67,10 @@ int CVEHICLE::checkCollision(vector<CVEHICLE*>& vehicles) {
 void CVEHICLE::update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles, vector<CTRAFFIC> traffics) {
 	int oldX = mX, oldY = mY;
 	move(x, y, window, traffics);
-	if (checkCollision(vehicles) == 1) {
-		mX = fmod((oldX), window.getSize().x);
-		mY = oldY;
-	}
+	//if (checkCollision(vehicles) == 1) {
+	//	mX = fmod((oldX), window.getSize().x);
+	//	mY = oldY;
+	//}
 	drawVehicle(window);
 }
 

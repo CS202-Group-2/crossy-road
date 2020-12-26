@@ -74,15 +74,22 @@ void CGAME::drawBackground(const string& backgroundIMG) {
         return;
     }
     background.setTexture(texture);
-    resizeImage(background);
+    background.scale(window->getSize().x / background.getGlobalBounds().width,
+        window->getSize().y / background.getGlobalBounds().height);
+    window->draw(background);
 
 }
 
 void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < vehicles.size(); ++i) {
+        if (vehicles[i]->IsOutOfBound()) {
+            float initY = vehicles[i]->initY;
+            delete vehicles[i];
+            vehicles[i] = new CCAR(0, initY);
+        }
         if (vehicles[i] != nullptr) {
-            vehicles[i]->update(1, 0, *window, vehicles, traffics);
+            vehicles[i]->update(1, 1, *window, vehicles, traffics);
             //cout << "Moving" << endl;
         }
     }
@@ -108,20 +115,16 @@ void CGAME::render() {
 
     switch (gameState) {
     case GAME_STATE::MENU: {
-        sf::RectangleShape rectangle(sf::Vector2f(250, 350));
-        rectangle.setOrigin(rectangle.getLocalBounds().left + rectangle.getLocalBounds().width / 2,
-            rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
-        rectangle.setPosition(window->getSize().x / 2, (window->getSize().y - menu->titlePadding) / 2 + menu->titlePadding);
-        rectangle.setFillColor(sf::Color(0, 0, 0, 200));
+        
 
-        window->draw(background);
-        window->draw(rectangle);
+        drawBackground("menu.jpg");
         menu->draw(*window);
         break;
     }
     case GAME_STATE::LEVEL_1: {
+        //drawBackground("Background.jpg");
         updatePosVehicle();
-        updatePosAnimal();
+        //updatePosAnimal();
         player->render();
         for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
         break;
@@ -230,30 +233,10 @@ void CGAME::initVehicle() {
     
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
-            if (i % 4 == 0) {
-                v = new CCAR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + Constants::GetInstance().PADDING_TOP);
+            
+                v = new CCAR(0, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i - 1000);
                 vehicles.push_back(v);
-            }
-            else if (i % 4 == 1) {
-                a = new CDINAUSOR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + Constants::GetInstance().PADDING_TOP);
-                animals.push_back(a);
-            }
-            else if (i % 4 == 2) {
-                v = new CTRUCK(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j 
-                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + Constants::GetInstance().PADDING_TOP);
-                vehicles.push_back(v);
-            }
-            else if (i % 4 == 3) {
-                a = new CBIRD(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + Constants::GetInstance().PADDING_TOP);
-                animals.push_back(a);
-            }
+            
         }
     }
 }

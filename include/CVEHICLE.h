@@ -3,6 +3,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "CTRAFFIC.h"
+#include <math.h>
+#include "../Constants.h"
 
 using namespace std;
 
@@ -14,7 +16,9 @@ protected:
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Clock clock;
-    float speedMult = 2.0f;
+    float initY = 0;
+    float speedMult = 1.0f;
+    bool isOutOfBound = false;
 public:
     CVEHICLE(float x, float y);
     void update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles, vector<CTRAFFIC> traffics);
@@ -23,4 +27,5 @@ public:
     virtual void drawVehicle(sf::RenderWindow& window);
     virtual void tell () = 0;
     virtual void crash ();
+    bool IsOutOfBound() { return isOutOfBound; };
 };
