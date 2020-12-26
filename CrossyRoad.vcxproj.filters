@@ -45,9 +45,6 @@
     <ClCompile Include="src\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\CTRAFFIC.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CANIMAL.h">
@@ -77,10 +74,7 @@
     <ClInclude Include="include\Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\Constants.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="include\CTRAFFIC.h">
+    <ClInclude Include="Constants.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

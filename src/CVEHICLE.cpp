@@ -1,8 +1,8 @@
 #include "../include/CVEHICLE.h"
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
-#include <time.h> 
-#include <SFML/Audio.hpp> 
+#include <time.h>
+#include <SFML/Audio.hpp>
 
 CVEHICLE::CVEHICLE(float x, float y) {
 	mX = x; mY = y;

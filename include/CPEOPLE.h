@@ -1,9 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <SFML/Graphics.hpp>
+#include "../Constants.h"
 #include "CVEHICLE.h"
 #include "CANIMAL.h"
-#include <SFML/Graphics.hpp>
+#include <fstream>
+#include <math.h>
 
 using namespace std;
 
@@ -15,12 +18,35 @@ private:
     string textureFile = "Player.png";
     sf::Texture texture;
     sf::Sprite sprite;
+    int gender, side;
+    bool mState;
+    sf::Texture mTexture;
+    sf::Sprite mSprite;
+    sf::RenderWindow* mWindow;
 public:
-    CPEOPLE();
-    void moveUp(int);
-    void moveLeft(int);
-    void moveRight(int);
-    void moveDown(int);
+    static int FIG_WIDTH, FIG_HEIGHT;
+    static double FIG_SCALE;
+    static int RIGHT, LEFT, UP, DOWN;
+    static int MALE, FEMALE;
+    static double MOVEABLE_DIST;
+
+
+    CPEOPLE(sf::RenderWindow* window, int gender, int side = UP, int x = -1, int y = -1);
+
+    bool canMoveDown();
+    bool canMoveUp();
+    bool canMoveRight();
+    bool canMoveLeft();
+
+    void setGender(int gender);
+    void setSide(int side = UP);
+
+    void render();
+
+    void moveUp();
+    void moveLeft();
+    void moveRight();
+    void moveDown();
     bool isImpact(const CVEHICLE*&);
     bool isImpact(const CANIMAL*&);
     bool isFinish();
@@ -28,4 +54,6 @@ public:
     sf::Sprite& getSprite() {
         return sprite;
     }
+
+    void savePlayer();
 };

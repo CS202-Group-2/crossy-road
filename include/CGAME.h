@@ -34,7 +34,7 @@ private:
     CCAR* axh;
     CDINAUSOR* akl;
     CBIRD* ac;
-    CPEOPLE cn;
+    CPEOPLE* player;
 
     vector<CANIMAL*> animals;
     vector<CVEHICLE*> vehicles;
@@ -59,7 +59,7 @@ public:
     CGAME(); 
     void drawGame(); 
     ~CGAME(); 
-    CPEOPLE getPeople();
+    CPEOPLE* getPlayer();
     CVEHICLE* getVehicle();
     CANIMAL* getAnimal(); 
     void resetGame(); 
