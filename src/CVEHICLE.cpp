@@ -22,8 +22,8 @@ void CVEHICLE::move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC>
 		isOutOfBound = true;
 		return;
 	}
-	sprite.move(x * speedMult * 0.766 + y * speedMult * 0.643, 
-		x * speedMult * 0.866 + y * speedMult * 0.5);
+	sprite.move(x * speedMult * cos(BETA) + y * speedMult * sin(BETA), 
+		x * speedMult * cos(ALPHA) + y * speedMult * sin(BETA));
 	//mX += x * speedMult;
 	//mY += y * speedMult;
 	//if (mX >= window.getSize().x) sprite.setPosition(0, initY);
