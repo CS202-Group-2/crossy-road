@@ -1,9 +1,12 @@
+
+/*
 #pragma once
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "CTRAFFIC.h"
-
+#include <vector>
+#include "../include/Constants.h"
 using namespace std;
 
 class CVEHICLE {
@@ -17,10 +20,11 @@ protected:
     float speedMult = 2.0f;
 public:
     CVEHICLE(float x, float y);
-    void update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles, vector<CTRAFFIC> traffics);
+    void update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles);
     int checkCollision(vector<CVEHICLE*>& vehicles);
-    virtual void move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC> traffics);
+    virtual void move(float x, float y, sf::RenderWindow &window);
     virtual void drawVehicle(sf::RenderWindow& window);
-    virtual void tell () = 0;
+  //  virtual void tell () = 0;
     virtual void crash ();
 };
+*/

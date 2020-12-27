@@ -23,12 +23,12 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y) {
 
 bool CPEOPLE::canMoveDown() {
     // In moving down, we must decrease x and increase y with respect to BETA.
-    bool canDecreaseX = (mSprite.getGlobalBounds().left - PLAYER_STEP * cos(BETA) >= 0);
+    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA) >= 0);
 
     bool canIncreaseY = (
         (double)mSprite.getGlobalBounds().top
         + (double)mSprite.getGlobalBounds().height
-        + PLAYER_STEP * sin(BETA)
+        + Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA)
         <= mWindow->getSize().y
         );
 
@@ -39,7 +39,7 @@ bool CPEOPLE::canMoveUp() {
     // The character only moves up when the distance between the character and the bottom
     // has not exceeded MOVEABLE_DIST.
     // Otherwise, other figures in the screen will move down and player stays still.
-    bool isInMovableDist = (mWindow->getSize().y - mSprite.getGlobalBounds().top) <= MOVEABLE_DIST * sin(BETA);
+    bool isInMovableDist = (mWindow->getSize().y - mSprite.getGlobalBounds().top) <= MOVEABLE_DIST * sin(Constants::GetInstance ().BETA);
 
     return isInMovableDist;
 }
@@ -49,14 +49,14 @@ bool CPEOPLE::canMoveRight() {
     bool canIncreaseX = (
         (double)mSprite.getGlobalBounds().left
         + (double)mSprite.getGlobalBounds().width
-        + PLAYER_STEP * cos(ALPHA)
+        + Constants::GetInstance ().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA)
         <= mWindow->getSize().x
         );
 
     bool canIncreaseY = (
         mSprite.getGlobalBounds().top
         + mSprite.getGlobalBounds().height
-        + PLAYER_STEP * sin(ALPHA)
+        + Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA)
         <= mWindow->getSize().y
         );
 
@@ -65,9 +65,9 @@ bool CPEOPLE::canMoveRight() {
 
 bool CPEOPLE::canMoveLeft() {
     // In moving left, we must decrease x and decrease y with respect to ALPHA.
-    bool canDecreaseX = (mSprite.getGlobalBounds().left - PLAYER_STEP * cos(ALPHA) >= 0);
+    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance ().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA) >= 0);
 
-    bool canDecreaseY = (mSprite.getGlobalBounds().top - PLAYER_STEP * sin(ALPHA) >= 0);
+    bool canDecreaseY = (mSprite.getGlobalBounds().top - Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA) >= 0);
 
     return canDecreaseX && canDecreaseY;
 }
@@ -94,32 +94,32 @@ void CPEOPLE::render() {
 void CPEOPLE::moveUp() {
     cout << "up\n";
     // Increase x and decrease y with respect to BETA.
-    mSprite.move(PLAYER_STEP * cos(BETA), -PLAYER_STEP * sin(BETA));
+    mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
 }
 
 void CPEOPLE::moveLeft() {
     cout << "left\n";
     // Decrease x and Decrease y with respect to ALPHA.
-    mSprite.move(-PLAYER_STEP * cos(ALPHA), -PLAYER_STEP * sin(ALPHA));
+    mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveRight() {
     cout << "right\n";
     // Increase x and increase y with respect to ALPHA.
-    mSprite.move(PLAYER_STEP * cos(ALPHA), PLAYER_STEP * sin(ALPHA));
+    mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveDown() {
     cout << "down\n";
     // Decrease x and Increase y with respect to BETA.
-    mSprite.move(-PLAYER_STEP * cos(BETA), PLAYER_STEP * sin(BETA));
+    mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
 }
 
-bool CPEOPLE::isImpact(const CVEHICLE*&) {
-    return false;
-}
+//bool CPEOPLE::isImpact(const CVEHICLE*&) {
+  //  return false;
+//}
 
-bool CPEOPLE::isImpact(const CANIMAL*&) {
+bool CPEOPLE::isImpact(const COBJECT*&) {
     return false;
 }
 

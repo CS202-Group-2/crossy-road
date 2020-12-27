@@ -5,7 +5,7 @@
 #include "CVEHICLE.h"
 #include "CTRUCK.h"
 #include "CCAR.h"
-#include "CANIMAL.h"
+#include "../include/COBJECT.h"
 #include "CDINAUSOR.h"
 #include "CBIRD.h"
 #include "Menu.h"
@@ -36,8 +36,8 @@ private:
     CBIRD* ac;
     CPEOPLE* player;
 
-    vector<CANIMAL*> animals;
-    vector<CVEHICLE*> vehicles;
+    vector<COBJECT*> animals;
+    vector<COBJECT*> vehicles;
     vector<CTRAFFIC> traffics;
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
@@ -60,8 +60,8 @@ public:
     void drawGame(); 
     ~CGAME(); 
     CPEOPLE* getPlayer();
-    CVEHICLE* getVehicle();
-    CANIMAL* getAnimal(); 
+    COBJECT* getVehicle();
+    COBJECT* getAnimal(); 
     void resetGame(); 
     void exitGame(HANDLE); 
     void startGame(); 

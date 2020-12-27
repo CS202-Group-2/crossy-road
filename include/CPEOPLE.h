@@ -4,10 +4,9 @@
 #include <SFML/Graphics.hpp>
 #include "../Constants.h"
 #include "CVEHICLE.h"
-#include "CANIMAL.h"
+#include "../include/COBJECT.h"
 #include <fstream>
 #include <math.h>
-
 using namespace std;
 
 class CPEOPLE {
@@ -16,10 +15,7 @@ private:
     int mX, mY;
     bool mState; 
     string textureFile = "Player.png";
-    sf::Texture texture;
-    sf::Sprite sprite;
     int gender, side;
-    bool mState;
     sf::Texture mTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;
@@ -47,13 +43,10 @@ public:
     void moveLeft();
     void moveRight();
     void moveDown();
-    bool isImpact(const CVEHICLE*&);
-    bool isImpact(const CANIMAL*&);
+    //bool isImpact(const COBJECT*&);
+    bool isImpact(const COBJECT*&);
     bool isFinish();
     bool isDead();
-    sf::Sprite& getSprite() {
-        return sprite;
-    }
 
     void savePlayer();
 };

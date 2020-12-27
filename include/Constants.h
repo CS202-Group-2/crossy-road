@@ -23,7 +23,10 @@ public:
 	const float DISTANCE_BETWEEN_LANES = 100;
 	const float PADDING_TOP = 200;
 	const float DISTANCE_BETWEEN_OBSTACLES = 300;
-
+	const double ALPHA = 30 * 3.14 / 180, BETA = 40 * 3.14 / 180;
+	const double PLAYER_STEP = 15;
+	const int FPS = 60;
+	const int ANIMAL = 1, VEHICLE = 2;
 	// Constants(Constants const&) = delete;
 	//void operator=(Constants const&) = delete;
 

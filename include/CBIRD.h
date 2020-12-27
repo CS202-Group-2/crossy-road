@@ -1,19 +1,20 @@
 #pragma once
 
 #include <iostream>
-#include <stdlib.h>     /* srand, rand */
+#include <stdlib.h>    
 #include <time.h> 
 #include <SFML/Graphics.hpp>
-#include "CANIMAL.h"
+#include "../include/COBJECT.h"
+#include "../include/Constants.h"
 
 using namespace std;
 
-class CBIRD : public CANIMAL {
+class CBIRD : public COBJECT {
 private:
     friend class CGAME;
 
 public:
     CBIRD(float x, float y);
     void move(float x, float y, sf::RenderWindow& window);
-    void drawAnimal(sf::RenderWindow& window);
+    void drawObject(sf::RenderWindow& window);
 };

@@ -4,17 +4,12 @@
 #include "include/CVEHICLE.h"
 #include "include/CTRUCK.h"
 #include "include/CCAR.h"
-#include "include/CANIMAL.h"
+#include "include/COBJECT.h"
 #include "include/CDINAUSOR.h"
 #include "include/CBIRD.h"
 
 
-
-
-
 using namespace std;
-
-
 
 int main() {
     

@@ -1,6 +1,7 @@
+/*
 #include "../include/CVEHICLE.h"
-#include <stdio.h>      /* printf, scanf, puts, NULL */
-#include <stdlib.h>     /* srand, rand */
+#include <stdio.h>      
+#include <stdlib.h>  
 #include <time.h>
 #include <SFML/Audio.hpp>
 
@@ -9,11 +10,9 @@ CVEHICLE::CVEHICLE(float x, float y) {
 	
 }
 
-void CVEHICLE::move(float x, float y, sf::RenderWindow &window, vector<CTRAFFIC> traffics) {
+void CVEHICLE::move(float x, float y, sf::RenderWindow &window) {
 	//srand(time(NULL));
-	for (int i = 0; i < traffics.size(); ++i) {
-		if (traffics[i].checkStop());
-	}
+	
 	mX = fmod((mX + x * speedMult), window.getSize().x);
 	mY = fmod((mY + y * speedMult), window.getSize().y);
 	//cout << mX << endl;
@@ -41,20 +40,20 @@ int CVEHICLE::checkCollision(vector<CVEHICLE*>& vehicles) {
 			return 1;
 		}
 	}
-	/*
-	for (int i = 0; i < animals.size(); ++i) {
-		if (sprite.getGlobalBounds().intersects(animals[i]->sprite.getGlobalBounds())) {
-			mX = vehicles[i]->sprite.getGlobalBounds().left - 20;
-		}
-	}
-	*/
+	
+	//for (int i = 0; i < animals.size(); ++i) {
+	//	if (sprite.getGlobalBounds().intersects(animals[i]->sprite.getGlobalBounds())) {
+	//		mX = vehicles[i]->sprite.getGlobalBounds().left - 20;
+	//	}
+	//}
+	
 	return 0;
 	//if (sprite.getGlobalBounds().intersects(player))
 }
 
-void CVEHICLE::update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles, vector<CTRAFFIC> traffics) {
+void CVEHICLE::update(float x, float y, sf::RenderWindow& window, vector<CVEHICLE*>& vehicles) {
 	int oldX = mX, oldY = mY;
-	move(x, y, window, traffics);
+	move(x, y, window);
 	if (checkCollision(vehicles) == 1) {
 		mX = fmod((oldX), window.getSize().x);
 		mY = oldY;
@@ -72,3 +71,4 @@ void CVEHICLE::crash () {
 	sound.setBuffer (buffer);
 	sound.play ();
 }
+*/

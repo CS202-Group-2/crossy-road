@@ -29,11 +29,11 @@ CPEOPLE* CGAME::getPlayer() {
     return new CPEOPLE(this->window, gender, side, x, y);
 }
 
-CVEHICLE* CGAME::getVehicle() {
+COBJECT* CGAME::getVehicle() {
     return nullptr;
 }
 
-CANIMAL* CGAME::getAnimal() {
+COBJECT* CGAME::getAnimal() {
     return nullptr;
 }
 
@@ -82,7 +82,7 @@ void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i] != nullptr) {
-            vehicles[i]->update(1, 0, *window, vehicles, traffics);
+            vehicles[i]->update(1, 0, *window, vehicles);
             //cout << "Moving" << endl;
         }
     }
@@ -225,34 +225,37 @@ void CGAME::pollEvents() {
 }
 
 void CGAME::initVehicle() {
-    CVEHICLE* v = nullptr;
-    CANIMAL* a = nullptr;
+
+    COBJECT* v = nullptr;
     
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
-            if (i % 4 == 0) {
+
+            // random create objects in lane
+            int choice = rand() % 4;
+            if (choice % 4 == 0) {
                 v = new CCAR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
                     + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
                     + Constants::GetInstance().PADDING_TOP);
                 vehicles.push_back(v);
             }
-            else if (i % 4 == 1) {
-                a = new CDINAUSOR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
+            else if (choice % 4 == 1) {
+                v = new CDINAUSOR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
                     + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
                     + Constants::GetInstance().PADDING_TOP);
-                animals.push_back(a);
+                animals.push_back(v);
             }
-            else if (i % 4 == 2) {
+            else if (choice % 4 == 2) {
                 v = new CTRUCK(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j 
                     + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
                     + Constants::GetInstance().PADDING_TOP);
                 vehicles.push_back(v);
             }
-            else if (i % 4 == 3) {
-                a = new CBIRD(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
+            else if (choice % 4 == 3) {
+                v = new CBIRD(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
                     + rand() % 100 - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
                     + Constants::GetInstance().PADDING_TOP);
-                animals.push_back(a);
+                animals.push_back(v);
             }
         }
     }
