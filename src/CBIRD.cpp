@@ -1,7 +1,7 @@
 #include "../include/CBIRD.h"
 
 void CBIRD::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x * speedMult, y * speedMult, window);
+	COBJECT::move(x , y , window);
 }
 
 void CBIRD::drawObject(sf::RenderWindow& window) {

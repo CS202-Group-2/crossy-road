@@ -1,7 +1,7 @@
 #include "../include/CCAR.h"
 
 void CCAR::move(float x, float y, sf::RenderWindow &window) {
-	COBJECT::move(x*speedMult, y*speedMult, window);
+	COBJECT::move(x, y, window);
 }
 
 void CCAR::drawObject(sf::RenderWindow &window) {

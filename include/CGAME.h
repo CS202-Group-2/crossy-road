@@ -36,7 +36,7 @@ private:
     CBIRD* ac;
     CPEOPLE* player;
 
-    vector<COBJECT*> animals;
+   // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
     vector<CTRAFFIC> traffics;
     vector<sf::Sprite> sprites;
@@ -61,7 +61,7 @@ public:
     ~CGAME(); 
     CPEOPLE* getPlayer();
     COBJECT* getVehicle();
-    COBJECT* getAnimal(); 
+  //  COBJECT* getAnimal(); 
     void resetGame(); 
     void exitGame(HANDLE); 
     void startGame(); 

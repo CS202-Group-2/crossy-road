@@ -1,7 +1,7 @@
 #include "../include/CDINAUSOR.h"
 
 void CDINAUSOR::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x * speedMult, y * speedMult, window);
+	COBJECT::move(x , y, window);
 }
 
 void CDINAUSOR::drawObject(sf::RenderWindow& window) {

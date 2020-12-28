@@ -1,7 +1,7 @@
 #include "../include/CTRUCK.h"
 
 void CTRUCK::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x * speedMult, y * speedMult, window);
+	COBJECT::move(x , y , window);
 }
 
 void CTRUCK::drawObject(sf::RenderWindow& window) {

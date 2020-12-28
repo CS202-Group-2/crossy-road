@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "../Constants.h"
 #include "CVEHICLE.h"
-#include "../include/COBJECT.h"
+// #include "../include/COBJECT.h"
 #include <fstream>
 #include <math.h>
 using namespace std;
@@ -12,6 +12,7 @@ using namespace std;
 class CPEOPLE {
 private:
     friend class CGAME;
+    friend class COBJECT;
     int mX, mY;
     bool mState; 
     string textureFile = "Player.png";

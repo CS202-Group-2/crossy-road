@@ -14,7 +14,7 @@ public:
 		static Constants instance;
 		return instance;
 	}
-	const int MAX_NUMBER_OF_LANES = 5;
+	const int MAX_NUMBER_OF_LANES = 10;
 	const int MAX_NUMBER_OF_VEHICLES_EACH_LANE = 5;
 	const float TIME_BETWEEN_TRAFFIC = 10;
 	const float MAX_TRAFFIC_STOP = 5;
