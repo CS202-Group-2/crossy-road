@@ -49,14 +49,14 @@ bool CPEOPLE::canMoveRight() {
     bool canIncreaseX = (
         (double)mSprite.getGlobalBounds().left
         + (double)mSprite.getGlobalBounds().width
-        + Constants::GetInstance ().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA)
+        + Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA)
         <= mWindow->getSize().x
         );
 
     bool canIncreaseY = (
         mSprite.getGlobalBounds().top
         + mSprite.getGlobalBounds().height
-        + Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA)
+        + Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA)
         <= mWindow->getSize().y
         );
 
@@ -65,9 +65,9 @@ bool CPEOPLE::canMoveRight() {
 
 bool CPEOPLE::canMoveLeft() {
     // In moving left, we must decrease x and decrease y with respect to ALPHA.
-    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance ().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA) >= 0);
+    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA) >= 0);
 
-    bool canDecreaseY = (mSprite.getGlobalBounds().top - Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA) >= 0);
+    bool canDecreaseY = (mSprite.getGlobalBounds().top - Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA) >= 0);
 
     return canDecreaseX && canDecreaseY;
 }
@@ -117,13 +117,13 @@ void CPEOPLE::moveUp() {
 void CPEOPLE::moveLeft() {
     cout << "left\n";
     // Decrease x and Decrease y with respect to ALPHA.
-    mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA));
+    mSprite.move(-Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), -Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveRight() {
     cout << "right\n";
     // Increase x and increase y with respect to ALPHA.
-    mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().ALPHA));
+    mSprite.move(Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveDown() {

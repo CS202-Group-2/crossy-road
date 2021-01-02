@@ -29,6 +29,7 @@ public:
 	const float DISTANCE_BETWEEN_OBSTACLES = 300;
 	const double ALPHA = 15 * 3.14 / 180, BETA = 75 * 3.14 / 180;
 	const double PLAYER_STEP = 100;
+	const double PLAYER_STEP_HORIZONTAL = 25;
 	const int FPS = 60;
 	const int ANIMAL = 1, VEHICLE = 2;
 	

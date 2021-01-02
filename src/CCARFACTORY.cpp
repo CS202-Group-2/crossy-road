@@ -1,8 +1,15 @@
 #include "../include/CCARFACTORY.h"
 
 COBJECT* CCARFACTORY::initObject(int index, sf::Texture& textureLane, sf::Sprite& laneBackground, sf::RenderWindow* window) {
-    if (!textureLane.loadFromFile("Road.png")) {
-        return nullptr;
+    //srand(time(NULL));
+    int choice = rand() % 2;
+    if (choice == 0) {
+        if (!textureLane.loadFromFile("Road.png")) {
+            return nullptr;
+        }
+    }
+    else if (!textureLane.loadFromFile("Grass.png")) {
+           return nullptr;
     }
     laneBackground.setTexture(textureLane);
     double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
