@@ -248,9 +248,11 @@ void CGAME::initVehicle() {
             return;
         }
         laneBackground.setTexture(textureRoad);
-        laneBackground.setScale(window->getSize().x / laneBackground.getLocalBounds().width,
-            Constants::GetInstance().LANE_WIDTH / laneBackground.getLocalBounds().height);
-        laneBackground.setPosition(0, 0);
+        double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
+        laneBackground.setScale(scaleX, scaleX);
+        //double scaleY = 100 / laneBackground.getGlobalBounds().height;
+       // laneBackground.setScale(scaleY, scaleY);
+        laneBackground.setPosition(0, i*Constants::GetInstance().LANE_WIDTH);
         lanes.push_back(laneBackground);
 
 
@@ -260,7 +262,7 @@ void CGAME::initVehicle() {
             int choice = rand() % 4;
             int k = rand () % 100;
             
-            v = new CCAR(-100, i * Constants::GetInstance().LANE_WIDTH);
+            v = new CCAR(-100, i * Constants::GetInstance().LANE_WIDTH + 25);
             vehicles.push_back(v);
             
    
