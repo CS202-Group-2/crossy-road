@@ -73,7 +73,7 @@ void CGAME::updatePosPeople(char) {
 void CGAME::updateLanes() {
     srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        (*it)->updatePosObject(1, 1, *window, *player);
+        (*it)->updatePosObject(1, 1, *window, *player, *traffic);
 }
 
 void CGAME::initLanes() {
@@ -98,7 +98,7 @@ void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i] != nullptr) {
-            vehicles[i]->update(1,1, *window, vehicles, *player, traffics);
+            //vehicles[i]->update(1,1, *window, vehicles, *player);
             if (vehicles[i]->checkOutWindow (*window) == 1) {
                 float temp = vehicles[i]->initY;
                 delete vehicles[i];
@@ -145,6 +145,7 @@ void CGAME::render() {
     case GAME_STATE::LEVEL_1: {
         window->draw(background);
         updateLanes();
+        traffic->drawTraffic(window);
         //updatePosVehicle();
         //updatePosAnimal();
         player->render();
@@ -163,9 +164,8 @@ void CGAME::render() {
 void CGAME::initVariables() {
     this->window = nullptr;
     srand(time(NULL));
-    for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
-        traffics.push_back(CTRAFFIC(rand() % 10 + 1));
-    }
+    traffic = new CTRAFFIC(0);
+
     //vehicles.assign(rowCount, vector<CVEHICLE*>(maxVehicle, nullptr));
 }
 void CGAME::initWindow() {

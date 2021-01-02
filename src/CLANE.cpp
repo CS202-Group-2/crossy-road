@@ -14,11 +14,16 @@ CLANE::~CLANE() {
 }
 
 void CLANE::initObject() {
-	object = factory->initObject(index, textureLane, laneBackground, window);
+	object = factory->initObject(index,  window);
+	factory->initBackground(index, textureLane, laneBackground, window);
 }
 
-void CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player) {
+void CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
 	window.draw(laneBackground);
+	if (object->checkOutWindow(window)) {
+		delete object;
+		object = factory->initObject(index, this->window);
+	}
+	object->trafficStop(traffic.checkStop());
 	object->update(1, 1, window, player);
-	
 }

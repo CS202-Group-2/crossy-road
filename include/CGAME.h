@@ -41,7 +41,7 @@ private:
 
    // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
-    vector<CTRAFFIC> traffics;
+    CTRAFFIC* traffic;
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;

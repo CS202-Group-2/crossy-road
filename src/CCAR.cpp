@@ -1,7 +1,7 @@
 #include "../include/CCAR.h"
 
 void CCAR::move(float x, float y, sf::RenderWindow &window) {
-	COBJECT::move(x, y, window);
+	if (!isStopping) COBJECT::move(x, y, window);
 	
 }
 
@@ -11,7 +11,8 @@ void CCAR::drawObject(sf::RenderWindow &window) {
 
 CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
-	textureFile = "Car.png";
+	if (x > 100) textureFile = "Car_back.png";
+	else textureFile = "Car_front.png";
 	type = Constants::GetInstance ().VEHICLE;
 
 	if (!texture.loadFromFile(textureFile)) {
@@ -22,8 +23,8 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 	
-	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	sprite.rotate(Constants::GetInstance().ALPHA/(3.14)*180 - 90);
+	sprite.setScale(sf::Vector2f(1.0f, 1.0f));
+	//sprite.rotate(Constants::GetInstance().ALPHA/(3.14)*180 - 90);
 	//speedMult = rand() % 2 + 1;
 }
 
@@ -36,4 +37,13 @@ void CCAR::tell () {
 	sound.setBuffer (buffer);
 	sound.play ();
 	cout << "sound car" << endl;
+}
+
+CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
+	this->direction = direction;
+}
+
+void CCAR::trafficStop(bool state) {
+	//cout << "state " << std::boolalpha << state << endl;
+	isStopping = state;
 }

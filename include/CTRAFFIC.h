@@ -1,4 +1,5 @@
 #pragma once
+#include "COBJECT.h"
 #include <SFML/Graphics.hpp>
 
 class CTRAFFIC {
@@ -7,9 +8,10 @@ private:
 	sf::Texture texture;
 	sf::Sprite sprite;
 	float curTime = 0;
+	int color = 0; // 1: green, 0: yellow, -1: red
 public:
 	CTRAFFIC(float startTime);
 	bool checkStop();
 	sf::Sprite getSprite();
-	void drawTraffic();
+	void drawTraffic(sf::RenderWindow *window);
 };

@@ -1,15 +1,24 @@
 #include "../include/CCARFACTORY.h"
 
-COBJECT* CCARFACTORY::initObject(int index, sf::Texture& textureLane, sf::Sprite& laneBackground, sf::RenderWindow* window) {
+COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
     //srand(time(NULL));
+    int dir = rand() % 2;
+    COBJECT* object = nullptr;
+    if (dir == 0) object = new CCAR(-100, (index - 1) * Constants::GetInstance().LANE_WIDTH + 25, true);
+    else object = new CCAR(window->getSize().x+100, 
+        window->getSize().x * tan(Constants::GetInstance().ALPHA) + (index) * Constants::GetInstance().LANE_WIDTH - 25, false);
+    return object;
+}
+
+void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, sf::Sprite& laneBackground, sf::RenderWindow* window) {
     int choice = rand() % 2;
     if (choice == 0) {
         if (!textureLane.loadFromFile("Road.png")) {
-            return nullptr;
+            return;
         }
     }
     else if (!textureLane.loadFromFile("Grass.png")) {
-           return nullptr;
+        return;
     }
     laneBackground.setTexture(textureLane);
     double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
@@ -17,7 +26,4 @@ COBJECT* CCARFACTORY::initObject(int index, sf::Texture& textureLane, sf::Sprite
     //double scaleY = 100 / laneBackground.getGlobalBounds().height;
    // laneBackground.setScale(scaleY, scaleY);
     laneBackground.setPosition(0, (index - 1) * Constants::GetInstance().LANE_WIDTH);
-    
-    COBJECT* object = new CCAR(-100, (index - 1) * Constants::GetInstance().LANE_WIDTH + 25);
-    return object;
 }

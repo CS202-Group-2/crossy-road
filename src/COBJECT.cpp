@@ -7,14 +7,21 @@ COBJECT::COBJECT(float x, float y) {
 	this->mX = x; 
 	this->mY = y;
 	initY = y;
-	speedMult = rand() % 5 + 1;
+	speedMult = rand() % 5 + 2;
 
 }
 
 void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 	//srand(time(NULL));
-	mX = mX + x * speedMult * cos (Constants::GetInstance ().ALPHA);
-	mY = mY + y * speedMult * sin (Constants::GetInstance ().ALPHA);
+	if (direction) {
+		mX = mX + x * speedMult * cos(Constants::GetInstance().ALPHA);
+		mY = mY + y * speedMult * sin(Constants::GetInstance().ALPHA);
+	}
+	else {
+		mX = mX - x * speedMult * cos(Constants::GetInstance().ALPHA);
+		mY = mY - y * speedMult * sin(Constants::GetInstance().ALPHA);
+	}
+	
 	//cout << mX << endl;
 
 }
@@ -28,6 +35,7 @@ void COBJECT::drawObject(sf::RenderWindow& window) {
 // -1: collides with player -> gameover
 //  2: check traffic
 
+/*
 int COBJECT::checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector<CTRAFFIC> traffics) {
 	for (int i = 0; i < objects.size(); ++i) {
 		//sf::FloatRect otherRect = vehicles[i]->sprite.getGlobalBounds();
@@ -50,6 +58,7 @@ int COBJECT::checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector<C
 	return 0;
 }
 
+
 void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player, vector<CTRAFFIC> traffics) {
 	int oldX = mX, oldY = mY;
 	move (x, y, window);
@@ -66,6 +75,7 @@ void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT
 	}
 	drawObject(window);
 }
+*/
 
 bool COBJECT::checkCollision(CPEOPLE& player) {
 	return ((sprite.getGlobalBounds().left + sprite.getLocalBounds().width == player.mSprite.getGlobalBounds().left) ||
@@ -82,6 +92,8 @@ void COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 	//cout << window.getSize ().x << " " << window.getSize ().y << endl;
 	//cout << mX << endl;
-	if (sprite.getPosition().x >= window.getSize().x + 200 || sprite.getPosition().y >= window.getSize().y + 200) return 1;
+	
+	if (direction && (sprite.getPosition().x >= window.getSize().x + 200 || sprite.getPosition().y >= window.getSize().y + 200)) return 1;
+	else if (!direction && (sprite.getPosition().x <= -200 || sprite.getPosition().y <= -200)) return 1;
 	return 0;
 }
