@@ -3,7 +3,7 @@
 int CPEOPLE::RIGHT = 0, CPEOPLE::UP = 1, CPEOPLE::LEFT = 2, CPEOPLE::DOWN = 3;
 int CPEOPLE::MALE = 0, CPEOPLE::FEMALE = 1;
 int CPEOPLE::FIG_WIDTH = 167, CPEOPLE::FIG_HEIGHT = 373;
-double CPEOPLE::FIG_SCALE = 0.45;
+double CPEOPLE::FIG_SCALE = 0.2;
 double CPEOPLE::MOVEABLE_DIST = 600;
 
 //double CPEOPLE::ALPHA = 30 * 3.14 / 180, CPEOPLE::BETA = 40 * 3.14 / 180;
@@ -13,7 +13,9 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y) {
     setGender(gender);
     mSprite.setTexture(mTexture);
     mSprite.setScale(FIG_SCALE, FIG_SCALE);
-  
+    if (x != -1)
+        mSprite.setPosition(x, y);
+    else
         mSprite.setPosition(window->getSize().x / 2, window->getSize().y - FIG_HEIGHT * FIG_SCALE);
     setSide(side);
     mWindow = window;

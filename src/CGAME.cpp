@@ -132,6 +132,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
+        window->draw(background);
         drawLane();
          updatePosVehicle();
         //updatePosAnimal();
@@ -252,7 +253,7 @@ void CGAME::initVehicle() {
         laneBackground.setScale(scaleX, scaleX);
         //double scaleY = 100 / laneBackground.getGlobalBounds().height;
        // laneBackground.setScale(scaleY, scaleY);
-        laneBackground.setPosition(0, i*Constants::GetInstance().LANE_WIDTH);
+        laneBackground.setPosition(0, (i-1)*Constants::GetInstance().LANE_WIDTH);
         lanes.push_back(laneBackground);
 
 
@@ -262,7 +263,7 @@ void CGAME::initVehicle() {
             int choice = rand() % 4;
             int k = rand () % 100;
             
-            v = new CCAR(-100, i * Constants::GetInstance().LANE_WIDTH + 25);
+            v = new CCAR(-100, (i-1) * Constants::GetInstance().LANE_WIDTH + 25);
             vehicles.push_back(v);
             
    
