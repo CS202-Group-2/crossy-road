@@ -6,6 +6,8 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "../include/CPEOPLE.h"
+#include <string>
+#include "../include/CTRAFFIC.h"
 
 using namespace std;
 
@@ -19,12 +21,15 @@ protected:
     sf::Clock clock;
     float speedMult = 2.0f;
     int type;
+    string sound;
 public:
     COBJECT(float x, float y);
-    void update(float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player);
-    int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player);
+    void update(float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player, vector<CTRAFFIC> traffics);
+    int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector< CTRAFFIC> traffics);
+    bool checkOutWindow (sf::RenderWindow& window);
     virtual void move(float x, float y, sf::RenderWindow& window);
     virtual void drawObject(sf::RenderWindow& window);
+    virtual void tell () = 0;
 };
 
 #endif

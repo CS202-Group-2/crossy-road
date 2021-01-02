@@ -82,7 +82,10 @@ void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i] != nullptr) {
-            vehicles[i]->update(1,1 , *window, vehicles, *player);
+            vehicles[i]->update(1,1, *window, vehicles, *player, traffics);
+            if (vehicles[i]->checkOutWindow (*window) == 1) {
+
+            }
         }
     }
 }
@@ -232,42 +235,32 @@ void CGAME::initVehicle() {
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
 
             // random create objects in lane
-         //   int choice = rand() % 4;
+            int choice = rand() % 4;
             int k = rand () % 100;
-            if (j == 0) {
-                v = new CCAR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50, (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * tan (Constants::GetInstance ().ALPHA) + Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
+            if (choice == 0) {
+                v = new CCAR((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                    + k - 50)* cos(Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
                    );
                 vehicles.push_back(v);
             }
-            else if (j == 1) {
-                v = new CDINAUSOR(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * tan (Constants::GetInstance ().ALPHA));
+            else if (choice == 1) {
+                v = new CDINAUSOR((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
                 vehicles.push_back(v);
             }
-            else if (j == 2) {
-                v = new CTRUCK(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j 
-                    + k - 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                   + (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * tan (Constants::GetInstance ().ALPHA));
+            else if (choice == 2) {
+                v = new CTRUCK((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
                 vehicles.push_back(v);
             }
-            else if (j == 3) {
-                v = new CBIRD(Constants::GetInstance().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k- 50, Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                    + (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * tan (Constants::GetInstance ().ALPHA));
+            else if (choice == 3) {
+                v = new CBIRD((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
+                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
                 vehicles.push_back(v);
-            }
-            else if (j == 4) {
-                v = new CBIRD (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50, Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i
-                    + (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * tan (Constants::GetInstance ().ALPHA));
-                vehicles.push_back (v);
             }
         }
     }

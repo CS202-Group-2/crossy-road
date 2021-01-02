@@ -25,3 +25,14 @@ CDINAUSOR::CDINAUSOR(float x, float y) : COBJECT(x, y) {
 	//sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
+
+void CDINAUSOR::tell () {
+	cout << "Dino sound" << endl;
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile ("assets/sound/dino.wav")) {
+		cout << "Cannot load bird" << endl;
+	}
+	sf::Sound sound;
+	sound.setBuffer (buffer);
+	sound.play ();
+}

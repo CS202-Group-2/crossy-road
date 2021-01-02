@@ -4,6 +4,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
 #include <SFML/Graphics.hpp>
+#include <SFML/audio.hpp>
 #include "../include/COBJECT.h"
 #include "../include/Constants.h"
 
@@ -17,4 +18,5 @@ public:
     CDINAUSOR(float x, float y);
     void move(float x, float y, sf::RenderWindow& window);
     void drawObject(sf::RenderWindow& window);
+    void tell ();
 };

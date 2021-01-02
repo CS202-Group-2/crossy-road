@@ -89,6 +89,23 @@ void CPEOPLE::setSide(int side) {
 
 void CPEOPLE::render() {
     mWindow->draw(mSprite);
+   // cout << mSprite.getGlobalBounds ().height << endl;
+  //  cout << mSprite.getGlobalBounds ().width << endl;
+  //  cout << mSprite.getGlobalBounds ().top << endl;
+  //  cout << mSprite.getGlobalBounds ().left << endl;
+    /*
+    167.85
+75.15
+373
+265
+    */
+    /*
+    373
+167
+0
+0
+    */
+
 }
 
 void CPEOPLE::moveUp() {

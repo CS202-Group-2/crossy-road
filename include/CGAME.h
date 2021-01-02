@@ -71,7 +71,7 @@ public:
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
     void updatePosVehicle(); 
-    void updatePosAnimal();
+   // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);
 

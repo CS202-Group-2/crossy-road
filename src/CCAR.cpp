@@ -2,6 +2,7 @@
 
 void CCAR::move(float x, float y, sf::RenderWindow &window) {
 	COBJECT::move(x, y, window);
+	
 }
 
 void CCAR::drawObject(sf::RenderWindow &window) {
@@ -24,4 +25,15 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
 	sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
+}
+
+void CCAR::tell () {
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile ("assets/sound/car.wav")) {
+		cout << "Cannot load bird" << endl;
+	}
+	sf::Sound sound;
+	sound.setBuffer (buffer);
+	sound.play ();
+	cout << "sound car" << endl;
 }

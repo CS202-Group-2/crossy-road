@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "../include/COBJECT.h"
 #include "../include/Constants.h"
+#include <SFML/audio.hpp>
 
 using namespace std;
 
@@ -17,4 +18,5 @@ public:
     CBIRD(float x, float y);
     void move(float x, float y, sf::RenderWindow& window);
     void drawObject(sf::RenderWindow& window);
+    void tell ();
 };

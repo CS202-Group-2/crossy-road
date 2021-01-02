@@ -14,8 +14,9 @@ public:
 		static Constants instance;
 		return instance;
 	}
-	const int MAX_NUMBER_OF_LANES = 10;
-	const int MAX_NUMBER_OF_VEHICLES_EACH_LANE = 5;
+	const double PI = 3.141592653589793238463;
+	const int MAX_NUMBER_OF_LANES = 1;
+	const int MAX_NUMBER_OF_VEHICLES_EACH_LANE = 2;
 	const float TIME_BETWEEN_TRAFFIC = 10;
 	const float MAX_TRAFFIC_STOP = 5;
 	const int NUMBER_OF_MENU_ITEMS = 3;
@@ -23,7 +24,7 @@ public:
 	const float DISTANCE_BETWEEN_LANES = 100;
 	const float PADDING_TOP = 200;
 	const float DISTANCE_BETWEEN_OBSTACLES = 300;
-	const double ALPHA = 30 * 3.14 / 180, BETA = 40 * 3.14 / 180;
+	const double ALPHA = 30 * PI / 180, BETA = 40 * PI / 180;
 	const double PLAYER_STEP = 15;
 	const int FPS = 60;
 	const int ANIMAL = 1, VEHICLE = 2;

@@ -6,6 +6,7 @@ void CBIRD::move(float x, float y, sf::RenderWindow& window) {
 
 void CBIRD::drawObject(sf::RenderWindow& window) {
 	COBJECT::drawObject(window);
+	//tell ();
 }
 
 CBIRD::CBIRD(float x, float y) : COBJECT(x, y) {
@@ -23,4 +24,15 @@ CBIRD::CBIRD(float x, float y) : COBJECT(x, y) {
 	//sprite.setScale(sf::Vector2f(-1.0f, 1.0f));
 	//sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
+}
+
+void CBIRD::tell () {
+	cout << "Bird sound" << endl;
+	sf::SoundBuffer buffer;
+	if (!buffer.loadFromFile ("assets/sound/bird.wav")) {
+		cout << "Cannot load bird" << endl;
+	}
+	sf::Sound sound;
+	sound.setBuffer (buffer);
+	sound.play ();
 }
