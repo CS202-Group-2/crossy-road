@@ -8,6 +8,7 @@
 #include "../include/CPEOPLE.h"
 #include <string>
 #include "../include/CTRAFFIC.h"
+#include "Constants.h"
 
 using namespace std;
 
@@ -19,7 +20,8 @@ protected:
     sf::Texture texture;
     sf::Sprite sprite;
     sf::Clock clock;
-    float speedMult = 2.0f;
+    float initY = 0;
+    float speedMult = 5.0f;
     int type;
     string sound;
 public:

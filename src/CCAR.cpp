@@ -23,7 +23,7 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 	
 	sprite.setScale(sf::Vector2f(0.2f, 0.2f));
-	sprite.rotate(-90);
+	sprite.rotate(Constants::GetInstance().ALPHA/(3.14)*180 - 90);
 	//speedMult = rand() % 2 + 1;
 }
 

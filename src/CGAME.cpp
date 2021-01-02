@@ -78,15 +78,25 @@ void CGAME::drawBackground(const string& backgroundIMG) {
 
 }
 
+void CGAME::drawLane() {
+    for (int i = 0; i < lanes.size(); ++i) window->draw(lanes[i]);
+
+}
+
 void CGAME::updatePosVehicle() {
     srand(time(NULL));
     for (int i = 0; i < vehicles.size(); ++i) {
         if (vehicles[i] != nullptr) {
             vehicles[i]->update(1,1, *window, vehicles, *player, traffics);
             if (vehicles[i]->checkOutWindow (*window) == 1) {
-
+                float temp = vehicles[i]->initY;
+                delete vehicles[i];
+                vehicles[i] = new CCAR(-100, temp);
             }
         }
+    }
+    for (int i = 0; i < lanes.size(); ++i) {
+        
     }
 }
 /*
@@ -122,6 +132,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
+        drawLane();
          updatePosVehicle();
         //updatePosAnimal();
         player->render();
@@ -148,7 +159,7 @@ void CGAME::initVariables() {
 void CGAME::initWindow() {
     GetDesktopResolution();
     this->window = new sf::RenderWindow(this->videoMode, "Crossy Road");
-    //window->setFramerateLimit(60);
+    window->setFramerateLimit(30);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("menu.jpg");
 
@@ -159,8 +170,8 @@ void CGAME::GetDesktopResolution()
     RECT desktop;
     const HWND hDesktop = GetDesktopWindow();
     GetWindowRect(hDesktop, &desktop);
-    videoMode.width = desktop.right;
-    videoMode.height = desktop.bottom;
+    videoMode.width = 432;
+    videoMode.height = 768;
 }
 
 const bool CGAME::running() const {
@@ -232,36 +243,27 @@ void CGAME::initVehicle() {
     COBJECT* v = nullptr;
     
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; ++i) {
+        sf::Sprite laneBackground;
+        if (!textureRoad.loadFromFile("Road.png")) {
+            return;
+        }
+        laneBackground.setTexture(textureRoad);
+        laneBackground.setScale(window->getSize().x / laneBackground.getLocalBounds().width,
+            Constants::GetInstance().LANE_WIDTH / laneBackground.getLocalBounds().height);
+        laneBackground.setPosition(0, 0);
+        lanes.push_back(laneBackground);
+
+
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
 
             // random create objects in lane
             int choice = rand() % 4;
             int k = rand () % 100;
-            if (choice == 0) {
-                v = new CCAR((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50)* cos(Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance().DISTANCE_BETWEEN_LANES * i
-                   );
-                vehicles.push_back(v);
-            }
-            else if (choice == 1) {
-                v = new CDINAUSOR((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
-                vehicles.push_back(v);
-            }
-            else if (choice == 2) {
-                v = new CTRUCK((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
-                vehicles.push_back(v);
-            }
-            else if (choice == 3) {
-                v = new CBIRD((Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                    + k - 50) * cos (Constants::GetInstance ().ALPHA), (Constants::GetInstance ().DISTANCE_BETWEEN_OBSTACLES * j
-                        + k - 50) * sin (Constants::GetInstance ().ALPHA) + Constants::GetInstance ().DISTANCE_BETWEEN_LANES * i);
-                vehicles.push_back(v);
-            }
+            
+            v = new CCAR(-100, i * Constants::GetInstance().LANE_WIDTH);
+            vehicles.push_back(v);
+            
+   
         }
     }
 }

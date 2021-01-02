@@ -39,6 +39,7 @@ private:
    // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
     vector<CTRAFFIC> traffics;
+    vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;
@@ -54,6 +55,7 @@ private:
     sf::RectangleShape enemy;
     sf::Texture texture;
     sf::Sprite background;
+    sf::Texture textureRoad;
 
 public:
     CGAME(); 
@@ -71,6 +73,7 @@ public:
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
     void updatePosVehicle(); 
+    void drawLane();
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);

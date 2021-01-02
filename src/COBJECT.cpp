@@ -6,6 +6,8 @@
 COBJECT::COBJECT(float x, float y) {
 	this->mX = x; 
 	this->mY = y;
+	initY = y;
+	speedMult = rand() % 5 + 1;
 
 }
 
@@ -20,7 +22,6 @@ void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 void COBJECT::drawObject(sf::RenderWindow& window) {
 	sprite.setPosition(sf::Vector2f(mX, mY));
 	if (checkOutWindow (window) == 0) window.draw (sprite);
-	else  cout << "out window" << endl;
 }
 //  0: no collision
 //  1: collides with other obstacles -> push back
@@ -69,6 +70,6 @@ void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 	//cout << window.getSize ().x << " " << window.getSize ().y << endl;
 	//cout << mX << endl;
-	if (sprite.getPosition().x >= window.getSize().x || sprite.getPosition().y >= window.getSize ().y) return 1;
+	if (sprite.getPosition().x >= window.getSize().x + 200 || sprite.getPosition().y >= window.getSize().y + 200) return 1;
 	return 0;
 }

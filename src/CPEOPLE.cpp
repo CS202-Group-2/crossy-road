@@ -13,9 +13,7 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y) {
     setGender(gender);
     mSprite.setTexture(mTexture);
     mSprite.setScale(FIG_SCALE, FIG_SCALE);
-    if (x != -1)
-        mSprite.setPosition(x, y);
-    else
+  
         mSprite.setPosition(window->getSize().x / 2, window->getSize().y - FIG_HEIGHT * FIG_SCALE);
     setSide(side);
     mWindow = window;
