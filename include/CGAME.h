@@ -1,6 +1,8 @@
 
 
-#include <iostream>
+#include "CLANE.h"
+#include "COBJECTFACTORY.h"
+#include "CCARFACTORY.h"
 #include "CPEOPLE.h"
 #include "CVEHICLE.h"
 #include "CTRUCK.h"
@@ -21,6 +23,7 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
 #include <vector>
+#include <deque>
 
 using namespace std;
 
@@ -39,7 +42,8 @@ private:
    // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
     vector<CTRAFFIC> traffics;
-    vector<sf::Sprite> lanes;
+    deque<CLANE*> lanes;
+    //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;
@@ -47,6 +51,7 @@ private:
     void initVariables();
     void initWindow();
     void initVehicle();
+    void initLanes();
 
     sf::RenderWindow* window;
     sf::Event event;
@@ -70,8 +75,10 @@ public:
     void loadGame(istream&); 
     void saveGame(istream&); 
     void pauseGame(HANDLE); 
+
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
+    void updateLanes();
     void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();

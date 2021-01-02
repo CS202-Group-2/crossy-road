@@ -4,7 +4,8 @@ CGAME::CGAME() {
     srand(time(NULL));
     this->initVariables();
     this->initWindow();
-    this->initVehicle();
+    this->initLanes();
+    //this->initVehicle();
     this->player = getPlayer();
 }
 
@@ -69,6 +70,20 @@ void CGAME::updatePosPeople(char) {
 
 }
 
+void CGAME::updateLanes() {
+    srand(time(NULL));
+    for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
+        (*it)->updatePosObject(1, 1, *window, *player);
+}
+
+void CGAME::initLanes() {
+    CLANE* lane;
+    for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
+        lane = new CLANE(i, new CCARFACTORY(), window);
+        lanes.push_back(lane);
+    }
+}
+
 void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
@@ -78,10 +93,6 @@ void CGAME::drawBackground(const string& backgroundIMG) {
 
 }
 
-void CGAME::drawLane() {
-    for (int i = 0; i < lanes.size(); ++i) window->draw(lanes[i]);
-
-}
 
 void CGAME::updatePosVehicle() {
     srand(time(NULL));
@@ -133,8 +144,8 @@ void CGAME::render() {
     }
     case GAME_STATE::LEVEL_1: {
         window->draw(background);
-        drawLane();
-         updatePosVehicle();
+        updateLanes();
+        //updatePosVehicle();
         //updatePosAnimal();
         player->render();
 
@@ -254,7 +265,7 @@ void CGAME::initVehicle() {
         //double scaleY = 100 / laneBackground.getGlobalBounds().height;
        // laneBackground.setScale(scaleY, scaleY);
         laneBackground.setPosition(0, (i-1)*Constants::GetInstance().LANE_WIDTH);
-        lanes.push_back(laneBackground);
+
 
 
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {

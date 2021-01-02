@@ -67,6 +67,18 @@ void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT
 	drawObject(window);
 }
 
+bool COBJECT::checkCollision(CPEOPLE& player) {
+	return ((sprite.getGlobalBounds().left + sprite.getLocalBounds().width == player.mSprite.getGlobalBounds().left) ||
+		sprite.getGlobalBounds().left == player.mSprite.getGlobalBounds().left + player.mSprite.getLocalBounds().width);
+}
+
+void COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player) {
+	int oldX = mX, oldY = mY;
+	move(x, y, window);
+	if (checkCollision(player)) cout << "collide" << endl;
+	drawObject(window);
+}
+
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 	//cout << window.getSize ().x << " " << window.getSize ().y << endl;
 	//cout << mX << endl;
