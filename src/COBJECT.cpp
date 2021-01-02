@@ -7,7 +7,7 @@ COBJECT::COBJECT(float x, float y) {
 	this->mX = x; 
 	this->mY = y;
 	initY = y;
-	speedMult = rand() % 5 + 2;
+	speedMult = rand() % 10 + 2;
 
 }
 

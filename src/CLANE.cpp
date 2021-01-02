@@ -21,6 +21,7 @@ void CLANE::initObject() {
 void CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
 	window.draw(laneBackground);
 	if (object->checkOutWindow(window)) {
+		
 		delete object;
 		object = factory->initObject(index, this->window);
 	}

@@ -143,6 +143,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
+        srand(time(NULL));
         window->draw(background);
         updateLanes();
         traffic->drawTraffic(window);
@@ -271,8 +272,6 @@ void CGAME::initVehicle() {
         for (int j = 0; j < Constants::GetInstance().MAX_NUMBER_OF_VEHICLES_EACH_LANE; ++j) {
 
             // random create objects in lane
-            int choice = rand() % 4;
-            int k = rand () % 100;
             
             v = new CCAR(-100, (i-1) * Constants::GetInstance().LANE_WIDTH + 25);
             vehicles.push_back(v);
