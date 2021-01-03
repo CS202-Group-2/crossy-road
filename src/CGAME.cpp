@@ -323,9 +323,10 @@ void CGAME::pollEvents() {
                 if (cgui->GUICheck(event.mouseButton.x, event.mouseButton.y)) {
                     cout << "Paused the game" << endl;
                     gameState = GAME_STATE::PAUSE;
+                    cgui->drawPauseGUI(score, level, window);
                     break;
                 }
-                cgui->drawPauseGUI(score, level, window);
+                
             }
             }
         }

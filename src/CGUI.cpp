@@ -17,7 +17,7 @@ void CGUI::drawGUI(int score, int level, sf::RenderWindow* window) {
 	if (!isPause) {
 		window->draw(pauseButton);
 		// cout << score << " " << level << endl;
-		
+		drawGUIText(score, level, window);
 		return;
 	}
 	sf::RectangleShape rectangle(sf::Vector2f(300, 600));
