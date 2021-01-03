@@ -7,7 +7,7 @@ COBJECT::COBJECT(float x, float y) {
 	this->mX = x; 
 	this->mY = y;
 	initY = y;
-	speedMult = rand() % 10 + 2;
+	speedMult = rand() % 2 + 1;
 
 }
 
@@ -77,16 +77,24 @@ void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT
 }
 */
 
-bool COBJECT::checkCollision(CPEOPLE& player) {
-	return ((sprite.getGlobalBounds().left + sprite.getLocalBounds().width == player.mSprite.getGlobalBounds().left) ||
-		sprite.getGlobalBounds().left == player.mSprite.getGlobalBounds().left + player.mSprite.getLocalBounds().width);
+bool COBJECT::checkCollision(CPEOPLE& player, int index) {
+	if (player.index != index) {
+		return false;
+	}
+	// else cout << "Same line" << endl;
+	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left
+		+ sprite.getGlobalBounds().width);
 }
 
-void COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player) {
+bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
 	int oldX = mX, oldY = mY;
 	move(x, y, window);
-	if (checkCollision(player)) cout << "collide" << endl;
+	if (checkCollision(player, index)) {
+		// TODO: implement onCollision
+		if (type == Constants::GetInstance().VEHICLE) return false;
+	}
 	drawObject(window);
+	return true;
 }
 
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {

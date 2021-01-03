@@ -7,6 +7,7 @@ COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
     if (dir == 0) object = new CCAR(-100, (index - 2) * Constants::GetInstance().LANE_WIDTH + 25, true);
     else object = new CCAR(window->getSize().x+100, 
         window->getSize().x * tan(Constants::GetInstance().ALPHA) + (index-1) * Constants::GetInstance().LANE_WIDTH - 25, false);
+    // cout << "Spawned vehicle in row index " << index << endl;
     return object;
 }
 

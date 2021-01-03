@@ -28,7 +28,7 @@ protected:
 public:
     COBJECT(float x, float y);
     void update(float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player);
-    void update(float x, float y, sf::RenderWindow& window, CPEOPLE& player);
+    bool update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index);
     //int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector< CTRAFFIC> traffics);
     int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player);
     bool checkOutWindow (sf::RenderWindow& window);
@@ -36,7 +36,7 @@ public:
     virtual void drawObject(sf::RenderWindow& window);
     virtual void tell () = 0;
     virtual void trafficStop(bool state) = 0;
-    bool checkCollision(CPEOPLE& player);
+    bool checkCollision(CPEOPLE& player, int index);
 };
 
 #endif

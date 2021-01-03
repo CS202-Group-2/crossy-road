@@ -13,6 +13,7 @@
 #include "Menu.h"
 #include "Constants.h"
 #include "CTRAFFIC.h"
+#include "CGUI.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -27,7 +28,7 @@
 
 using namespace std;
 
-enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER};
+enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE};
 
 typedef void* HANDLE;
 
@@ -47,10 +48,14 @@ private:
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;
+    CGUI* cgui = nullptr;
+    bool isGameOver = false;
+    int score = 0, level = 1;
+    
         
     void initVariables();
     void initWindow();
-    void initVehicle();
+    //void initVehicle();
     void initLanes();
 
     sf::RenderWindow* window;
@@ -72,18 +77,19 @@ public:
     void resetGame(); 
     void exitGame(HANDLE); 
     void startGame(); 
-    void loadGame(istream&); 
-    void saveGame(istream&); 
+    bool loadGame(string loadFile); 
+    bool saveGame(string saveFile);
     void pauseGame(HANDLE); 
 
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
     void updateLanes();
-    void updatePosVehicle(); 
+    //void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);
+    
 
     void update();
     void render();

@@ -23,6 +23,7 @@ public:
 	const float TIME_BETWEEN_TRAFFIC = 10;
 	const float MAX_TRAFFIC_STOP = 3;
 	const int NUMBER_OF_MENU_ITEMS = 3;
+	const int NUMBER_OF_OPTION_ITEMS = 4;
 	const string SAVE_FILE;
 	const float DISTANCE_BETWEEN_LANES = 100;
 	const float PADDING_TOP = 200;

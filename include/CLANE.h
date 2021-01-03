@@ -40,7 +40,7 @@ public:
     CLANE(int index, COBJECTFACTORY *factory, sf::RenderWindow *window);
     ~CLANE();
     void initObject();
-    void updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
+    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
 
 
 };

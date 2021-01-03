@@ -29,6 +29,12 @@ void Menu::draw(sf::RenderWindow& window) {
 	if (!title.loadFromFile("CrossyRoadTitle.png")) {
 		return;
 	}
+	sf::RectangleShape rectangle(sf::Vector2f(250, 350));
+	rectangle.setOrigin(rectangle.getLocalBounds().left + rectangle.getLocalBounds().width / 2,
+		rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
+	rectangle.setPosition(window.getSize().x / 2, (window.getSize().y - titlePadding) / 2 + titlePadding);
+	rectangle.setFillColor(sf::Color(0, 0, 0, 200));
+	window.draw(rectangle);
 	sf::Sprite titleText(title);
 	titleText.setOrigin(titleText.getLocalBounds().left + titleText.getLocalBounds().width / 2,
 		titleText.getLocalBounds().top + titleText.getLocalBounds().height / 2);

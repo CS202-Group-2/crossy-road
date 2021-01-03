@@ -18,7 +18,7 @@ void CLANE::initObject() {
 	factory->initBackground(index, textureLane, laneBackground, window);
 }
 
-void CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
 	window.draw(laneBackground);
 	if (object->checkOutWindow(window)) {
 		
@@ -26,5 +26,6 @@ void CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 		object = factory->initObject(index, this->window);
 	}
 	object->trafficStop(traffic.checkStop());
-	object->update(1, 1, window, player);
+	if (!object->update(x, y, window, player, index)) return false;
+	return true;
 }

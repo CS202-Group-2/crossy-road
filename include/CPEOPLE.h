@@ -15,8 +15,10 @@ private:
     friend class COBJECT;
     int mX, mY;
     bool mState; 
+    int index;
     string textureFile = "Player.png";
     int gender, side;
+    
     sf::Texture mTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;
@@ -28,7 +30,7 @@ public:
     static double MOVEABLE_DIST;
 
 
-    CPEOPLE(sf::RenderWindow* window, int gender, int side = UP, int x = -1, int y = -1);
+    CPEOPLE(sf::RenderWindow* window, int gender, int side = UP, int x = -1, int y = -1, int index = 0);
 
     bool canMoveDown();
     bool canMoveUp();
@@ -49,5 +51,7 @@ public:
     bool isFinish();
     bool isDead();
 
-    void savePlayer();
+    void resetPlayer();
+
+    void savePlayer(int score, int level);
 };

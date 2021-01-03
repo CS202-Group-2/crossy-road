@@ -9,7 +9,7 @@ double CPEOPLE::MOVEABLE_DIST = 600;
 //double CPEOPLE::ALPHA = 30 * 3.14 / 180, CPEOPLE::BETA = 40 * 3.14 / 180;
 //double CPEOPLE::PLAYER_STEP = 5;
 
-CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y) {
+CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, int index) {
     setGender(gender);
     mSprite.setTexture(mTexture);
     mSprite.setScale(FIG_SCALE, FIG_SCALE);
@@ -19,6 +19,7 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y) {
         mSprite.setPosition(window->getSize().x / 2, window->getSize().y - FIG_HEIGHT * FIG_SCALE);
     setSide(side);
     mWindow = window;
+    this->index = index;
 }
 
 bool CPEOPLE::canMoveDown() {
@@ -112,6 +113,7 @@ void CPEOPLE::moveUp() {
     cout << "up\n";
     // Increase x and decrease y with respect to BETA.
     mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
+    index--;
 }
 
 void CPEOPLE::moveLeft() {
@@ -130,6 +132,7 @@ void CPEOPLE::moveDown() {
     cout << "down\n";
     // Decrease x and Increase y with respect to BETA.
     mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
+    index++;
 }
 
 //bool CPEOPLE::isImpact(const CVEHICLE*&) {
@@ -148,8 +151,16 @@ bool CPEOPLE::isDead() {
     return false;
 }
 
-void CPEOPLE::savePlayer() {
+void CPEOPLE::resetPlayer() {
+    gender = 0;
+    side = 1;
+    index = 8;
+    mSprite.setPosition(91.905, 622.108);
+}
+
+void CPEOPLE::savePlayer(int score, int level) {
     ofstream playerConfig("game_log/player.txt");
-    playerConfig << gender << "\n" << side << "\n" << mSprite.getPosition().x << " " << mSprite.getPosition().y;
+    playerConfig << gender << "\n" << side << "\n" << index << "\n" << score << "\n" << level << "\n"
+        << mSprite.getPosition().x << " " << mSprite.getPosition().y;
     playerConfig.close();
 }
