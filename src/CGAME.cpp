@@ -100,6 +100,18 @@ void CGAME::updateLanes() {
         };
 }
 
+void CGAME::shiftLanesUp() {
+    //cout << "Called" << endl;
+    for (auto it = lanes.begin(); it != lanes.end(); ++it) {
+        (*it)->shiftLane();
+    }
+    CLANE* lane = lanes.front();
+    delete lane;
+    lanes.pop_front();
+    lane = new CLANE(0, new CCARFACTORY(), window);
+    lanes.push_back(lane);
+}
+
 void CGAME::initLanes() {
     for (int i = 0; i < lanes.size(); ++i) {
         if (lanes[i] != nullptr) delete lanes[i];
@@ -221,6 +233,10 @@ void CGAME::pollEvents() {
                     player->setSide(CPEOPLE::UP);
                     if (player->canMoveUp())
                         player->moveUp(), level++;
+                    else {
+                        level++;
+                        shiftLanesUp();
+                    }
                 }
                 break;
             case sf::Keyboard::Down:

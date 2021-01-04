@@ -28,3 +28,7 @@ void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, sf::Sprite
    // laneBackground.setScale(scaleY, scaleY);
     laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
 }
+
+void CCARFACTORY::shiftBackground(int index, sf::Sprite& laneBackground) {
+    laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
+}

@@ -11,6 +11,10 @@ COBJECT::COBJECT(float x, float y) {
 
 }
 
+COBJECT::COBJECT(float x, float y, int index) : COBJECT(x, y) {
+	this->index = index;
+}
+
 void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 	//srand(time(NULL));
 	if (direction) {
@@ -81,7 +85,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 	if (player.index != index) {
 		return false;
 	}
-	// else cout << "Same line" << endl;
+	//else cout << "Same line" << endl;
 	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left
 		+ sprite.getGlobalBounds().width);
 }
@@ -95,6 +99,11 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 	}
 	drawObject(window);
 	return true;
+}
+
+void COBJECT::shiftObject() {
+	mX = mX - Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA);
+	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA);
 }
 
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {

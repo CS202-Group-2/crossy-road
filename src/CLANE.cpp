@@ -29,3 +29,9 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
+
+void CLANE::shiftLane() {
+	index++;
+	object->shiftObject();
+	factory->shiftBackground(index, laneBackground);
+}

@@ -84,6 +84,7 @@ public:
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
     void updateLanes();
+    void shiftLanesUp();
     //void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();
