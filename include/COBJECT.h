@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "../include/CPEOPLE.h"
 #include <string>
 #include "../include/CTRAFFIC.h"
@@ -19,6 +20,8 @@ protected:
     string textureFile = "animal.jpg";
     sf::Texture texture;
     sf::Sprite sprite;
+    sf::SoundBuffer buffer;
+    sf::Sound objectSound;
     sf::Clock clock;
     bool direction; // true: forward, false: backward
     float initY = 0;
