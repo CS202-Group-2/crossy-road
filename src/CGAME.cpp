@@ -1,7 +1,7 @@
 #include "../include/CGAME.h"
 
 CGAME::CGAME() {
-    srand(time(NULL));
+    //srand(time(NULL));
     this->initVariables();
     this->initWindow();
     this->initSound ();
@@ -100,7 +100,7 @@ void CGAME::updateSound() {
 }
 
 void CGAME::updateLanes() {
-    srand(time(NULL));
+    //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
         if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == false) {
            gameState = GAME_STATE::GAMEOVER;
@@ -112,11 +112,14 @@ void CGAME::updateLanes() {
 
 void CGAME::createNewLane(int index) {
     //srand(time(NULL));
-    int k = rand() % 2;
+    // We want 20% for animals, 60% for cars and 20% for grass.
+    int k = rand() % 120 - 20;
 
     CLANE* lane;
-    if (lanes.size() < 3 || k == 0)
+    if (k < 20)
         lane = new CLANE(index, new CGRASSFACTORY(), window);
+    else if (k < 40)
+        lane = new CLANE(index, new CANIMALFACTORY(), window);
     else
         lane = new CLANE(index, new CCARFACTORY(), window);
 
@@ -180,8 +183,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
-        srand(time(NULL));
-        
+        //srand(time(NULL));
         
         updateLanes();
         traffic->drawTraffic(window);
@@ -214,7 +216,7 @@ void CGAME::render() {
 
 void CGAME::initVariables() {
     this->window = nullptr;
-    srand(time(NULL));
+    //srand(time(NULL));
     traffic = new CTRAFFIC(0);
 
     //vehicles.assign(rowCount, vector<CVEHICLE*>(maxVehicle, nullptr));

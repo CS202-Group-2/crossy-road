@@ -45,7 +45,7 @@ public:
     bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
     void shiftLane();
     void shiftBackground();
-
+    void saveLane(ofstream& out);
 
 };
 

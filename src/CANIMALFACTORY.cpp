@@ -1,10 +1,7 @@
-#include "../include/CCARFACTORY.h"
+#include "../include/CANIMALFACTORY.h"
 
-COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
-    //srand(time(NULL));
-    int dir = rand() % 2;
-    COBJECT* object = nullptr;
-    return new CCAR(index, window->getSize().x);
+COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window) {
+    return new CANIMAL(index, window->getSize().x);
     //if (dir == 0) object = new CCAR(-100, (index - 3) * Constants::GetInstance().LANE_WIDTH, true);
     //else object = new CCAR(window->getSize().x+100, 
     //    window->getSize().x * tan(Constants::GetInstance().ALPHA) + (index-2) * Constants::GetInstance().LANE_WIDTH - 25, false);
@@ -12,7 +9,7 @@ COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
     //return object;
 }
 
-void CCARFACTORY::initBackground(int index, sf::Texture& textureLane) {
+void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane) {
     if (!textureLane.loadFromFile("Road.png")) {
         return;
     }

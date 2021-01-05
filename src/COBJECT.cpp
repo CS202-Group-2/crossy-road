@@ -3,6 +3,8 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
 
+COBJECT::COBJECT() {}
+
 COBJECT::COBJECT(float x, float y) {
 	this->mX = x; 
 	this->mY = y;
@@ -96,7 +98,7 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 	if (type != Constants::GetInstance().INTERACTABLE) move(x, y, window);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
-		if (type == Constants::GetInstance().VEHICLE) return false;
+		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL) return false;
 		else if (type == Constants::GetInstance().INTERACTABLE) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -119,4 +121,8 @@ bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 	if (direction && (sprite.getPosition().x >= window.getSize().x + 200 || sprite.getPosition().y >= window.getSize().y + 200)) return 1;
 	else if (!direction && (sprite.getPosition().x <= -200 || sprite.getPosition().y <= -200)) return 1;
 	return 0;
+}
+
+string COBJECT::getTextureFile() {
+	return textureFile;
 }

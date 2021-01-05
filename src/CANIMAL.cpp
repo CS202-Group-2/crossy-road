@@ -1,15 +1,14 @@
-#include "../include/CCAR.h"
+#include "../include/CANIMAL.h"
 
-void CCAR::move(float x, float y, sf::RenderWindow &window) {
-	if (!isStopping) COBJECT::move(x, y, window);
-	
+void CANIMAL::move(float x, float y, sf::RenderWindow& window) {
+	COBJECT::move(x, y, window);
 }
 
-CCAR::CCAR(int index, int windowX) {
+CANIMAL::CANIMAL(int index, int windowX) {
 	direction = rand() % 2;
-	type = Constants::GetInstance().VEHICLE;
-	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
-	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);
+	type = Constants::GetInstance().ANIMAL;
+	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
+	textureFile = "a_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
 		mY = (index - 3) * Constants::GetInstance().LANE_WIDTH;
@@ -21,7 +20,7 @@ CCAR::CCAR(int index, int windowX) {
 	initY = mY;
 	speedMult = rand() % 2 + 1;
 	if (!texture.loadFromFile(textureFile + ".png")) {
-		cout << "Cannot find car texture." << endl;
+		cout << "Cannot find animal texture." << endl;
 		return;
 	}
 	sprite.setTexture(texture);
@@ -30,7 +29,7 @@ CCAR::CCAR(int index, int windowX) {
 	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
 }
 
-CCAR::CCAR(float x, float y) : COBJECT(x, y) {
+CANIMAL::CANIMAL(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
 	int choice = rand() % 4;
 	textureFile = "car" + to_string(choice);
@@ -50,7 +49,7 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	}
 	if (x > 100) textureFile += "_back.png";
 	else textureFile += "_front.png";
-	type = Constants::GetInstance ().VEHICLE;
+	type = Constants::GetInstance().VEHICLE;
 
 	if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
@@ -65,12 +64,11 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//speedMult = rand() % 2 + 1;
 }
 
-CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
+CANIMAL::CANIMAL(float x, float y, bool direction) : CANIMAL(x, y) {
 	this->direction = direction;
 }
 
-void CCAR::trafficStop(bool state) {
-	//cout << "state " << std::boolalpha << state << endl;
-	isStopping = state;
+void CANIMAL::trafficStop(bool state) {
+	// Animals don't stop.
 }
 
