@@ -164,3 +164,7 @@ void CPEOPLE::savePlayer(int score, int level) {
         << mSprite.getPosition().x << " " << mSprite.getPosition().y;
     playerConfig.close();
 }
+
+void CPEOPLE::addScore(int amount) {
+    score += amount;
+}

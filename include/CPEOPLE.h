@@ -17,7 +17,7 @@ private:
     bool mState; 
     int index;
     string textureFile = "Player.png";
-    int gender, side;
+    int gender, side, score;
     
     sf::Texture mTexture;
     sf::Sprite mSprite;
@@ -39,6 +39,7 @@ public:
 
     void setGender(int gender);
     void setSide(int side = UP);
+    void addScore(int amount);
 
     void render();
 

@@ -86,16 +86,21 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 		return false;
 	}
 	//else cout << "Same line" << endl;
-	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left + 25 && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left - 25
+	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left
 		+ sprite.getGlobalBounds().width);
 }
 
 bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
 	int oldX = mX, oldY = mY;
-	move(x, y, window);
+	if (type != Constants::GetInstance().INTERACTABLE) move(x, y, window);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE) return false;
+		else if (type == Constants::GetInstance().INTERACTABLE) {
+			player.addScore(100);
+			sprite.setColor(sf::Color::Transparent);
+			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
+		}
 	}
 	drawObject(window);
 	return true;

@@ -34,7 +34,9 @@ CPEOPLE* CGAME::getPlayer() {
     playerConfig.close();
     this->score = score;
     this->level = level;
-    return new CPEOPLE(this->window, gender, side, x, y, index);
+    CPEOPLE* player = new CPEOPLE(this->window, gender, side, x, y, index);
+    player->score = score;
+    return player;
 }
 
 COBJECT* CGAME::getVehicle() {
@@ -106,6 +108,7 @@ void CGAME::updateLanes() {
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
         };
+    this->score = player->score;
 }
 
 void CGAME::createNewLane(int index) {
