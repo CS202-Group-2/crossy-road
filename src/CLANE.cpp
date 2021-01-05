@@ -11,11 +11,15 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window) {
 CLANE::~CLANE() {
 	delete object;
 	delete factory;
+	delete coin;
 }
 
 void CLANE::initObject() {
-	object = factory->initObject(index,  window);
+	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	coin = coinFactory->initObject(index, window);
+	object = factory->initObject(index, window);
 	factory->initBackground(index, textureLane, laneBackground, window);
+	delete coinFactory;
 }
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
@@ -26,6 +30,7 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 		object = factory->initObject(index, this->window);
 	}
 	object->trafficStop(traffic.checkStop());
+	coin->update(x, y, window, player, index);
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
@@ -33,5 +38,6 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 void CLANE::shiftLane() {
 	index++;
 	object->shiftObject();
+	coin->shiftObject();
 	factory->shiftBackground(index, laneBackground);
 }

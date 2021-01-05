@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include "COBJECTFACTORY.h"
+#include "CCOINFACTORY.h"
 #include "CPEOPLE.h"
 #include "CVEHICLE.h"
 #include "CPEOPLE.h"
@@ -32,6 +33,7 @@ protected:
     int index;
     friend class CGAME;
     COBJECT* object;
+    COBJECT* coin;
     COBJECTFACTORY* factory;
     sf::Sprite laneBackground;
     sf::Texture textureLane;

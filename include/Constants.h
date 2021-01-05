@@ -32,7 +32,7 @@ public:
 	const double PLAYER_STEP = 100;
 	const double PLAYER_STEP_HORIZONTAL = 25;
 	const int FPS = 60;
-	const int ANIMAL = 1, VEHICLE = 2;
+	const int ANIMAL = 1, VEHICLE = 2, INTERACTABLE = 3;
 	
 	// Constants(Constants const&) = delete;
 	//void operator=(Constants const&) = delete;
