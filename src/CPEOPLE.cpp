@@ -154,8 +154,8 @@ bool CPEOPLE::isDead() {
 void CPEOPLE::resetPlayer() {
     gender = 0;
     side = 1;
-    index = 8;
-    mSprite.setPosition(91.905, 622.108);
+    index = 7;
+    mSprite.setPosition(143.797, 428.957);
 }
 
 void CPEOPLE::savePlayer(int score, int level) {

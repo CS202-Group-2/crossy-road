@@ -18,6 +18,8 @@ void CGUI::drawGUI(int score, int level, sf::RenderWindow* window) {
 		window->draw(pauseButton);
 		// cout << score << " " << level << endl;
 		drawGUIText(score, level, window);
+		window->draw(levelText);
+		window->draw(scoreText);
 		return;
 	}
 	sf::RectangleShape rectangle(sf::Vector2f(300, 600));
