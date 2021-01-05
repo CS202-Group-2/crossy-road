@@ -25,8 +25,3 @@ CTRUCK::CTRUCK(float x, float y) : COBJECT(x, y) {
 	sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
-
-void CTRUCK::tell () {
-	bool canTell = PlaySound("assets/sound/truck.wav", NULL, SND_SYNC);
-	if (canTell) cout << "True";
-}

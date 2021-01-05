@@ -25,8 +25,3 @@ CDINAUSOR::CDINAUSOR(float x, float y) : COBJECT(x, y) {
 	//sprite.rotate(-90);
 	//speedMult = rand() % 2 + 1;
 }
-
-void CDINAUSOR::tell () {
-	bool canTell = PlaySound ("assets/sound/dino.wav", NULL, SND_SYNC);
-	if (canTell) cout << "True";
-}

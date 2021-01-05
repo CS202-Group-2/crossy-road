@@ -5,6 +5,7 @@ CGAME::CGAME() {
     this->initVariables();
     this->initWindow();
     this->soundManager = new CSOUND();
+    this->soundJump = new CJUMP ();
     //this->initVehicle();
     this->player = getPlayer();
     this->player->resetPlayer();
@@ -150,6 +151,10 @@ void CGAME::initSound() {
     soundManager->playBackgroundSound();
 }
 
+void CGAME::initSoundJump () {
+    soundJump->playJumpSound();
+}
+
 void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
@@ -181,7 +186,6 @@ void CGAME::render() {
         
         
         updateLanes();
-        updateSound();
         traffic->drawTraffic(window);
         //updatePosVehicle();
         //updatePosAnimal();
@@ -251,6 +255,7 @@ void CGAME::pollEvents() {
                 window->close();
                 break;
             case sf::Keyboard::Up:
+                soundJump->playJumpSound ();
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
@@ -267,6 +272,7 @@ void CGAME::pollEvents() {
                 }
                 break;
             case sf::Keyboard::Down:
+                soundJump->playJumpSound ();
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::PAUSE || gameState == GAME_STATE::GAMEOVER)
@@ -278,11 +284,13 @@ void CGAME::pollEvents() {
                 }
                 break;
             case sf::Keyboard::Left:
+                soundJump->playJumpSound ();
                 player->setSide(CPEOPLE::LEFT);
                 if (player->canMoveLeft())
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
+                soundJump->playJumpSound ();
                 player->setSide(CPEOPLE::RIGHT);
                 if (player->canMoveRight())
                     player->moveRight();
@@ -307,6 +315,7 @@ void CGAME::pollEvents() {
                         break;
                     }
                 else if (gameState == GAME_STATE::PAUSE) {
+                    soundJump->playJumpSound ();
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 0:
@@ -339,9 +348,11 @@ void CGAME::pollEvents() {
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
+                    soundJump->playJumpSound ();
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 0:
+                        soundJump->playJumpSound ();
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         delete player;
@@ -351,6 +362,7 @@ void CGAME::pollEvents() {
                         initLanes();
                         break;
                     case 1:
+                        soundJump->playJumpSound ();
                         cout << "Loading the game..." << endl;
                         cout.flush();
                         cin.clear();
@@ -367,6 +379,7 @@ void CGAME::pollEvents() {
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
             case sf::Mouse::Left: {
+                soundJump->playJumpSound ();
                 cout << "Mouse clicked" << endl;
                 if (cgui->GUICheck(event.mouseButton.x, event.mouseButton.y)) {
                     cout << "Paused the game" << endl;

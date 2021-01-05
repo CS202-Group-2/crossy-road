@@ -20,9 +20,6 @@ protected:
     string textureFile = "animal.jpg";
     sf::Texture texture;
     sf::Sprite sprite;
-    sf::SoundBuffer buffer;
-    sf::Sound objectSound;
-    sf::Clock clock;
     bool direction; // true: forward, false: backward
     float initY = 0;
     float speedMult = 5.0f;
@@ -39,7 +36,6 @@ public:
     bool checkOutWindow (sf::RenderWindow& window);
     virtual void move(float x, float y, sf::RenderWindow& window);
     virtual void drawObject(sf::RenderWindow& window);
-    virtual void tell () = 0;
     virtual void trafficStop(bool state) = 0;
     bool checkCollision(CPEOPLE& player, int index);
 };

@@ -126,6 +126,7 @@
     <ClCompile Include="src\CCARFACTORY.cpp" />
     <ClCompile Include="src\CGRASSFACTORY.cpp" />
     <ClCompile Include="src\CGUI.cpp" />
+    <ClCompile Include="src\CJUMP.cpp" />
     <ClCompile Include="src\CLANE.cpp" />
     <ClCompile Include="src\COBJECT.cpp" />
     <ClCompile Include="src\CBIRD.cpp" />
@@ -144,6 +145,7 @@
     <ClInclude Include="include\CCARFACTORY.h" />
     <ClInclude Include="include\CGRASSFACTORY.h" />
     <ClInclude Include="include\CGUI.h" />
+    <ClInclude Include="include\CJUMP.h" />
     <ClInclude Include="include\CLANE.h" />
     <ClInclude Include="include\COBJECT.h" />
     <ClInclude Include="include\CBIRD.h" />
