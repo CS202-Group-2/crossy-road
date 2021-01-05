@@ -15,6 +15,7 @@
 #include "Constants.h"
 #include "CTRAFFIC.h"
 #include "CGUI.h"
+#include "CSOUND.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -44,12 +45,14 @@ private:
    // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
     CTRAFFIC* traffic;
+    CSOUND* soundManager;
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
     GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
+    sf::Clock clock;
     bool isGameOver = false;
     int score = 0, level = 1;
     
@@ -58,6 +61,7 @@ private:
     void initWindow();
     //void initVehicle();
     void initLanes();
+    void initSound();
 
     sf::RenderWindow* window;
     sf::Event event;
@@ -87,6 +91,7 @@ public:
     void createNewLane(int index);
     void updateLanes();
     void shiftLanesUp();
+    void updateSound();
     //void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();

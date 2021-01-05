@@ -4,11 +4,13 @@ CGAME::CGAME() {
     srand(time(NULL));
     this->initVariables();
     this->initWindow();
-    this->initLanes();
+    this->soundManager = new CSOUND();
     //this->initVehicle();
     this->player = getPlayer();
     this->player->resetPlayer();
+    level = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
+    
 }
 
 void CGAME::drawGame() {
@@ -90,10 +92,15 @@ void CGAME::updatePosPeople(char) {
 
 }
 
+void CGAME::updateSound() {
+    //int r = rand() % 30 + 1;
+    //if ((int)clock.getElapsedTime().asSeconds() % 5 == 0) soundManager->playBackgroundSound();
+}
+
 void CGAME::updateLanes() {
     srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/5+1, level/5+1, *window, *player, *traffic) == false) {
+        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == false) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -135,8 +142,12 @@ void CGAME::initLanes() {
     
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
-        createNewLane(i);
+        createNewLane(i-10);
     }
+}
+
+void CGAME::initSound() {
+    soundManager->playBackgroundSound();
 }
 
 void CGAME::drawBackground(const string& backgroundIMG) {
@@ -170,6 +181,7 @@ void CGAME::render() {
         
         
         updateLanes();
+        updateSound();
         traffic->drawTraffic(window);
         //updatePosVehicle();
         //updatePosAnimal();
@@ -280,6 +292,10 @@ void CGAME::pollEvents() {
                     switch (menu->getPressedItem()) {
                     case 0:
                         cout << "Started the game" << endl;
+                        this->initLanes();
+                        
+                        this->initSound();
+                        
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     case 1:
@@ -331,6 +347,7 @@ void CGAME::pollEvents() {
                         delete player;
                         this->player = getPlayer();
                         this->player->resetPlayer();
+                        level = 0;
                         initLanes();
                         break;
                     case 1:
