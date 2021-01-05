@@ -124,6 +124,10 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\CCARFACTORY.cpp" />
+    <ClCompile Include="src\CCOIN.cpp" />
+    <ClCompile Include="src\CCOINFACTORY.cpp" />
+    <ClCompile Include="src\CEAT.cpp" />
+    <ClCompile Include="src\CGAMEOVER.cpp" />
     <ClCompile Include="src\CGRASSFACTORY.cpp" />
     <ClCompile Include="src\CGUI.cpp" />
     <ClCompile Include="src\CJUMP.cpp" />
@@ -144,6 +148,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CCARFACTORY.h" />
+    <ClInclude Include="include\CCOIN.h" />
+    <ClInclude Include="include\CCOINFACTORY.h" />
+    <ClInclude Include="include\CEAT.h" />
+    <ClInclude Include="include\CGAMEOVER.h" />
     <ClInclude Include="include\CGRASSFACTORY.h" />
     <ClInclude Include="include\CGUI.h" />
     <ClInclude Include="include\CJUMP.h" />

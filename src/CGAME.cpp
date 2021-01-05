@@ -291,7 +291,7 @@ void CGAME::pollEvents() {
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
                 if (player->canMoveRight())
-                    player->moveRight();
+                    player->moveRight();         
                 break;
             case sf::Keyboard::Return:
                 if (gameState == GAME_STATE::MENU)
@@ -345,12 +345,12 @@ void CGAME::pollEvents() {
                     }
                     cgui->isPause = false;
                 }
-                else if (gameState == GAME_STATE::GAMEOVER) {
-                    soundFactory->playSound (2);
+                else if (gameState == GAME_STATE::GAMEOVER) {             
                     string file = "";
+                   // soundFactory->playSound (4);
                     switch (cgui->getPressedItem()) {
                     case 0:
-                        soundFactory->playSound (2);
+                       // soundFactory->playSound (2);
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         delete player;
@@ -360,7 +360,7 @@ void CGAME::pollEvents() {
                         initLanes();
                         break;
                     case 1:
-                        soundFactory->playSound (2);
+                       // soundFactory->playSound (2);
                         cout << "Loading the game..." << endl;
                         cout.flush();
                         cin.clear();
