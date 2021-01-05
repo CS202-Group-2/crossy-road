@@ -1,12 +1,12 @@
 #include "../include/COBJECT.h"
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
-#include <time.h> 
+#include <time.h>
 
 COBJECT::COBJECT() {}
 
 COBJECT::COBJECT(float x, float y) {
-	this->mX = x; 
+	this->mX = x;
 	this->mY = y;
 	initY = y;
 	speedMult = rand() % 2 + 1;
@@ -27,7 +27,7 @@ void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 		mX = mX - x * speedMult * cos(Constants::GetInstance().ALPHA);
 		mY = mY - y * speedMult * sin(Constants::GetInstance().ALPHA);
 	}
-	
+
 	//cout << mX << endl;
 
 }
@@ -52,7 +52,7 @@ int COBJECT::checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector<C
 		}
 	}
 	for (int i = 0; i < traffics.size (); ++i) {
-		if (sprite.getGlobalBounds ().intersects (traffics[i].getSprite().getGlobalBounds()) && traffics[i].checkStop() && 
+		if (sprite.getGlobalBounds ().intersects (traffics[i].getSprite().getGlobalBounds()) && traffics[i].checkStop() &&
 			mX + sprite.getGlobalBounds().width / 2 <= traffics[i].getSprite().getGlobalBounds().left && mY > traffics[i].getSprite().getGlobalBounds().top + traffics[i].getSprite ().getGlobalBounds ().height / 2) {
 			return 2;
 		}
@@ -76,7 +76,7 @@ void COBJECT::update (float x, float y, sf::RenderWindow& window, vector<COBJECT
 		//game over
 	}
 	else if (checkCollision (objects, player, traffics) == 2) {
-		//stop the nearest vehicle 
+		//stop the nearest vehicle
 		move (0, 0, window);
 	}
 	drawObject(window);
@@ -99,9 +99,10 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL) return false;
-		else if (type == Constants::GetInstance().INTERACTABLE) {
+		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
+			interacted = true;
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 	}
@@ -117,7 +118,7 @@ void COBJECT::shiftObject() {
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 	//cout << window.getSize ().x << " " << window.getSize ().y << endl;
 	//cout << mX << endl;
-	
+
 	if (direction && (sprite.getPosition().x >= window.getSize().x + 200 || sprite.getPosition().y >= window.getSize().y + 200)) return 1;
 	else if (!direction && (sprite.getPosition().x <= -200 || sprite.getPosition().y <= -200)) return 1;
 	return 0;

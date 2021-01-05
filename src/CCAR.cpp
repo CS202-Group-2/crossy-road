@@ -32,6 +32,7 @@ CCAR::CCAR(int index, int windowX) {
 
 CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
+	//int choice = std::default_random_engine
 	int choice = rand() % 4;
 	textureFile = "car" + to_string(choice);
 	switch (choice) {

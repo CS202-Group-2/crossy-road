@@ -10,7 +10,7 @@ CGAME::CGAME() {
     this->player->resetPlayer();
     level = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
-    
+
 }
 
 void CGAME::drawGame() {
@@ -111,7 +111,6 @@ void CGAME::updateLanes() {
 }
 
 void CGAME::createNewLane(int index) {
-    //srand(time(NULL));
     // We want 20% for animals, 60% for cars and 20% for grass.
     int k = rand() % 120 - 20;
 
@@ -145,7 +144,7 @@ void CGAME::initLanes() {
     }
     lanes.clear();
 
-    
+
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
         createNewLane(i-10);
@@ -176,15 +175,14 @@ void CGAME::render() {
     window->draw(background);
     switch (gameState) {
     case GAME_STATE::MENU: {
-        
+
         //window->draw(background);
-        
+
         menu->draw(*window);
         break;
     }
     case GAME_STATE::LEVEL_1: {
-        //srand(time(NULL));
-        
+
         updateLanes();
         traffic->drawTraffic(window);
         //updatePosVehicle();
@@ -209,7 +207,7 @@ void CGAME::render() {
         break;
     }
     }
-    
+
 
     window->display();
 }
@@ -293,7 +291,7 @@ void CGAME::pollEvents() {
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
                 if (player->canMoveRight())
-                    player->moveRight();         
+                    player->moveRight();
                 break;
             case sf::Keyboard::Return:
                 if (gameState == GAME_STATE::MENU)
@@ -301,9 +299,9 @@ void CGAME::pollEvents() {
                     case 0:
                         cout << "Started the game" << endl;
                         this->initLanes();
-                        
+
                         soundFactory->playSound(1);
-                        
+
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     case 1:
@@ -347,7 +345,7 @@ void CGAME::pollEvents() {
                     }
                     cgui->isPause = false;
                 }
-                else if (gameState == GAME_STATE::GAMEOVER) {             
+                else if (gameState == GAME_STATE::GAMEOVER) {
                     string file = "";
                    // soundFactory->playSound (4);
                     switch (cgui->getPressedItem()) {
@@ -374,7 +372,7 @@ void CGAME::pollEvents() {
                     }
                     cgui->isPause = false;
                 }
-                    
+
             }
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
@@ -387,11 +385,11 @@ void CGAME::pollEvents() {
                     cgui->drawPauseGUI(score, level, window);
                     break;
                 }
-                
+
             }
             }
         }
-        
+
     }
 }
 void CGAME::resizeImage(sf::Sprite& sprite) {

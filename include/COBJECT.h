@@ -23,6 +23,7 @@ protected:
     sf::Texture texture;
     sf::Sprite sprite;
 
+    bool interacted = false;
     bool direction; // true: forward, false: backward
     float initY = 0;
     float speedMult = 5.0f;
