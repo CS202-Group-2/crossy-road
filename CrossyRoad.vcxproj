@@ -112,11 +112,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
+
+      <AdditionalIncludeDirectories>D:\19CTT2\HK1 2020-2021\CS202\Crossy Road - Final Project - Group 02\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\19CTT2\HK1 2020-2021\CS202\Crossy Road - Final Project - Group 02\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -125,6 +126,9 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="src\CCARFACTORY.cpp" />
     <ClCompile Include="src\CGRASSFACTORY.cpp" />
+
+    <ClCompile Include="src\CCOIN.cpp" />
+    <ClCompile Include="src\CCOINFACTORY.cpp" />
     <ClCompile Include="src\CGUI.cpp" />
     <ClCompile Include="src\CJUMP.cpp" />
     <ClCompile Include="src\CLANE.cpp" />
@@ -144,6 +148,8 @@
   <ItemGroup>
     <ClInclude Include="include\CCARFACTORY.h" />
     <ClInclude Include="include\CGRASSFACTORY.h" />
+    <ClInclude Include="include\CCOIN.h" />
+    <ClInclude Include="include\CCOINFACTORY.h" />
     <ClInclude Include="include\CGUI.h" />
     <ClInclude Include="include\CJUMP.h" />
     <ClInclude Include="include\CLANE.h" />
