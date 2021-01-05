@@ -42,6 +42,7 @@ public:
     void initObject();
     bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
     void shiftLane();
+    void shiftBackground();
 
 
 };

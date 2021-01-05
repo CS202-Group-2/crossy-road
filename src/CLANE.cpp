@@ -14,8 +14,13 @@ CLANE::~CLANE() {
 }
 
 void CLANE::initObject() {
-	object = factory->initObject(index,  window);
-	factory->initBackground(index, textureLane, laneBackground, window);
+	object = factory->initObject(index, window);
+	factory->initBackground(index, textureLane);
+
+	laneBackground.setTexture(textureLane);
+	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
+	laneBackground.setScale(scaleX, scaleX);
+	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
 }
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
@@ -25,7 +30,7 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 		delete object;
 		object = factory->initObject(index, this->window);
 	}
-	object->trafficStop(traffic.checkStop());
+	//object->trafficStop(traffic.checkStop());
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
@@ -33,5 +38,9 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 void CLANE::shiftLane() {
 	index++;
 	object->shiftObject();
-	factory->shiftBackground(index, laneBackground);
+	this->shiftBackground();
+}
+
+void CLANE::shiftBackground() {
+	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
 }

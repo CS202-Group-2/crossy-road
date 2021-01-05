@@ -11,7 +11,6 @@ class COBJECTFACTORY {
 protected:
 
 public:
-	virtual void initBackground(int index, sf::Texture& textureLane, sf::Sprite& laneBackground, sf::RenderWindow* window) = 0;
+	virtual void initBackground(int index, sf::Texture& textureLane) = 0;
 	virtual COBJECT* initObject(int index, sf::RenderWindow* window) = 0;
-	virtual void shiftBackground(int index, sf::Sprite& laneBackground) = 0;
 };

@@ -11,24 +11,9 @@ COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
     return object;
 }
 
-void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, sf::Sprite& laneBackground, sf::RenderWindow* window) {
-    int choice = rand() % 2;
-    if (choice == 0) {
-        if (!textureLane.loadFromFile("Road.png")) {
-            return;
-        }
-    }
-    else if (!textureLane.loadFromFile("Grass.png")) {
+void CCARFACTORY::initBackground(int index, sf::Texture& textureLane) {
+    if (!textureLane.loadFromFile("Road.png")) {
         return;
     }
-    laneBackground.setTexture(textureLane);
-    double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
-    laneBackground.setScale(scaleX, scaleX);
-    //double scaleY = 100 / laneBackground.getGlobalBounds().height;
-   // laneBackground.setScale(scaleY, scaleY);
-    laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
 }
 
-void CCARFACTORY::shiftBackground(int index, sf::Sprite& laneBackground) {
-    laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
-}
