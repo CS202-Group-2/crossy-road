@@ -6,6 +6,7 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window) {
 	this->window = window;
 	this->initObject();
 	
+	
 }
 
 CLANE::~CLANE() {
@@ -15,17 +16,17 @@ CLANE::~CLANE() {
 }
 
 void CLANE::initObject() {
-
+	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	coin = coinFactory->initObject(index, window);
+	object = factory->initObject(index, window);
+	factory->initBackground(index, textureLane);
+	delete coinFactory;
 	laneBackground.setTexture(textureLane);
 	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
 	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
 
-	CCOINFACTORY* coinFactory = new CCOINFACTORY();
-	coin = coinFactory->initObject(index, window);
-	object = factory->initObject(index, window);
-	//factory->initBackground(index, textureLane, laneBackground, window);
-	delete coinFactory;
+	
 }
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
@@ -45,14 +46,15 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 void CLANE::shiftLane() {
 	index++;
+	this->shiftBackground();
 	if (object != nullptr) 
 		object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
-	this->shiftBackground();
+	
 }
 
 void CLANE::shiftBackground() {
-	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
+	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
 	//object->shiftObject();
 	//coin->shiftObject();
 	//factory->shiftBackground(index, laneBackground);

@@ -85,9 +85,10 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 	if (player.index != index) {
 		return false;
 	}
+	int padding = type == Constants::GetInstance().INTERACTABLE ? 0 : 25;
 	//else cout << "Same line" << endl;
-	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left
-		+ sprite.getGlobalBounds().width);
+	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x + padding <= sprite.getGlobalBounds().left
+		+ sprite.getGlobalBounds().width - padding);
 }
 
 bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
@@ -108,7 +109,7 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 
 void COBJECT::shiftObject() {
 	mX = mX - Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA);
-	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA);
+	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA) - 1;
 }
 
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
