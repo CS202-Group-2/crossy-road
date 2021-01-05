@@ -17,6 +17,7 @@
 #include "CGUI.h"
 #include "CSOUND.h"
 #include "CJUMP.h"
+#include "CSOUNDFACTORY.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -42,12 +43,11 @@ private:
     CDINAUSOR* akl;
     CBIRD* ac;
     CPEOPLE* player;
+    CSOUNDFACTORY* soundFactory;
 
    // vector<COBJECT*> animals;
     vector<COBJECT*> vehicles;
     CTRAFFIC* traffic;
-    CSOUND* soundManager;
-    CJUMP* soundJump;
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
@@ -64,7 +64,6 @@ private:
     //void initVehicle();
     void initLanes();
     void initSound();
-    void initSoundJump ();
 
     sf::RenderWindow* window;
     sf::Event event;

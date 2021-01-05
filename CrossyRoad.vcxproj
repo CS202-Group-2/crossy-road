@@ -102,21 +102,21 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\HH\Desktop\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\HH\Desktop\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\HH\Desktop\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\HH\Desktop\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
@@ -136,6 +136,7 @@
     <ClCompile Include="src\COBJECTFACTORY.cpp" />
     <ClCompile Include="src\CPEOPLE.cpp" />
     <ClCompile Include="src\CSOUND.cpp" />
+    <ClCompile Include="src\CSOUNDFACTORY.cpp" />
     <ClCompile Include="src\CTRAFFIC.cpp" />
     <ClCompile Include="src\CTRUCK.cpp" />
     <ClCompile Include="src\CVEHICLE.cpp" />
@@ -156,6 +157,7 @@
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\CPEOPLE.h" />
     <ClInclude Include="include\CSOUND.h" />
+    <ClInclude Include="include\CSOUNDFACTORY.h" />
     <ClInclude Include="include\CTRAFFIC.h" />
     <ClInclude Include="include\CTRUCK.h" />
     <ClInclude Include="include\CVEHICLE.h" />

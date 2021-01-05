@@ -4,8 +4,7 @@ CGAME::CGAME() {
     srand(time(NULL));
     this->initVariables();
     this->initWindow();
-    this->soundManager = new CSOUND();
-    this->soundJump = new CJUMP ();
+    this->initSound ();
     //this->initVehicle();
     this->player = getPlayer();
     this->player->resetPlayer();
@@ -148,11 +147,7 @@ void CGAME::initLanes() {
 }
 
 void CGAME::initSound() {
-    soundManager->playBackgroundSound();
-}
-
-void CGAME::initSoundJump () {
-    soundJump->playJumpSound();
+    this->soundFactory = new CSOUNDFACTORY ();
 }
 
 void CGAME::drawBackground(const string& backgroundIMG) {
@@ -255,7 +250,7 @@ void CGAME::pollEvents() {
                 window->close();
                 break;
             case sf::Keyboard::Up:
-                soundJump->playJumpSound ();
+                soundFactory->playSound (2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
@@ -272,7 +267,7 @@ void CGAME::pollEvents() {
                 }
                 break;
             case sf::Keyboard::Down:
-                soundJump->playJumpSound ();
+                soundFactory->playSound (2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::PAUSE || gameState == GAME_STATE::GAMEOVER)
@@ -284,13 +279,13 @@ void CGAME::pollEvents() {
                 }
                 break;
             case sf::Keyboard::Left:
-                soundJump->playJumpSound ();
+                soundFactory->playSound (2);
                 player->setSide(CPEOPLE::LEFT);
                 if (player->canMoveLeft())
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
-                soundJump->playJumpSound ();
+                soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
                 if (player->canMoveRight())
                     player->moveRight();
@@ -302,7 +297,7 @@ void CGAME::pollEvents() {
                         cout << "Started the game" << endl;
                         this->initLanes();
                         
-                        this->initSound();
+                        soundFactory->playSound(1);
                         
                         gameState = GAME_STATE::LEVEL_1;
                         break;
@@ -315,7 +310,7 @@ void CGAME::pollEvents() {
                         break;
                     }
                 else if (gameState == GAME_STATE::PAUSE) {
-                    soundJump->playJumpSound ();
+                    soundFactory->playSound (2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 0:
@@ -348,11 +343,11 @@ void CGAME::pollEvents() {
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
-                    soundJump->playJumpSound ();
+                    soundFactory->playSound (2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 0:
-                        soundJump->playJumpSound ();
+                        soundFactory->playSound (2);
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         delete player;
@@ -362,7 +357,7 @@ void CGAME::pollEvents() {
                         initLanes();
                         break;
                     case 1:
-                        soundJump->playJumpSound ();
+                        soundFactory->playSound (2);
                         cout << "Loading the game..." << endl;
                         cout.flush();
                         cin.clear();
@@ -379,7 +374,7 @@ void CGAME::pollEvents() {
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
             case sf::Mouse::Left: {
-                soundJump->playJumpSound ();
+                soundFactory->playSound (2);
                 cout << "Mouse clicked" << endl;
                 if (cgui->GUICheck(event.mouseButton.x, event.mouseButton.y)) {
                     cout << "Paused the game" << endl;
