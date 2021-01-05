@@ -117,16 +117,21 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Users\HH\Desktop\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\CCARFACTORY.cpp" />
+    <ClCompile Include="src\CGUI.cpp" />
+    <ClCompile Include="src\CLANE.cpp" />
     <ClCompile Include="src\COBJECT.cpp" />
     <ClCompile Include="src\CBIRD.cpp" />
     <ClCompile Include="src\CCAR.cpp" />
     <ClCompile Include="src\CDINAUSOR.cpp" />
     <ClCompile Include="src\CGAME.cpp" />
+    <ClCompile Include="src\COBJECTFACTORY.cpp" />
     <ClCompile Include="src\CPEOPLE.cpp" />
     <ClCompile Include="src\CTRAFFIC.cpp" />
     <ClCompile Include="src\CTRUCK.cpp" />
@@ -134,11 +139,15 @@
     <ClCompile Include="src\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\CCARFACTORY.h" />
+    <ClInclude Include="include\CGUI.h" />
+    <ClInclude Include="include\CLANE.h" />
     <ClInclude Include="include\COBJECT.h" />
     <ClInclude Include="include\CBIRD.h" />
     <ClInclude Include="include\CCAR.h" />
     <ClInclude Include="include\CDINAUSOR.h" />
     <ClInclude Include="include\CGAME.h" />
+    <ClInclude Include="include\COBJECTFACTORY.h" />
     <ClInclude Include="include\Constants.h" />
     <ClInclude Include="include\CPEOPLE.h" />
     <ClInclude Include="include\CTRAFFIC.h" />

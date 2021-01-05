@@ -44,14 +44,8 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 }
 
 void CCAR::tell () {
-	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile ("assets/sound/car.wav")) {
-		cout << "Cannot load bird" << endl;
-	}
-	sf::Sound sound;
-	sound.setBuffer (buffer);
-	sound.play ();
-	cout << "sound car" << endl;
+	bool canTell = PlaySound ("assets/sound/car.wav", NULL, SND_SYNC);
+	if (canTell) cout << "True";
 }
 
 CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
@@ -61,4 +55,7 @@ CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
 void CCAR::trafficStop(bool state) {
 	//cout << "state " << std::boolalpha << state << endl;
 	isStopping = state;
+	if (isStopping == true) {
+		tell ();
+	}
 }

@@ -27,12 +27,6 @@ CDINAUSOR::CDINAUSOR(float x, float y) : COBJECT(x, y) {
 }
 
 void CDINAUSOR::tell () {
-	cout << "Dino sound" << endl;
-	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile ("assets/sound/dino.wav")) {
-		cout << "Cannot load bird" << endl;
-	}
-	sf::Sound sound;
-	sound.setBuffer (buffer);
-	sound.play ();
+	bool canTell = PlaySound ("assets/sound/dino.wav", NULL, SND_SYNC);
+	if (canTell) cout << "True";
 }

@@ -7,6 +7,7 @@
 #include "../include/COBJECT.h"
 #include "../include/Constants.h"
 #include <SFML/audio.hpp>
+#include <Windows.h>
 
 using namespace std;
 

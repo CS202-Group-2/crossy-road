@@ -27,12 +27,6 @@ CTRUCK::CTRUCK(float x, float y) : COBJECT(x, y) {
 }
 
 void CTRUCK::tell () {
-	cout << "Truck sound" << endl;
-	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile ("assets/sound/truck.wav")) {
-		cout << "Cannot load truck" << endl;
-	}
-	sf::Sound sound;
-	sound.setBuffer (buffer);
-	sound.play ();
+	bool canTell = PlaySound("assets/sound/truck.wav", NULL, SND_SYNC);
+	if (canTell) cout << "True";
 }

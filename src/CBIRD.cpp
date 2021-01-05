@@ -27,12 +27,6 @@ CBIRD::CBIRD(float x, float y) : COBJECT(x, y) {
 }
 
 void CBIRD::tell () {
-	cout << "Bird sound" << endl;
-	sf::SoundBuffer buffer;
-	if (!buffer.loadFromFile ("assets/sound/bird.wav")) {
-		cout << "Cannot load bird" << endl;
-	}
-	sf::Sound sound;
-	sound.setBuffer (buffer);
-	sound.play ();
+	bool canTell = PlaySound("assets/sound/bird.wav", NULL, SND_SYNC);
+	if (canTell) cout << "True";
 }
