@@ -8,14 +8,19 @@
 #include "../include/COBJECTFACTORY.h"
 #include "../include/CCAR.h"
 #include "../include/Constants.h"
-#include "../include/CSOUND.h";
+#include "../include/CSOUND.h"
 #include "../include/CJUMP.h"
+#include "../include/CEAT.h"
+#include "../include/CGAMEOVER.h"
 
 class CSOUNDFACTORY {
 protected:
 	CSOUND* soundSystem;
 	CJUMP* soundJump;
+	CEAT* soundCoin;
+	CGAMEOVER* soundLose;
 public:
 	CSOUNDFACTORY ();
 	void playSound (int state);
+	~CSOUNDFACTORY ();
 };
