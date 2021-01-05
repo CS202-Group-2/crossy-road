@@ -97,9 +97,10 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE) return false;
-		else if (type == Constants::GetInstance().INTERACTABLE) {
+		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
+			interacted = true;
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 	}
