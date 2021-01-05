@@ -8,6 +8,7 @@ CGAME::CGAME() {
     //this->initVehicle();
     this->player = getPlayer();
     this->player->resetPlayer();
+    level = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
 }
 
@@ -93,7 +94,7 @@ void CGAME::updatePosPeople(char) {
 void CGAME::updateLanes() {
     srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/5+1, level/5+1, *window, *player, *traffic) == false) {
+        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == false) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -119,7 +120,7 @@ void CGAME::initLanes() {
     lanes.clear();
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
-        lane = new CLANE(i, new CCARFACTORY(), window);
+        lane = new CLANE(i-10, new CCARFACTORY(), window);
         lanes.push_back(lane);
     }
 }
@@ -316,6 +317,7 @@ void CGAME::pollEvents() {
                         delete player;
                         this->player = getPlayer();
                         this->player->resetPlayer();
+                        level = 0;
                         initLanes();
                         break;
                     case 1:

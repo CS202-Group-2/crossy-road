@@ -18,9 +18,9 @@ public:
 	const int SCREEN_WIDTH = 432;
 	const int SCREEN_LENGTH = 768;
 	const float LANE_WIDTH = 100;
-	const int MAX_NUMBER_OF_LANES = 10; // 432 : 768
+	const int MAX_NUMBER_OF_LANES = 20; // 432 : 768
 	const int MAX_NUMBER_OF_VEHICLES_EACH_LANE = 1;
-	const float TIME_BETWEEN_TRAFFIC = 10;
+	const float TIME_BETWEEN_TRAFFIC = 13;
 	const float MAX_TRAFFIC_STOP = 3;
 	const int NUMBER_OF_MENU_ITEMS = 3;
 	const int NUMBER_OF_OPTION_ITEMS = 4;

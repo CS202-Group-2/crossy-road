@@ -86,7 +86,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 		return false;
 	}
 	//else cout << "Same line" << endl;
-	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left
+	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left + 25 && player.mSprite.getPosition().x <= sprite.getGlobalBounds().left - 25
 		+ sprite.getGlobalBounds().width);
 }
 
