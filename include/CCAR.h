@@ -21,6 +21,5 @@ public:
     CCAR(float x, float y, bool direction);
     void move(float x, float y, sf::RenderWindow &window);
     void drawObject(sf::RenderWindow &window);
-    void tell ();
     void trafficStop(bool state);
 };

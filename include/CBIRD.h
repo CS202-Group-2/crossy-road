@@ -19,5 +19,4 @@ public:
     CBIRD(float x, float y);
     void move(float x, float y, sf::RenderWindow& window);
     void drawObject(sf::RenderWindow& window);
-    void tell ();
 };

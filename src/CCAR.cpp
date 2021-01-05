@@ -37,22 +37,10 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
-	
 	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
-	if (!buffer.loadFromFile("assets/sound/car.wav")) {
-		cout << "Sound file not found" << endl;
-	}
-	objectSound.setBuffer(buffer);
-	objectSound.setLoop(false);
 
 	//sprite.rotate(Constants::GetInstance().ALPHA/(3.14)*180 - 90);
 	//speedMult = rand() % 2 + 1;
-}
-
-void CCAR::tell () {
-	//bool canTell = PlaySound ("assets/sound/car.wav", NULL, SND_SYNC);
-	//if (canTell) cout << "True";
-	objectSound.play();
 }
 
 CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
@@ -62,7 +50,4 @@ CCAR::CCAR(float x, float y, bool direction) : CCAR(x, y) {
 void CCAR::trafficStop(bool state) {
 	//cout << "state " << std::boolalpha << state << endl;
 	isStopping = state;
-	if ((int)mX == 100) {
-		objectSound.play();
-	}
 }

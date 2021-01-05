@@ -15,6 +15,7 @@
 #include "CTRAFFIC.h"
 #include "CGUI.h"
 #include "CSOUND.h"
+#include "CJUMP.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -45,6 +46,7 @@ private:
     vector<COBJECT*> vehicles;
     CTRAFFIC* traffic;
     CSOUND* soundManager;
+    CJUMP* soundJump;
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
@@ -61,6 +63,7 @@ private:
     //void initVehicle();
     void initLanes();
     void initSound();
+    void initSoundJump ();
 
     sf::RenderWindow* window;
     sf::Event event;
@@ -90,6 +93,8 @@ public:
     void updateLanes();
     void shiftLanesUp();
     void updateSound();
+//    void updateSoundJump ();
+
     //void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();
