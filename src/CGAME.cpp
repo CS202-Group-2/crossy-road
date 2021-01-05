@@ -100,7 +100,7 @@ void CGAME::updateSound() {
 }
 
 void CGAME::updateLanes() {
-    srand(time(NULL));
+    //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
         if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == false) {
            gameState = GAME_STATE::GAMEOVER;
@@ -112,6 +112,7 @@ void CGAME::updateLanes() {
 
 void CGAME::createNewLane(int index) {
     //srand(time(NULL));
+    
     int k = rand() % 2;
 
     CLANE* lane;
@@ -180,7 +181,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
-        srand(time(NULL));
+        //srand((unsigned int)time(NULL));
         
         
         updateLanes();
@@ -214,7 +215,7 @@ void CGAME::render() {
 
 void CGAME::initVariables() {
     this->window = nullptr;
-    srand(time(NULL));
+    //srand(time(NULL));
     traffic = new CTRAFFIC(0);
 
     //vehicles.assign(rowCount, vector<CVEHICLE*>(maxVehicle, nullptr));

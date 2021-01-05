@@ -11,6 +11,7 @@ void CCAR::drawObject(sf::RenderWindow &window) {
 
 CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
+	//int choice = std::default_random_engine
 	int choice = rand() % 4;
 	switch (choice) {
 	case 0:
