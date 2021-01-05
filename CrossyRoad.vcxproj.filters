@@ -60,6 +60,9 @@
     <ClCompile Include="src\COBJECTFACTORY.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\CGRASSFACTORY.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\CBIRD.h">
@@ -105,6 +108,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="include\COBJECTFACTORY.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\CGRASSFACTORY.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

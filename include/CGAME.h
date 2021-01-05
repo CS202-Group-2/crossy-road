@@ -3,6 +3,7 @@
 #include "CLANE.h"
 #include "COBJECTFACTORY.h"
 #include "CCARFACTORY.h"
+#include "CGRASSFACTORY.h"
 #include "CPEOPLE.h"
 #include "CVEHICLE.h"
 #include "CTRUCK.h"
@@ -83,6 +84,7 @@ public:
 
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
+    void createNewLane(int index);
     void updateLanes();
     void shiftLanesUp();
     //void updatePosVehicle(); 

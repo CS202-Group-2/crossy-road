@@ -25,6 +25,8 @@ void CLANE::initObject() {
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
 	window.draw(laneBackground);
+
+	if (object == nullptr) return true;
 	if (object->checkOutWindow(window)) {
 		
 		delete object;
@@ -37,7 +39,8 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 void CLANE::shiftLane() {
 	index++;
-	object->shiftObject();
+	if (object != nullptr) 
+		object->shiftObject();
 	this->shiftBackground();
 }
 

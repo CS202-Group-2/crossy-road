@@ -100,6 +100,19 @@ void CGAME::updateLanes() {
         };
 }
 
+void CGAME::createNewLane(int index) {
+    //srand(time(NULL));
+    int k = rand() % 2;
+
+    CLANE* lane;
+    if (lanes.size() < 3 || k == 0)
+        lane = new CLANE(index, new CGRASSFACTORY(), window);
+    else
+        lane = new CLANE(index, new CCARFACTORY(), window);
+
+    lanes.push_back(lane);
+}
+
 void CGAME::shiftLanesUp() {
     //cout << "Called" << endl;
     for (auto it = lanes.begin(); it != lanes.end(); ++it) {
@@ -108,8 +121,9 @@ void CGAME::shiftLanesUp() {
     CLANE* lane = lanes.front();
     delete lane;
     lanes.pop_front();
-    lane = new CLANE(0, new CCARFACTORY(), window);
-    lanes.push_back(lane);
+    /*lane = new CLANE(0, new CCARFACTORY(), window);
+    lanes.push_back(lane);*/
+    createNewLane(0);
 }
 
 void CGAME::initLanes() {
@@ -117,10 +131,11 @@ void CGAME::initLanes() {
         if (lanes[i] != nullptr) delete lanes[i];
     }
     lanes.clear();
+
+    
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
-        lane = new CLANE(i, new CCARFACTORY(), window);
-        lanes.push_back(lane);
+        createNewLane(i);
     }
 }
 
