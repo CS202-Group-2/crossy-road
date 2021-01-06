@@ -30,6 +30,7 @@ protected:
     int type, index;
     string sound;
     string getTextureFile();
+    void setupTexture();
     COBJECT();
 public:
     COBJECT(float x, float y);

@@ -87,10 +87,12 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 	if (player.index != index) {
 		return false;
 	}
-	int padding = type == Constants::GetInstance().INTERACTABLE ? 0 : 25;
-	//else cout << "Same line" << endl;
-	return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left && player.mSprite.getPosition().x + padding <= sprite.getGlobalBounds().left
-		+ sprite.getGlobalBounds().width - padding);
+	return player.mSprite.getGlobalBounds().intersects(this->sprite.getGlobalBounds());
+	//int padding = type == Constants::GetInstance().INTERACTABLE ? 0 : 25;
+	////else cout << "Same line" << endl;
+	//return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left 
+	//	&& player.mSprite.getPosition().x + padding <= sprite.getGlobalBounds().left
+	//	+ sprite.getGlobalBounds().width - padding);
 }
 
 bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
@@ -98,7 +100,8 @@ bool COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player
 	if (type != Constants::GetInstance().INTERACTABLE) move(x, y, window);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
-		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL) return false;
+		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
+			return false;
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -126,4 +129,11 @@ bool COBJECT::checkOutWindow (sf::RenderWindow& window) {
 
 string COBJECT::getTextureFile() {
 	return textureFile;
+}
+
+void COBJECT::setupTexture() {
+	sprite.setTexture(texture);
+	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
+		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
+	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
 }
