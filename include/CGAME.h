@@ -104,6 +104,8 @@ public:
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);
+    bool checkMove(CLANE* lane, CPEOPLE* player, int direction);
+    CLANE* findLane(int index);
     
 
     void update();

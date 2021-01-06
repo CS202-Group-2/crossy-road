@@ -64,11 +64,11 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 
 int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
 	int oldX = mX, oldY = mY;
-	if (type != Constants::GetInstance().INTERACTABLE) move(x, y);
+	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK) move(x, y);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
-			return false;
+			return 0;
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -76,7 +76,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 		else if (type == Constants::GetInstance().BLOCK) {
-			return -1;
+			
 		}
 	}
 	drawObject(window);

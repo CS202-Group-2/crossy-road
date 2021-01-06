@@ -14,6 +14,6 @@ class CANIMALFACTORY : public COBJECTFACTORY {
 protected:
 
 public:
-	virtual void initBackground(int index, sf::Texture& textureLane);
+	virtual void initBackground(int index, sf::Texture& textureLane, bool& isGrass);
 	virtual COBJECT* initObject(int index, sf::RenderWindow* window);
 };
