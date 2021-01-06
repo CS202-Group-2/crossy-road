@@ -142,6 +142,8 @@
     <ClCompile Include="src\CSOUND.cpp" />
     <ClCompile Include="src\CSOUNDFACTORY.cpp" />
     <ClCompile Include="src\CTRAFFIC.cpp" />
+    <ClCompile Include="src\CTREE.cpp" />
+    <ClCompile Include="src\CTREEFACTORY.cpp" />
     <ClCompile Include="src\CTRUCK.cpp" />
     <ClCompile Include="src\CVEHICLE.cpp" />
     <ClCompile Include="src\Menu.cpp" />
@@ -167,6 +169,8 @@
     <ClInclude Include="include\CSOUND.h" />
     <ClInclude Include="include\CSOUNDFACTORY.h" />
     <ClInclude Include="include\CTRAFFIC.h" />
+    <ClInclude Include="include\CTREE.h" />
+    <ClInclude Include="include\CTREEFACTORY.h" />
     <ClInclude Include="include\CTRUCK.h" />
     <ClInclude Include="include\CVEHICLE.h" />
     <ClInclude Include="include\Menu.h" />

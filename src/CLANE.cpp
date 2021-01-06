@@ -13,10 +13,12 @@ CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
+	//for (int i = 0; i < blocks.size(); ++i) delete blocks[i];
 }
 
 void CLANE::initObject() {
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	coin = coinFactory->initObject(index, window);
 	object = factory->initObject(index, window);
 	factory->initBackground(index, textureLane);
@@ -40,6 +42,7 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 	}
 	object->trafficStop(traffic.checkStop());
 	coin->update(x, y, window, player, index);
+	//for (int i = 0; i < blocks.size(); ++i) blocks[i]->update(x, y, window, player, index);
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
@@ -51,6 +54,11 @@ void CLANE::shiftLane() {
 		object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
 	
+}
+
+bool CLANE::checkBlock(float x, float y) {
+	//for (int i = 0; i < blocks.size(); ++i) if (blocks[i]->checkBlock(x, y)) return true;
+	return false;
 }
 
 void CLANE::shiftBackground() {

@@ -12,19 +12,20 @@ void CCAR::drawObject(sf::RenderWindow &window) {
 CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
 	//int choice = std::default_random_engine
+	textureFile = "assets/graphics/";
 	int choice = rand() % 4;
 	switch (choice) {
 	case 0:
-		textureFile = "Car";
+		textureFile += "Car";
 		break;
 	case 1:
-		textureFile = "Car2";
+		textureFile += "Car2";
 		break;
 	case 2:
-		textureFile = "Bus";
+		textureFile += "Bus";
 		break;
 	case 3:
-		textureFile = "Truck";
+		textureFile += "Truck";
 		break;
 	}
 	if (x > 100) textureFile += "_back.png";

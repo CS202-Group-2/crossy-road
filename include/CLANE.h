@@ -34,6 +34,7 @@ protected:
     friend class CGAME;
     COBJECT* object;
     COBJECT* coin;
+    //vector<COBJECT*> blocks;
     COBJECTFACTORY* factory;
     sf::Sprite laneBackground;
     sf::Texture textureLane;
@@ -45,7 +46,7 @@ public:
     bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
     void shiftLane();
     void shiftBackground();
-
+    bool checkBlock(float x, float y);
 
 };
 
