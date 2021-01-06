@@ -5,7 +5,7 @@
 class CCOINFACTORY : public COBJECTFACTORY {
 public:
 	void initBackground(int index, sf::Texture& textureLane, bool& isGrass);
-	virtual COBJECT* initObject(int index, sf::RenderWindow* window);
+	COBJECT* initObject(int index, sf::RenderWindow* window, int level);
 	//virtual void shiftBackground(int index, sf::Sprite& laneBackground);
 };
 

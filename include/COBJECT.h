@@ -32,11 +32,13 @@ protected:
     string sound;
     string getTextureFile();
     void setupTexture();
+
     COBJECT();
+    COBJECT(int level);
 public:
     COBJECT(float x, float y);
     COBJECT(float x, float y, int index);
-    void initSpeedMult();
+    void initSpeedMult(int level = 0);
     void update(float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player);
     virtual int update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index);
     void shiftObject();

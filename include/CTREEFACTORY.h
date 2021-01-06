@@ -4,8 +4,8 @@
 
 class CTREEFACTORY : public COBJECTFACTORY {
 public:
+    COBJECT* initObject(int index, sf::RenderWindow* window, int level);
     void initBackground(int index, sf::Texture& textureLane, bool& isGrass);
-    virtual COBJECT* initObject(int index, sf::RenderWindow* window);
     //virtual void shiftBackground(int index, sf::Sprite& laneBackground);
 };
 

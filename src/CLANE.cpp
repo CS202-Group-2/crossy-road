@@ -1,11 +1,11 @@
 #include "../include/CLANE.h"
 
-CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool isGrass) {
+CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool isGrass, int level) {
 	this->index = index;
 	this->isGrass = isGrass;
 	this->factory = factory;
 	this->window = window;
-	this->initObject();
+	this->initObject(level);
 }
 
 // For loading saved game.
@@ -45,7 +45,7 @@ CLANE::~CLANE() {
 	for (int i = 0; i < blocks.size(); ++i) if(blocks[i] != nullptr) delete blocks[i];
 }
 
-void CLANE::initObject() {
+void CLANE::initObject(int level) {
 	factory->initBackground(index, textureLane, isGrass);
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
 	CTREEFACTORY* treeFactory = new CTREEFACTORY();
@@ -55,7 +55,7 @@ void CLANE::initObject() {
 		
 		float x = rand() % (window->getSize().x - 25) + 25;
 		for (int i = 0; i < Constants::GetInstance().MAX_TREE_PER_LANE; ++i) {
-			tree = treeFactory->initObject(index, window);
+			tree = treeFactory->initObject(index, window, level);
 			blocks.push_back(tree);
 		}
 		
@@ -66,9 +66,9 @@ void CLANE::initObject() {
 
 	
 	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
-	coin = coinFactory->initObject(index, window);
+	coin = coinFactory->initObject(index, window, level);
 
-	object = factory->initObject(index, window);
+	object = factory->initObject(index, window, level);
 	int initialMove = rand() % 500;
 	if (object != nullptr) object->move(initialMove, initialMove);
 	
@@ -76,7 +76,7 @@ void CLANE::initObject() {
 	setupLaneBackground();
 }
 
-bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level) {
 	window.draw(laneBackground);
 	shiftBackground();
 
@@ -84,7 +84,7 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 	if (object->checkOutWindow(window)) {
 
 		delete object;
-		object = factory->initObject(index, this->window);
+		object = factory->initObject(index, this->window, level);
 	}
 	object->trafficStop(traffic.checkStop());
 	if (coin != nullptr)

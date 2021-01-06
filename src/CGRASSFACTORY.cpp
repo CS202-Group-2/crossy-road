@@ -1,6 +1,6 @@
 #include "../include/CGRASSFACTORY.h"
 
-COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window) {
+COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window, int level) {
     
     return nullptr;
 

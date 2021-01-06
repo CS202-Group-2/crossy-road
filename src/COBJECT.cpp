@@ -4,7 +4,11 @@
 #include <time.h>
 
 COBJECT::COBJECT() {
-	initSpeedMult();
+
+}
+
+COBJECT::COBJECT(int level) {
+	initSpeedMult(level);
 }
 
 COBJECT::COBJECT(float x, float y) {
@@ -14,7 +18,7 @@ COBJECT::COBJECT(float x, float y) {
 	initSpeedMult();
 }
 
-void COBJECT::initSpeedMult() {
+void COBJECT::initSpeedMult(int level) {
 	speedMult = (float) (rand() % 200) / 100 + 2;
 
 	bool xFactor = (rand() % 100 < 10);

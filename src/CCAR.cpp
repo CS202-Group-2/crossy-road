@@ -24,7 +24,7 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	setupTexture();
 }
 
-CCAR::CCAR(int index, int windowX) {
+CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().VEHICLE;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;

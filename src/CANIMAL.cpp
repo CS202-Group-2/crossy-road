@@ -24,7 +24,7 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 	setupTexture();
 }
 
-CANIMAL::CANIMAL(int index, int windowX) {
+CANIMAL::CANIMAL(int index, int windowX, int level) : COBJECT(level) {
 	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().ANIMAL;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
