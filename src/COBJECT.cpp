@@ -3,23 +3,34 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
 
-COBJECT::COBJECT() {}
+COBJECT::COBJECT() {
+	initSpeedMult();
+}
 
 COBJECT::COBJECT(float x, float y) {
 	this->mX = x;
 	this->mY = y;
 	initY = y;
-	speedMult = rand() % 2 + 1;
+	initSpeedMult();
+}
 
+void COBJECT::initSpeedMult() {
+	speedMult = (float) (rand() % 200) / 100 + 2;
+
+	bool xFactor = (rand() % 100 < 20);
+	if (xFactor) speedMult = 30;
+	cout << speedMult << endl;
 }
 
 COBJECT::COBJECT(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
+	initSpeedMult();
 }
 
-void COBJECT::move(float x, float y, sf::RenderWindow& window) {
+void COBJECT::move(float x, float y) {
 	//srand(time(NULL));
 	if (direction) {
+		cout << speedMult << endl;
 		mX = mX + x * speedMult * cos(Constants::GetInstance().ALPHA);
 		mY = mY + y * speedMult * sin(Constants::GetInstance().ALPHA);
 	}
@@ -53,7 +64,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 
 int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
 	int oldX = mX, oldY = mY;
-	if (type != Constants::GetInstance().INTERACTABLE) move(x, y, window);
+	if (type != Constants::GetInstance().INTERACTABLE) move(x, y);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
@@ -97,6 +108,7 @@ string COBJECT::getTextureFile() {
 }
 
 void COBJECT::setupTexture() {
+	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);

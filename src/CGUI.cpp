@@ -7,6 +7,7 @@ CGUI::CGUI(float width, float height) {
 		cout << "Cannot find texture file" << endl;
 		return;
 	}
+	pauseButtonTexture.setSmooth(true);
 	pauseButton.setTexture(pauseButtonTexture);
 	pauseButton.setPosition(0, 0);
 	pauseButton.setScale(0.2f, 0.2f);

@@ -1,7 +1,7 @@
 #include "../include/CANIMAL.h"
 
-void CANIMAL::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x, y, window);
+void CANIMAL::move(float x, float y) {
+	COBJECT::move(x, y);
 }
 
 CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
@@ -13,7 +13,7 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 	mX = x;
 	mY = y;
 	initY = y;
-	speedMult = speed;
+	//speedMult = speed;
 	this->textureFile = textureFile;
 
 	if (!texture.loadFromFile(textureFile + ".png")) {
@@ -25,7 +25,7 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 }
 
 CANIMAL::CANIMAL(int index, int windowX) {
-	direction = rand() % 2;
+	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().ANIMAL;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
 	textureFile = "assets/graphics/a_" + to_string(choice) + "_" + to_string(direction);
@@ -38,7 +38,6 @@ CANIMAL::CANIMAL(int index, int windowX) {
 		mY = windowX * tan(Constants::GetInstance().ALPHA) + (index - 2) * Constants::GetInstance().LANE_WIDTH - 25;
 	}
 	initY = mY;
-	speedMult = rand() % 2 + 1;
 	if (!texture.loadFromFile(textureFile + ".png")) {
 		cout << "Cannot find animal texture." << endl;
 		return;

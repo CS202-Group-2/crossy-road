@@ -185,7 +185,7 @@ void CGAME::updateSound() {
 void CGAME::updateLanes() {
     //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == 0) {
+        if ((*it)->updatePosObject(level/5+1, level/5+1, *window, *player, *traffic) == 0) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -194,11 +194,11 @@ void CGAME::updateLanes() {
 }
 
 void CGAME::createNewLane(int index) {
-    // We want 20% for animals, 60% for cars and 20% for grass.
-    int k = rand() % 120 - 20;
+    // We want 30% for animals, 60% for cars and 10% for grass.
+    int k = rand() % 100;
 
     CLANE* lane;
-    if (k < 20)
+    if (index == 7 || k < 10) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window);
@@ -244,6 +244,7 @@ void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
     }
+    texture.setSmooth(true);
     background.setTexture(texture);
     resizeImage(background);
 

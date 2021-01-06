@@ -19,6 +19,6 @@ public:
     CANIMAL(int index, int windowX);
     CANIMAL(float x, float y);
     CANIMAL(float x, float y, bool direction);
-    void move(float x, float y, sf::RenderWindow& window);
+    void move(float x, float y);
     void trafficStop(bool state);
 };

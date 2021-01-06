@@ -24,11 +24,13 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 	}
 	else
 		this->object = nullptr;
+
 	factory->initBackground(index, textureLane);
 	setupLaneBackground();
 }
 
 void CLANE::setupLaneBackground() {
+	textureLane.setSmooth(true);
 	laneBackground.setTexture(textureLane);
 	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
@@ -46,7 +48,11 @@ void CLANE::initObject() {
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
 	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	coin = coinFactory->initObject(index, window);
+
 	object = factory->initObject(index, window);
+	int initialMove = rand() % 500;
+	if (object != nullptr) object->move(initialMove, initialMove);
+
 	factory->initBackground(index, textureLane);
 	delete coinFactory;
 	setupLaneBackground();
