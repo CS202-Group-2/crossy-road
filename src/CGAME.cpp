@@ -182,10 +182,14 @@ void CGAME::updateSound() {
     //if ((int)clock.getElapsedTime().asSeconds() % 5 == 0) soundManager->playBackgroundSound();
 }
 
+float logLevel(int level) {
+    return level > 3 ? 1.5 * log(level * 0.5) / log(2) : 1;
+}
+
 void CGAME::updateLanes() {
     //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/5+1, level/5+1, *window, *player, *traffic, level) == 0) {
+        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level) == 0) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
