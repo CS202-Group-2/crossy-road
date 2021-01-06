@@ -83,7 +83,7 @@ bool CLANE::checkBlock(float x, float y) {
 }
 
 void CLANE::shiftBackground() {
-	laneBackground.move(0-laneBackground.getGlobalBounds().left, (index - 3) * Constants::GetInstance().LANE_WIDTH - laneBackground.getGlobalBounds().top);
+	laneBackground.move(-laneBackground.getGlobalBounds().left, (index - 3) * Constants::GetInstance().LANE_WIDTH - laneBackground.getGlobalBounds().top);
 	//laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
 	//object->shiftObject();
 	//coin->shiftObject();

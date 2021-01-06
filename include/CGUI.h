@@ -27,6 +27,8 @@ public:
     CGUI(float width, float height);
 	~CGUI();
     void drawGUI(int score, int level, sf::RenderWindow *window);
+    void drawGenderChoiceGUI(sf::RenderWindow* window);
+    void drawWarningGUI(sf::RenderWindow* window, string warning);
     void drawGameOverGUI(int score, int level, sf::RenderWindow* window);
     void drawPauseGUI(int score, int level, sf::RenderWindow* window);
     int GUICheck(float x, float y); // 1: pause menu, 0: play, -1: quit

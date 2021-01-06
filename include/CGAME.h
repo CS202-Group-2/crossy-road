@@ -33,7 +33,7 @@
 
 using namespace std;
 
-enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE};
+enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE};
 
 typedef void* HANDLE;
 
@@ -58,7 +58,7 @@ private:
     sf::Clock clock;
     bool isGameOver = false;
     int score = 0, level = 1;
-    
+    string warning;
         
     void initVariables();
     void initWindow();
@@ -88,6 +88,7 @@ public:
     bool loadGame(); 
     void clearSavedGame();
     bool saveGame();
+    bool haveSavedGame();
     void pauseGame(HANDLE); 
 
     void resumeGame(HANDLE); 
@@ -104,7 +105,7 @@ public:
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);
     
-
+    bool hasCharacterGender();
     void update();
     void render();
     void pollEvents();

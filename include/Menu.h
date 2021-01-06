@@ -1,5 +1,6 @@
 
 #include <SFML/Graphics.hpp>
+#include <fstream>
 #include "Constants.h"
 
 

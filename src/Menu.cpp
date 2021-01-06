@@ -1,7 +1,7 @@
 #include "../include/Menu.h"
 #include <iostream>
 Menu::Menu(float width, float height) {
-	if (!font.loadFromFile("arial.ttf")) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		std::cout << "Failed to load" << std::endl;
 	}
 	menu[0].setFont(font);

@@ -29,6 +29,15 @@ CGAME::~CGAME() {
 // ---  LOAD GAME  ---
 // newPlayer is false. Read config file and create new player.
 
+bool CGAME::hasCharacterGender() {
+    ifstream playerConfig("game_log/player.txt");
+    int gender = -1e9;
+    playerConfig >> gender;
+    bool res = !(gender == -1e9);
+    playerConfig.close();
+    return res;
+}
+
 CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     fstream playerConfig("game_log/player.txt");
     if (!playerConfig) {
@@ -39,18 +48,9 @@ CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     float x, y;
 
     if (newPlayer) {
-        if (playerConfig.eof()) {
-            // TODO: PROMPT CHOOSE GENDER
-            gender = 0;
-            playerConfig << gender;
-            playerConfig.close();
-        }
-        else {
-            playerConfig >> gender;
-            playerConfig.close();
-            clearSavedGame();
-        }
-        
+        playerConfig >> gender;
+        playerConfig.close();
+        clearSavedGame();
         CPEOPLE* p = new CPEOPLE(this->window, gender);
         p->resetPlayer();
         return p;
@@ -63,6 +63,20 @@ CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     CPEOPLE* player = new CPEOPLE(this->window, gender, side, x, y, index);
     player->score = score;
     return player;
+}
+
+bool CGAME::haveSavedGame() {
+    ifstream loadedGame("game_log/game.txt");
+    if (!loadedGame) {
+        cout << "Cannot load saved game" << endl;
+        return false;
+    }
+    int t = -1e9, s = -1e9;
+    loadedGame >> t >> s;
+    // Have no saved game --> Hide load option
+    if (s == -1e9)
+        return false;
+    return true;
 }
 
 COBJECT* CGAME::getVehicle() {
@@ -278,10 +292,17 @@ void CGAME::render() {
         //for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
         break;
     }
-    case GAME_STATE::PAUSE: {
-        //cout << "Is pausing" << endl;
-        cgui->drawGUI(score, level, window);
-    }
+    case GAME_STATE::PAUSE:
+        //cgui->drawGUI(score, level, window);
+        //break;
+    case GAME_STATE::GENDER_CHOICE:
+        //cgui->drawGenderChoiceGUI(window);
+        //cgui->drawGUI(score, level, window);
+        //break;
+    case GAME_STATE::WARNING:
+        //cgui->drawWarningGUI(window, warning);
+        //cgui->drawGUI(score, level, window);
+        //break;
     case GAME_STATE::GAMEOVER: {
         //cout << "Is pausing" << endl;
         cgui->drawGUI(score, level, window);
@@ -304,7 +325,7 @@ void CGAME::initVariables() {
 }
 void CGAME::initWindow() {
     GetDesktopResolution();
-    this->window = new sf::RenderWindow(this->videoMode, "Crossy Road");
+    this->window = new sf::RenderWindow(this->videoMode, "Crossy Road", sf::Style::Titlebar | sf::Style::Close);
     window->setFramerateLimit(30);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("assets/graphics/menu.jpg");
@@ -341,9 +362,7 @@ void CGAME::pollEvents() {
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
-                else if (gameState == GAME_STATE::PAUSE || gameState == GAME_STATE::GAMEOVER)
-                    cgui->MoveUp();
-                else {
+                else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::UP);
                     
                     if (player->canMoveUp())
@@ -353,19 +372,21 @@ void CGAME::pollEvents() {
                         shiftLanesUp();
                     }
                 }
+                else
+                    cgui->MoveUp();
                 break;
             case sf::Keyboard::Down:
                 soundFactory->playSound (2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
-                else if (gameState == GAME_STATE::PAUSE || gameState == GAME_STATE::GAMEOVER)
-                    cgui->MoveDown();
-                else {
+                else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::DOWN);
                     
                     if (player->canMoveDown())
                         player->moveDown(), level--;
                 }
+                else
+                    cgui->MoveDown();
                 break;
             case sf::Keyboard::Left:
                 soundFactory->playSound (2);
@@ -385,27 +406,73 @@ void CGAME::pollEvents() {
                 if (gameState == GAME_STATE::MENU)
                     switch (menu->getPressedItem()) {
                     case 0:
-                        // Clear saved stuff when start new game.
-                        clearSavedGame();
+                        if (hasCharacterGender()) {
+                            // Clear saved stuff when start new game.
+                            clearSavedGame();
 
-                        cout << "Started the game" << endl;
-                        this->initLanes();
-                        soundFactory->playSound(1);
-                        this->player = getPlayer(true);
-                        level = 0;
-                        gameState = GAME_STATE::LEVEL_1;
+                            cout << "Started the game" << endl;
+                            this->initLanes();
+                            soundFactory->playSound(1);
+                            this->player = getPlayer(true);
+                            level = 0;
+                            gameState = GAME_STATE::LEVEL_1;
+                        }
+                        else {
+                            gameState = GAME_STATE::GENDER_CHOICE;
+                            cgui->drawGenderChoiceGUI(window);
+                            cgui->isPause = true;
+                        }
                         break;
                     case 1:
                         cout << "Load the game" << endl;
-                        loadGame();
-                        soundFactory->playSound(1);
-                        gameState = GAME_STATE::LEVEL_1;
+                        
+                        if (this->haveSavedGame()) {
+                            loadGame();
+                            soundFactory->playSound(1);
+                            gameState = GAME_STATE::LEVEL_1;
+                        }
+                        else {
+                            gameState = GAME_STATE::WARNING;
+                            cgui->drawWarningGUI(window, warning);
+                            cgui->isPause = true;
+                            warning = "No saved game\n     available.";
+                        }
                         break;
                     case 2:
                         cout << "Exited the game" << endl;
                         window->close();
                         break;
                     }
+                else if (gameState == GAME_STATE::WARNING) {
+                    switch (cgui->getPressedItem()) {
+                    case 0:
+                        gameState = GAME_STATE::MENU;
+                        break;
+                    }
+                    cgui->isPause = false;
+                }
+                else if (gameState == GAME_STATE::GENDER_CHOICE) {
+                    ofstream playerOut("game_log/player.txt");
+                    switch (cgui->getPressedItem()) {
+                    case 1:
+                        playerOut << 0 << endl;
+                        break;
+                    case 2:
+                        playerOut << 1 << endl;
+                        break;
+                    }
+                    playerOut.close();
+
+                    cgui->isPause = false;
+
+                    // Start game
+                    cout << "Started the game" << endl;
+                    this->initLanes();
+                    soundFactory->playSound(1);
+                    this->player = getPlayer(true);
+                    level = 0;
+                    gameState = GAME_STATE::LEVEL_1;
+                }
                 else if (gameState == GAME_STATE::PAUSE) {
                     soundFactory->playSound (2);
                     string file = "";

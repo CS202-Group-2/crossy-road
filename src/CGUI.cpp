@@ -43,7 +43,7 @@ void CGUI::drawGUI(int score, int level, sf::RenderWindow* window) {
 }
 
 void CGUI::drawGUIText(int score, int level, sf::RenderWindow* window) {
-	if (!font.loadFromFile("arial.ttf")) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		cout << "No font" << endl;
 		std::cout << "Failed to load" << std::endl;
 	}
@@ -80,8 +80,44 @@ void CGUI::drawGameOverText(sf::RenderWindow* window) {
 	levelText.setPosition(sf::Vector2f(window->getSize().x / 2.0f - 100, window->getSize().y / 2.0f));
 }
 
+void CGUI::drawGenderChoiceGUI(sf::RenderWindow* window) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
+		std::cout << "Failed to load" << std::endl;
+	}
+
+	options.clear();
+	options.assign(3, sf::Text());
+
+	options[0].setFont(font);
+	options[0].setColor(sf::Color::Yellow);
+	options[0].setString("Choose character:");
+
+
+	options[1].setFont(font);
+	options[1].setColor(sf::Color::White);
+	options[1].setString("Boy");
+	//options[1].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 2));
+
+	options[2].setFont(font);
+	options[2].setColor(sf::Color::White);
+	options[2].setString("Girl");
+}
+
+void CGUI::drawWarningGUI(sf::RenderWindow* window, string warning) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
+		std::cout << "Failed to load" << std::endl;
+	}
+
+	options.clear();
+	options.assign(1, sf::Text());
+
+	options[0].setFont(font);
+	options[0].setColor(sf::Color::Yellow);
+	options[0].setString(warning);
+}
+
 void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
-	if (!font.loadFromFile("arial.ttf")) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		std::cout << "Failed to load" << std::endl;
 	}
 
@@ -109,7 +145,7 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 }
 
 void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
-	if (!font.loadFromFile("arial.ttf")) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		std::cout << "Failed to load" << std::endl;
 	}
 	options.clear();

@@ -35,7 +35,8 @@ public:
 	const int FPS = 60;
 	const int ANIMAL = 1, VEHICLE = 2, INTERACTABLE = 3, BLOCK = 4;
 	const int NUMBER_OF_CARS = 4, NUMBER_OF_ANIMALS = 2;
-	
+	const string menuFont = "arial.ttf";
+
 	// Constants(Constants const&) = delete;
 	//void operator=(Constants const&) = delete;
 
