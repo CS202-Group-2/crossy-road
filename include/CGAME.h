@@ -19,6 +19,7 @@
 #include "CSOUND.h"
 #include "CJUMP.h"
 #include "CSOUNDFACTORY.h"
+#include "CTRANSITION.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>

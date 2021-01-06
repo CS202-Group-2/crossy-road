@@ -10,6 +10,7 @@
 #include <string>
 #include "../include/CTRAFFIC.h"
 #include "Constants.h"
+#include "CTRANSITION.h"
 
 using namespace std;
 

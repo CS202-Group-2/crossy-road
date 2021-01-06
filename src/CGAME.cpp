@@ -126,6 +126,8 @@ void CGAME::createNewLane(int index) {
 }
 
 void CGAME::shiftLanesUp() {
+    CTRANSITION::offset().reset();
+
     //cout << "Called" << endl;
     for (auto it = lanes.begin(); it != lanes.end(); ++it) {
         (*it)->shiftLane();
@@ -182,7 +184,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
-
+        CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
         //updatePosVehicle();

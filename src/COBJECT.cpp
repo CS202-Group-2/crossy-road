@@ -33,7 +33,8 @@ void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 }
 
 void COBJECT::drawObject(sf::RenderWindow& window) {
-	sprite.setPosition(sf::Vector2f(mX, mY));
+	sprite.setPosition(sf::Vector2f(mX + CTRANSITION::offset().getObjectX(), 
+									mY + CTRANSITION::offset().getObjectY()));
 	if (checkOutWindow (window) == 0) window.draw (sprite);
 }
 //  0: no collision

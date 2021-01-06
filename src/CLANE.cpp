@@ -27,6 +27,7 @@ void CLANE::initObject() {
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
 	window.draw(laneBackground);
+	shiftBackground();
 
 	if (object == nullptr) return true;
 	if (object->checkOutWindow(window)) {
@@ -42,15 +43,19 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 void CLANE::shiftLane() {
 	index++;
-	this->shiftBackground();
-	if (object != nullptr) 
-		object->shiftObject();
+	//this->shiftBackground();
+	if (object != nullptr) object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
 	
 }
 
 void CLANE::shiftBackground() {
-	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
+	//laneBackground.setPosition(CTRANSITION::offset().getLaneX() + (index - 3) * Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA),
+	//						   CTRANSITION::offset().getLaneY() + (index - 3) * Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA));
+	float offsetX = Constants::GetInstance().LANE_WIDTH / (tan(Constants::GetInstance().ALPHA) + tan(Constants::GetInstance().BETA));
+	float offsetY = offsetX * tan(Constants::GetInstance().ALPHA);
+	laneBackground.setPosition(CTRANSITION::offset().getLaneX() - (index - 3) * offsetX,
+							   CTRANSITION::offset().getLaneY() + (index - 3) * (- offsetY + Constants::GetInstance().LANE_WIDTH));
 	//object->shiftObject();
 	//coin->shiftObject();
 	//factory->shiftBackground(index, laneBackground);

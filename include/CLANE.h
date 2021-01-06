@@ -14,6 +14,7 @@
 #include "CBIRD.h"
 #include "Constants.h"
 #include "CTRAFFIC.h"
+#include "CTRANSITION.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
