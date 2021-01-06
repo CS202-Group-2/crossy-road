@@ -7,7 +7,7 @@ Menu::Menu(float width, float height) {
 	menu[0].setFont(font);
 	menu[0].setColor(sf::Color::Yellow);
 	menu[0].setString("Start game");
-	
+	menu[0].setCharacterSize (menu[0].getCharacterSize () + 10);
 
 	menu[1].setFont(font);
 	menu[1].setColor(sf::Color::White);
@@ -57,10 +57,14 @@ void Menu::MoveUp() {
 	if (selectedItemIndex - 1 >= 0) {
 		menu[selectedItemIndex--].setColor(sf::Color::White);
 		menu[selectedItemIndex].setColor(sf::Color::Yellow);
+		menu[selectedItemIndex].setCharacterSize (menu[selectedItemIndex].getCharacterSize () + 10);
+		menu[selectedItemIndex + 1].setCharacterSize (menu[selectedItemIndex].getCharacterSize () - 10);
 	}
 	else {
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		menu[Constants::GetInstance().NUMBER_OF_MENU_ITEMS -1].setColor(sf::Color::Yellow);
+		menu[Constants::GetInstance ().NUMBER_OF_MENU_ITEMS - 1].setCharacterSize (menu[Constants::GetInstance ().NUMBER_OF_MENU_ITEMS - 1].getCharacterSize () + 10);
+		menu[0].setCharacterSize (menu[0].getCharacterSize () - 10);
 		selectedItemIndex = Constants::GetInstance().NUMBER_OF_MENU_ITEMS - 1;
 	}
 }
@@ -69,10 +73,14 @@ void Menu::MoveDown() {
 	if (selectedItemIndex + 1 < Constants::GetInstance().NUMBER_OF_MENU_ITEMS) {
 		menu[selectedItemIndex++].setColor(sf::Color::White);
 		menu[selectedItemIndex].setColor(sf::Color::Yellow);
+		menu[selectedItemIndex].setCharacterSize (menu[selectedItemIndex].getCharacterSize () + 10);
+		menu[selectedItemIndex - 1].setCharacterSize (menu[selectedItemIndex].getCharacterSize () - 10);
 	}
 	else {
 		menu[selectedItemIndex].setColor(sf::Color::White);
 		menu[0].setColor(sf::Color::Yellow);
+		menu[0].setCharacterSize (menu[selectedItemIndex].getCharacterSize () + 10);
+		menu[Constants::GetInstance ().NUMBER_OF_MENU_ITEMS - 1].setCharacterSize (menu[selectedItemIndex].getCharacterSize () - 10);
 		selectedItemIndex = 0;
 	}
 }

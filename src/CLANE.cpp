@@ -1,10 +1,11 @@
 #include "../include/CLANE.h"
 
-CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window) {
+CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool isGrass, int level) {
 	this->index = index;
+	this->isGrass = isGrass;
 	this->factory = factory;
 	this->window = window;
-	this->initObject();
+	this->initObject(level);
 }
 
 // For loading saved game.
@@ -24,11 +25,13 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 	}
 	else
 		this->object = nullptr;
-	factory->initBackground(index, textureLane);
+
+	factory->initBackground(index, textureLane, isGrass);
 	setupLaneBackground();
 }
 
 void CLANE::setupLaneBackground() {
+	textureLane.setSmooth(true);
 	laneBackground.setTexture(textureLane);
 	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
@@ -39,42 +42,65 @@ CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
-	//for (int i = 0; i < blocks.size(); ++i) delete blocks[i];
+	for (int i = 0; i < blocks.size(); ++i) if(blocks[i] != nullptr) delete blocks[i];
 }
 
-void CLANE::initObject() {
+void CLANE::initObject(int level) {
+	factory->initBackground(index, textureLane, isGrass);
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	CTREEFACTORY* treeFactory = new CTREEFACTORY();
+	COBJECT* tree = nullptr;
+	if (isGrass) {
+		//cout << "Acas" << endl;
+
+		float x = rand() % (window->getSize().x - 25) + 25;
+		for (int i = 0; i < Constants::GetInstance().MAX_TREE_PER_LANE; ++i) {
+			tree = treeFactory->initObject(index, window, level);
+			blocks.push_back(tree);
+		}
+
+	}
+	// delete tree;
+	delete treeFactory;
+
+
+
 	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
-	coin = coinFactory->initObject(index, window);
-	object = factory->initObject(index, window);
-	factory->initBackground(index, textureLane);
+	coin = coinFactory->initObject(index, window, level);
+
+	object = factory->initObject(index, window, level);
+	int initialMove = rand() % 500;
+	if (object != nullptr) object->move(initialMove, initialMove);
+
 	delete coinFactory;
 	setupLaneBackground();
 }
 
-bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level) {
 	window.draw(laneBackground);
+	shiftBackground();
 
 	if (object == nullptr) return true;
 	if (object->checkOutWindow(window)) {
 
 		delete object;
-		object = factory->initObject(index, this->window);
+		object = factory->initObject(index, this->window, level);
 	}
 	object->trafficStop(traffic.checkStop());
 	if (coin != nullptr)
 		coin->update(x, y, window, player, index);
+	for (int i = 0; i < blocks.size(); ++i)
+		if (blocks[i] != nullptr) blocks[i]->update(x, y, window, player, index);
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
 
 void CLANE::shiftLane() {
 	index++;
-	this->shiftBackground();
-	if (object != nullptr)
-		object->shiftObject();
+	//this->shiftBackground();
+	if (object != nullptr) object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
-
+	for (int i = 0; i < blocks.size(); ++i) blocks[i]->shiftObject();
 }
 
 bool CLANE::checkBlock(float x, float y) {
@@ -83,8 +109,13 @@ bool CLANE::checkBlock(float x, float y) {
 }
 
 void CLANE::shiftBackground() {
-	laneBackground.move(-laneBackground.getGlobalBounds().left, (index - 3) * Constants::GetInstance().LANE_WIDTH - laneBackground.getGlobalBounds().top);
-	//laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
+
+	//laneBackground.setPosition(CTRANSITION::offset().getLaneX() + (index - 3) * Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA),
+	//						   CTRANSITION::offset().getLaneY() + (index - 3) * Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA));
+	float offsetX = Constants::GetInstance().LANE_WIDTH / (tan(Constants::GetInstance().ALPHA) + tan(Constants::GetInstance().BETA));
+	float offsetY = offsetX * tan(Constants::GetInstance().ALPHA);
+	laneBackground.setPosition(CTRANSITION::offset().getLaneX() - (index - 3) * offsetX,
+							   CTRANSITION::offset().getLaneY() + (index - 3) * (- offsetY + Constants::GetInstance().LANE_WIDTH));
 	//object->shiftObject();
 	//coin->shiftObject();
 	//factory->shiftBackground(index, laneBackground);

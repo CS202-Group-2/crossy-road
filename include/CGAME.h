@@ -19,6 +19,7 @@
 #include "CSOUND.h"
 #include "CJUMP.h"
 #include "CSOUNDFACTORY.h"
+#include "CTRANSITION.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -93,7 +94,7 @@ public:
 
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
-    void createNewLane(int index);
+    void createNewLane(int index, int level);
     void updateLanes();
     void shiftLanesUp();
     void updateSound();
@@ -104,6 +105,8 @@ public:
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
     void resizeImage(sf::Sprite& sprite);
+    bool checkMove(CLANE* lane, CPEOPLE* player, int direction);
+    CLANE* findLane(int index);
     
     bool hasCharacterGender();
     void update();

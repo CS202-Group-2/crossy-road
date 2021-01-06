@@ -1,7 +1,7 @@
 #include "../include/CBIRD.h"
 
-void CBIRD::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x , y , window);
+void CBIRD::move(float x, float y) {
+	COBJECT::move(x, y);
 }
 
 void CBIRD::drawObject(sf::RenderWindow& window) {
@@ -11,12 +11,13 @@ void CBIRD::drawObject(sf::RenderWindow& window) {
 
 CBIRD::CBIRD(float x, float y) : COBJECT(x, y) {
 	//srand(time(NULL));
-	textureFile = "Bird.png";
+	textureFile = "assets/graphics/Bird.png";
 	type = Constants::GetInstance ().ANIMAL;
 	if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
 		return;
 	}
+	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);

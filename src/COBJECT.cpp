@@ -3,23 +3,45 @@
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>
 
-COBJECT::COBJECT() {}
+COBJECT::COBJECT() {
+
+}
+
+COBJECT::COBJECT(int level) {
+	initSpeedMult(level);
+}
 
 COBJECT::COBJECT(float x, float y) {
 	this->mX = x;
 	this->mY = y;
 	initY = y;
-	speedMult = rand() % 2 + 1;
+	initSpeedMult();
+}
 
+void COBJECT::initSpeedMult(int level) {
+	/*int m = max((int)(10 * log((float)level / 2) / log(2)), 2) * 100;
+
+	speedMult = max((float)(rand() % m) / 100, (float)2);*/
+
+
+	speedMult = (float) (rand() % 200) / 100 + 2;
+
+	bool xFactor = (rand() % 100 < 10);
+	if (xFactor) speedMult = 30;
+	//cout << speedMult << endl;
+
+	speedMult /= Constants::GetInstance().FPS / 30;
 }
 
 COBJECT::COBJECT(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
+	initSpeedMult();
 }
 
-void COBJECT::move(float x, float y, sf::RenderWindow& window) {
+void COBJECT::move(float x, float y) {
 	//srand(time(NULL));
 	if (direction) {
+		//cout << speedMult << endl;
 		mX = mX + x * speedMult * cos(Constants::GetInstance().ALPHA);
 		mY = mY + y * speedMult * sin(Constants::GetInstance().ALPHA);
 	}
@@ -33,7 +55,8 @@ void COBJECT::move(float x, float y, sf::RenderWindow& window) {
 }
 
 void COBJECT::drawObject(sf::RenderWindow& window) {
-	sprite.setPosition(sf::Vector2f(mX, mY));
+	sprite.setPosition(sf::Vector2f(mX + CTRANSITION::offset().getObjectX(), 
+									mY + CTRANSITION::offset().getObjectY()));
 	if (checkOutWindow (window) == 0) window.draw (sprite);
 }
 
@@ -52,11 +75,11 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 
 int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
 	int oldX = mX, oldY = mY;
-	if (type != Constants::GetInstance().INTERACTABLE) move(x, y, window);
+	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK) move(x, y);
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
-			return false;
+			return 0;
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -64,7 +87,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 		else if (type == Constants::GetInstance().BLOCK) {
-			return -1;
+			
 		}
 	}
 	drawObject(window);
@@ -96,6 +119,7 @@ string COBJECT::getTextureFile() {
 }
 
 void COBJECT::setupTexture() {
+	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);

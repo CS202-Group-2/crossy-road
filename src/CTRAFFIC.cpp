@@ -48,6 +48,7 @@ void CTRAFFIC::drawTraffic(sf::RenderWindow *window) {
 		}
 		break;
 	}
+	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);

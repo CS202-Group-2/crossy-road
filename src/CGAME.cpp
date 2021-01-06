@@ -117,7 +117,7 @@ bool CGAME::loadGame() {
         if (lane != nullptr)
             delete lane;
     lanes.clear();
-    
+
     int index;
     string textureFile, texture;
     float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, speed = -1e9;
@@ -142,7 +142,7 @@ bool CGAME::loadGame() {
 
     if (lanes.empty())
         resetGame();
-    else 
+    else
         player = getPlayer();
 
     infile.close();
@@ -196,10 +196,14 @@ void CGAME::updateSound() {
     //if ((int)clock.getElapsedTime().asSeconds() % 5 == 0) soundManager->playBackgroundSound();
 }
 
+float logLevel(int level) {
+    return level > 3 ? 1.5 * log(level * 0.5) / log(2) : 1;
+}
+
 void CGAME::updateLanes() {
     //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == 0) {
+        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level) == 0) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -207,22 +211,24 @@ void CGAME::updateLanes() {
     this->score = player->score;
 }
 
-void CGAME::createNewLane(int index) {
-    // We want 20% for animals, 60% for cars and 20% for grass.
-    int k = rand() % 120 - 20;
+void CGAME::createNewLane(int index, int level) {
+    // We want 30% for animals, 60% for cars and 10% for grass.
+    int k = rand() % 100;
 
     CLANE* lane;
-    if (k < 20)
-        lane = new CLANE(index, new CGRASSFACTORY(), window);
+    if (index == 7 || k < 10) // Initially, players always stand on grass
+        lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
-        lane = new CLANE(index, new CANIMALFACTORY(), window);
+        lane = new CLANE(index, new CANIMALFACTORY(), window, level);
     else
-        lane = new CLANE(index, new CCARFACTORY(), window);
+        lane = new CLANE(index, new CCARFACTORY(), window, level);
 
     lanes.push_back(lane);
 }
 
 void CGAME::shiftLanesUp() {
+    CTRANSITION::offset().reset();
+
     //cout << "Called" << endl;
     for (auto it = lanes.begin(); it != lanes.end(); ++it) {
         (*it)->shiftLane();
@@ -232,7 +238,7 @@ void CGAME::shiftLanesUp() {
     lanes.pop_front();
     /*lane = new CLANE(0, new CCARFACTORY(), window);
     lanes.push_back(lane);*/
-    createNewLane(0);
+    createNewLane(0, level);
 }
 
 void CGAME::initLanes() {
@@ -244,7 +250,46 @@ void CGAME::initLanes() {
 
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
-        createNewLane(i-10);
+        createNewLane(i-10, level);
+    }
+}
+
+bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
+    float coordX = player->mX, coordY = player->mY;
+    switch (direction) {
+    case 1:
+        // up
+        coordX += Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+        coordY += -Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+        break;
+    case 2:
+        // left
+        coordX += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+        coordY += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+        break;
+    case 3:
+        // right
+        coordX += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+        coordY += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+        break;
+    case 4:
+        // down
+        coordX += -Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+        coordY += Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+        break;
+
+    }
+    int padding = 10;
+    for (int i = 0; i < lane->blocks.size(); ++i) {
+        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - 20 && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
+            + lane->blocks[i]->sprite.getGlobalBounds().width - padding) return false;
+    }
+    return true;
+}
+
+CLANE* CGAME::findLane(int index) {
+    for (auto it = lanes.begin(); it != lanes.end(); ++it) {
+        if ((*it)->index == index) return (*it);
     }
 }
 
@@ -256,6 +301,7 @@ void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
     }
+    texture.setSmooth(true);
     background.setTexture(texture);
     resizeImage(background);
 
@@ -279,7 +325,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
-
+        CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
         //updatePosVehicle();
@@ -326,7 +372,7 @@ void CGAME::initVariables() {
 void CGAME::initWindow() {
     GetDesktopResolution();
     this->window = new sf::RenderWindow(this->videoMode, "Crossy Road", sf::Style::Titlebar | sf::Style::Close);
-    window->setFramerateLimit(30);
+    window->setFramerateLimit(Constants::GetInstance().FPS);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("assets/graphics/menu.jpg");
 
@@ -347,7 +393,7 @@ const bool CGAME::running() const {
 
 void CGAME::pollEvents() {
     while (window->pollEvent(event)) {
-        CLANE* temp = nullptr;
+
         switch (event.type) {
         case sf::Event::Closed:
             window->close();
@@ -364,10 +410,10 @@ void CGAME::pollEvents() {
                     menu->MoveUp();
                 else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::UP);
-                    
-                    if (player->canMoveUp())
+
+                    if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
                         player->moveUp(), level++;
-                    else {
+                    else if (checkMove(findLane(player->index - 1), player, 1)) {
                         level++;
                         shiftLanesUp();
                     }
@@ -381,8 +427,8 @@ void CGAME::pollEvents() {
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::DOWN);
-                    
-                    if (player->canMoveDown())
+
+                    if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
                         player->moveDown(), level--;
                 }
                 else
@@ -391,15 +437,15 @@ void CGAME::pollEvents() {
             case sf::Keyboard::Left:
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::LEFT);
-                
-                if (player->canMoveLeft())
+
+                if (player->canMoveLeft() && checkMove(findLane(player->index), player, 2))
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
-                
-                if (player->canMoveRight())
+
+                if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
                     player->moveRight();
                 break;
             case sf::Keyboard::Return:
@@ -425,7 +471,7 @@ void CGAME::pollEvents() {
                         break;
                     case 1:
                         cout << "Load the game" << endl;
-                        
+
                         if (this->haveSavedGame()) {
                             loadGame();
                             soundFactory->playSound(1);
@@ -477,7 +523,7 @@ void CGAME::pollEvents() {
                     soundFactory->playSound (2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
-                    case 0:
+                    case 2:
                         cout << "Save and exit" << endl;
                         saveGame();
                         gameState = GAME_STATE::MENU;
@@ -487,7 +533,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         resetGame();
                         break;
-                    case 2:
+                    case 0:
                         cout << "Continued the game..." << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         break;
@@ -532,7 +578,7 @@ void CGAME::pollEvents() {
             }
             }
         }
-        delete temp;
+
     }
 }
 void CGAME::resizeImage(sf::Sprite& sprite) {

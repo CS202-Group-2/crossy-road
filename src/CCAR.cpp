@@ -1,7 +1,7 @@
 #include "../include/CCAR.h"
 
-void CCAR::move(float x, float y, sf::RenderWindow &window) {
-	if (!isStopping) COBJECT::move(x, y, window);
+void CCAR::move(float x, float y) {
+	if (!isStopping) COBJECT::move(x, y);
 
 }
 
@@ -14,7 +14,6 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	mX = x;
 	mY = y;
 	initY = y;
-	speedMult = speed;
 	this->textureFile = textureFile;
 
 	if (!texture.loadFromFile(textureFile + ".png")) {
@@ -25,8 +24,8 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	setupTexture();
 }
 
-CCAR::CCAR(int index, int windowX) {
-	direction = rand() % 2;
+CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
+	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().VEHICLE;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
 	textureFile = "assets/graphics/c_" + to_string(choice) + "_" + to_string(direction);
@@ -39,7 +38,6 @@ CCAR::CCAR(int index, int windowX) {
 		mY = windowX * tan(Constants::GetInstance().ALPHA) + (index - 2) * Constants::GetInstance().LANE_WIDTH - 25;
 	}
 	initY = mY;
-	speedMult = rand() % 2 + 1;
 	if (!texture.loadFromFile(textureFile + ".png")) {
 		cout << "Cannot find car texture." << endl;
 		return;

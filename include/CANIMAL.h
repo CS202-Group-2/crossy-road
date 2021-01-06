@@ -16,9 +16,9 @@ private:
     friend class CGAME;
 public:
     CANIMAL(string textureFile, float x, float y, float speed);
-    CANIMAL(int index, int windowX);
+    CANIMAL(int index, int windowX, int level);
     CANIMAL(float x, float y);
     CANIMAL(float x, float y, bool direction);
-    void move(float x, float y, sf::RenderWindow& window);
+    void move(float x, float y);
     void trafficStop(bool state);
 };
