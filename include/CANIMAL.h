@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include <stdlib.h>     /* srand, rand */
+#include <stdlib.h>
 #include <time.h> 
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
@@ -11,14 +11,13 @@
 
 using namespace std;
 
-class CCAR : public COBJECT {
+class CANIMAL : public COBJECT {
 private:
     friend class CGAME;
-    bool isStopping = false;
 public:
-    CCAR(int index, int windowX);
-    CCAR(float x, float y);
-    CCAR(float x, float y, bool direction);
-    void move(float x, float y, sf::RenderWindow &window);
+    CANIMAL(int index, int windowX);
+    CANIMAL(float x, float y);
+    CANIMAL(float x, float y, bool direction);
+    void move(float x, float y, sf::RenderWindow& window);
     void trafficStop(bool state);
 };

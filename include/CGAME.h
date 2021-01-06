@@ -4,6 +4,7 @@
 #include "COBJECTFACTORY.h"
 #include "CCARFACTORY.h"
 #include "CGRASSFACTORY.h"
+#include "CANIMALFACTORY.h"
 #include "CPEOPLE.h"
 #include "CVEHICLE.h"
 #include "CTRUCK.h"

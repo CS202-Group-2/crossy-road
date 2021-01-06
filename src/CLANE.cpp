@@ -5,8 +5,6 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window) {
 	this->factory = factory;
 	this->window = window;
 	this->initObject();
-	
-	
 }
 
 CLANE::~CLANE() {
@@ -27,8 +25,6 @@ void CLANE::initObject() {
 	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
 	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
-
-	
 }
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
@@ -66,4 +62,17 @@ void CLANE::shiftBackground() {
 	//object->shiftObject();
 	//coin->shiftObject();
 	//factory->shiftBackground(index, laneBackground);
+}
+
+void CLANE::saveLane(ofstream& out) {
+	out << index << " ";
+	if (object != nullptr)
+		out << object->getTextureFile() << " " << object->mX << " " << object->mY << " " << object->speedMult << " ";
+	else
+		out << "none";
+	if (coin != nullptr)
+		out << "Coin " << coin->mX << " " << coin->mY;
+	else
+		out << "none";
+	out << endl;
 }

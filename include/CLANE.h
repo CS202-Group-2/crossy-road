@@ -47,6 +47,7 @@ public:
     void shiftLane();
     void shiftBackground();
     bool checkBlock(float x, float y);
+    void saveLane(ofstream& out);
 
 };
 

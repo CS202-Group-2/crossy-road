@@ -17,15 +17,20 @@ class COBJECT {
 protected:
     float mX = 0, mY = 0;
     friend class CGAME;
-    string textureFile = "animal.jpg";
+    friend class CLANE;
+    string textureFile;
+
     sf::Texture texture;
     sf::Sprite sprite;
+
     bool interacted = false;
     bool direction; // true: forward, false: backward
     float initY = 0;
     float speedMult = 5.0f;
     int type, index;
     string sound;
+    string getTextureFile();
+    COBJECT();
 public:
     COBJECT(float x, float y);
     COBJECT(float x, float y, int index);
