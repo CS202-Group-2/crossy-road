@@ -17,9 +17,11 @@ COBJECT::COBJECT(float x, float y) {
 void COBJECT::initSpeedMult() {
 	speedMult = (float) (rand() % 200) / 100 + 2;
 
-	bool xFactor = (rand() % 100 < 20);
+	bool xFactor = (rand() % 100 < 10);
 	if (xFactor) speedMult = 30;
-	cout << speedMult << endl;
+	//cout << speedMult << endl;
+
+	speedMult /= Constants::GetInstance().FPS / 30;
 }
 
 COBJECT::COBJECT(float x, float y, int index) : COBJECT(x, y) {
@@ -30,7 +32,7 @@ COBJECT::COBJECT(float x, float y, int index) : COBJECT(x, y) {
 void COBJECT::move(float x, float y) {
 	//srand(time(NULL));
 	if (direction) {
-		cout << speedMult << endl;
+		//cout << speedMult << endl;
 		mX = mX + x * speedMult * cos(Constants::GetInstance().ALPHA);
 		mY = mY + y * speedMult * sin(Constants::GetInstance().ALPHA);
 	}
