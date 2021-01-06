@@ -36,12 +36,14 @@ protected:
     sf::Sprite laneBackground;
     sf::Texture textureLane;
     sf::RenderWindow* window;
-public:
     CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, float coinX = -1e9, float coinY = -1e9);
-    CLANE(int index, COBJECTFACTORY *factory, sf::RenderWindow *window);
+
+public:
+    
+    CLANE(int index, COBJECTFACTORY *factory, sf::RenderWindow *window, int level);
     ~CLANE();
-    void initObject();
-    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
+    void initObject(int level);
+    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level);
     void shiftLane();
     void shiftBackground();
     bool checkBlock(float x, float y);

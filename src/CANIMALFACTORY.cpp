@@ -1,7 +1,7 @@
 #include "../include/CANIMALFACTORY.h"
 
-COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window) {
-    return new CANIMAL(index, window->getSize().x);
+COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window, int level) {
+    return new CANIMAL(index, window->getSize().x, level);
     //if (dir == 0) object = new CCAR(-100, (index - 3) * Constants::GetInstance().LANE_WIDTH, true);
     //else object = new CCAR(window->getSize().x+100, 
     //    window->getSize().x * tan(Constants::GetInstance().ALPHA) + (index-2) * Constants::GetInstance().LANE_WIDTH - 25, false);

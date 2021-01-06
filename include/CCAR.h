@@ -17,7 +17,7 @@ private:
     bool isStopping = false;
 public:
     CCAR(string textureFile, float x, float y, float speed);
-    CCAR(int index, int windowX);
+    CCAR(int index, int windowX, int level);
     CCAR(float x, float y);
     CCAR(float x, float y, bool direction);
     void move(float x, float y);

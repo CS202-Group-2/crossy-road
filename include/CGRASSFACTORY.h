@@ -14,6 +14,6 @@ class CGRASSFACTORY : public COBJECTFACTORY {
 protected:
 
 public:
-	virtual void initBackground(int index, sf::Texture& textureLane);
-	virtual COBJECT* initObject(int index, sf::RenderWindow* window);
+	void initBackground(int index, sf::Texture& textureLane);
+	COBJECT* initObject(int index, sf::RenderWindow* window, int level);
 };

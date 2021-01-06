@@ -1,6 +1,6 @@
 #include "../include/CGRASSFACTORY.h"
 
-COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window) {
+COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window, int level) {
     CTREEFACTORY* treeFactory = new CTREEFACTORY();
     COBJECT* tree = nullptr;
     float x = rand() % (window->getSize().x - 25) + 25;

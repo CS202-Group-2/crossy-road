@@ -93,7 +93,7 @@ public:
 
     void resumeGame(HANDLE); 
     void updatePosPeople(char);
-    void createNewLane(int index);
+    void createNewLane(int index, int level);
     void updateLanes();
     void shiftLanesUp();
     void updateSound();
