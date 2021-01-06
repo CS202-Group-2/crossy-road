@@ -413,7 +413,7 @@ void CGAME::pollEvents() {
                     soundFactory->playSound (2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
-                    case 0:
+                    case 2:
                         cout << "Save and exit" << endl;
                         saveGame();
                         gameState = GAME_STATE::MENU;
@@ -423,7 +423,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         resetGame();
                         break;
-                    case 2:
+                    case 0:
                         cout << "Continued the game..." << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         break;
