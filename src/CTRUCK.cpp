@@ -1,7 +1,7 @@
 #include "../include/CTRUCK.h"
 
-void CTRUCK::move(float x, float y, sf::RenderWindow& window) {
-	COBJECT::move(x , y , window);
+void CTRUCK::move(float x, float y) {
+	COBJECT::move(x, y);
 }
 
 void CTRUCK::drawObject(sf::RenderWindow& window) {
@@ -17,6 +17,7 @@ CTRUCK::CTRUCK(float x, float y) : COBJECT(x, y) {
 		cout << "Cannot find texture file" << endl;
 		return;
 	}
+	texture.setSmooth(true);
 	sprite.setTexture(texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);

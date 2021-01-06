@@ -6,11 +6,11 @@ CGAME::CGAME() {
     this->initWindow();
     this->initSound ();
     //this->initVehicle();
-    this->player = getPlayer();
-    this->player->resetPlayer();
+    //this->player = getPlayer();
+    //this->player->resetPlayer();
+    this->player = nullptr;
     level = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
-
 }
 
 void CGAME::drawGame() {
@@ -19,16 +19,43 @@ void CGAME::drawGame() {
 
 CGAME::~CGAME() {
     delete window;
-    player->savePlayer(score, level);
     delete player;
 }
 
-CPEOPLE* CGAME::getPlayer() {
-    ifstream playerConfig("game_log/player.txt");
-    if (!playerConfig)
-        return new CPEOPLE(this->window, CPEOPLE::UP);
+// CALLED FROM:
+// ---  START GAME  ---
+// newPlayer is passed in as true. Check gender if config file. If no gender exists, it prompts user
+// to select gender. Then create a new player and reset to beginning position.
+// ---  LOAD GAME  ---
+// newPlayer is false. Read config file and create new player.
+
+CPEOPLE* CGAME::getPlayer(bool newPlayer) {
+    fstream playerConfig("game_log/player.txt");
+    if (!playerConfig) {
+        cout << "No player file" << endl;
+        return nullptr;
+    }
     int gender, side, index, score, level;
-    double x, y;
+    float x, y;
+
+    if (newPlayer) {
+        if (playerConfig.eof()) {
+            // TODO: PROMPT CHOOSE GENDER
+            gender = 0;
+            playerConfig << gender;
+            playerConfig.close();
+        }
+        else {
+            playerConfig >> gender;
+            playerConfig.close();
+            clearSavedGame();
+        }
+        
+        CPEOPLE* p = new CPEOPLE(this->window, gender);
+        p->resetPlayer();
+        return p;
+    }
+
     playerConfig >> gender >> side >> index >> score >> level >> x >> y;
     playerConfig.close();
     this->score = score;
@@ -47,7 +74,13 @@ COBJECT* CGAME::getVehicle() {
 //}
 
 void CGAME::resetGame() {
-
+    if (player == nullptr)
+        player = getPlayer(true);
+    else
+        player->resetPlayer();
+    clearSavedGame();
+    level = 0;
+    initLanes();
 }
 
 void CGAME::exitGame(HANDLE) {
@@ -58,26 +91,76 @@ void CGAME::startGame() {
 
 }
 
-bool CGAME::loadGame(string loadFile) {
-    ifstream infile(loadFile);
+bool CGAME::loadGame() {
+    if (player != nullptr)
+        delete player;
+    ifstream infile("game_log/game.txt");
     if (!infile.is_open()) {
         cout << "Load file not found. Error." << endl;
         return false;
     }
+    for (CLANE*& lane : lanes)
+        if (lane != nullptr)
+            delete lane;
+    lanes.clear();
+    
+    int index;
+    string textureFile, texture;
+    float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, speed = -1e9;
+    CLANE* lane = nullptr;
+    COBJECTFACTORY* factory = nullptr;
+    while (infile >> index >> textureFile) {
+        if (textureFile != "none") {
+            infile >> x >> y >> speed;
+            if (textureFile[0] == 'a')
+                factory = new CANIMALFACTORY();
+            else
+                factory = new CCARFACTORY();
+        }
+        else
+            factory = new CGRASSFACTORY();
+        infile >> texture;
+        if (texture != "none")
+            infile >> cX >> cY;
+        lane = new CLANE(index, this->window, factory, textureFile, x, y, speed, cX, cY);
+        lanes.push_back(lane);
+    }
 
-    // TODO: implement loading parametres
+    if (lanes.empty())
+        resetGame();
+    else 
+        player = getPlayer();
+
+    infile.close();
+
     cout << "Load successfully" << endl;
     return true;
 }
 
-bool CGAME::saveGame(string saveFile) {
-    ofstream outfile(saveFile);
+void CGAME::clearSavedGame() {
+    ofstream clear("game_log/game.txt");
+    clear.close();
+    ifstream playerConfig("game_log/player.txt");
+    int gender;
+    playerConfig >> gender;
+    playerConfig.close();
+    ofstream playerClear("game_log/player.txt");
+    playerClear << gender << endl;
+    playerClear.close();
+}
+
+bool CGAME::saveGame() {
+    player->savePlayer(score, level);
+    ofstream outfile("game_log/game.txt");
     if (!outfile.is_open()) {
         cout << "Save file not found. Error." << endl;
         return false;
     }
 
-    // TODO: implement saving parametres
+    for (CLANE*& lane : lanes)
+        lane->saveLane(outfile);
+
+    outfile.close();
     cout << "Saved successfully" << endl;
     return true;
 }
@@ -102,7 +185,7 @@ void CGAME::updateSound() {
 void CGAME::updateLanes() {
     //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == 0) {
+        if ((*it)->updatePosObject(level/5+1, level/5+1, *window, *player, *traffic) == 0) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -111,11 +194,11 @@ void CGAME::updateLanes() {
 }
 
 void CGAME::createNewLane(int index) {
-    // We want 20% for animals, 60% for cars and 20% for grass.
-    int k = rand() % 120 - 20;
+    // We want 30% for animals, 60% for cars and 10% for grass.
+    int k = rand() % 100;
 
     CLANE* lane;
-    if (k < 20)
+    if (index == 7 || k < 10) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window);
@@ -126,6 +209,8 @@ void CGAME::createNewLane(int index) {
 }
 
 void CGAME::shiftLanesUp() {
+    CTRANSITION::offset().reset();
+
     //cout << "Called" << endl;
     for (auto it = lanes.begin(); it != lanes.end(); ++it) {
         (*it)->shiftLane();
@@ -159,6 +244,7 @@ void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
     }
+    texture.setSmooth(true);
     background.setTexture(texture);
     resizeImage(background);
 
@@ -182,7 +268,7 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::LEVEL_1: {
-
+        CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
         //updatePosVehicle();
@@ -302,15 +388,21 @@ void CGAME::pollEvents() {
                 if (gameState == GAME_STATE::MENU)
                     switch (menu->getPressedItem()) {
                     case 0:
+                        // Clear saved stuff when start new game.
+                        clearSavedGame();
+
                         cout << "Started the game" << endl;
                         this->initLanes();
-
                         soundFactory->playSound(1);
-
+                        this->player = getPlayer(true);
+                        level = 0;
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     case 1:
                         cout << "Load the game" << endl;
+                        loadGame();
+                        soundFactory->playSound(1);
+                        gameState = GAME_STATE::LEVEL_1;
                         break;
                     case 2:
                         cout << "Exited the game" << endl;
@@ -322,28 +414,16 @@ void CGAME::pollEvents() {
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 0:
-                        cout << "Exited to main menu" << endl;
+                        cout << "Save and exit" << endl;
+                        saveGame();
                         gameState = GAME_STATE::MENU;
                         break;
                     case 1:
-                        cout << "Saving the game..." << endl;
-                        cout.flush();
-                        cin.clear();
-                        cout << "Please input the file to save your progress: ";
-                        getline(cin, file);
-                        saveGame(file);
+                        cout << "Restart game." << endl;
                         gameState = GAME_STATE::LEVEL_1;
+                        resetGame();
                         break;
                     case 2:
-                        cout << "Loading the game..." << endl;
-                        cout.flush();
-                        cin.clear();
-                        cout << "Please input the file to load your progress: ";
-                        getline(cin, file);
-                        loadGame(file);
-                        gameState = GAME_STATE::LEVEL_1;
-                        break;
-                    case 3:
                         cout << "Continued the game..." << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         break;
@@ -351,28 +431,22 @@ void CGAME::pollEvents() {
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
+                    // Clear saved stuff when gameover.
+                    clearSavedGame();
+
                     string file = "";
-                   // soundFactory->playSound (4);
+                    // soundFactory->playSound (4);
                     switch (cgui->getPressedItem()) {
                     case 0:
                        // soundFactory->playSound (2);
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
-                        delete player;
-                        this->player = getPlayer();
-                        this->player->resetPlayer();
-                        level = 0;
-                        initLanes();
+                        resetGame();
                         break;
                     case 1:
                        // soundFactory->playSound (2);
-                        cout << "Loading the game..." << endl;
-                        cout.flush();
-                        cin.clear();
-                        cout << "Please input the file to load your progress: ";
-                        getline(cin, file);
-                        loadGame(file);
-                        gameState = GAME_STATE::LEVEL_1;
+                        cout << "Exit to main menu" << endl;
+                        gameState = GAME_STATE::MENU;
                         break;
                     }
                     cgui->isPause = false;

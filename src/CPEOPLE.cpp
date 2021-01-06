@@ -11,12 +11,17 @@ double CPEOPLE::MOVEABLE_DIST = 300;
 
 CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, int index) {
     setGender(gender);
+    mTexture.setSmooth(true);
     mSprite.setTexture(mTexture);
     mSprite.setScale(FIG_SCALE, FIG_SCALE);
-    if (x != -1)
-        mSprite.setPosition(x, y);
-    else
-        mSprite.setPosition(window->getSize().x / 2, window->getSize().y - FIG_HEIGHT * FIG_SCALE);
+    if (x != -1) {
+        mX = x;
+        mY = y;
+    }
+    else {
+        mX = window->getSize().x / 2;
+        mY = window->getSize().y - FIG_HEIGHT * FIG_SCALE;
+    }
     setSide(side);
     mWindow = window;
     this->index = index;
@@ -91,6 +96,8 @@ void CPEOPLE::setSide(int side) {
 }
 
 void CPEOPLE::render() {
+    mSprite.setPosition(mX + CTRANSITION::offset().getObjectX(),
+        mY + CTRANSITION::offset().getObjectY());
     mWindow->draw(mSprite);
    // cout << mSprite.getGlobalBounds ().height << endl;
   //  cout << mSprite.getGlobalBounds ().width << endl;
@@ -114,26 +121,34 @@ void CPEOPLE::render() {
 void CPEOPLE::moveUp() {
     cout << "up\n";
     // Increase x and decrease y with respect to BETA.
-    mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
+    mX += Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+    mY += -Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+    //mSprite.move(Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), -Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
     index--;
 }
 
 void CPEOPLE::moveLeft() {
     cout << "left\n";
     // Decrease x and Decrease y with respect to ALPHA.
-    mSprite.move(-Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), -Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
+    mX += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+    mY += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+    //mSprite.move(-Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), -Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveRight() {
     cout << "right\n";
     // Increase x and increase y with respect to ALPHA.
-    mSprite.move(Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
+    mX += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+    mY += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+    //mSprite.move(Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
 }
 
 void CPEOPLE::moveDown() {
     cout << "down\n";
     // Decrease x and Increase y with respect to BETA.
-    mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
+    mX += -Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+    mY += Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+    //mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
     index++;
 }
 
@@ -154,16 +169,20 @@ bool CPEOPLE::isDead() {
 }
 
 void CPEOPLE::resetPlayer() {
-    gender = 0;
     side = 1;
     index = 7;
-    mSprite.setPosition(143.797, 428.957);
+    score = 0;
+    level = 0;
+    mX = 143.797;
+    mY = 428.957;
 }
 
 void CPEOPLE::savePlayer(int score, int level) {
     ofstream playerConfig("game_log/player.txt");
+    //playerConfig << gender << "\n" << side << "\n" << index << "\n" << score << "\n" << level << "\n"
+    //    << mSprite.getPosition().x << " " << mSprite.getPosition().y;
     playerConfig << gender << "\n" << side << "\n" << index << "\n" << score << "\n" << level << "\n"
-        << mSprite.getPosition().x << " " << mSprite.getPosition().y;
+        << mX << " " << mY;
     playerConfig.close();
 }
 

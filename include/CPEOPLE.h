@@ -4,8 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
 #include "CVEHICLE.h"
-
-// #include "../include/COBJECT.h"
+#include "CTRANSITION.h"
 #include <fstream>
 #include <math.h>
 using namespace std;
@@ -15,11 +14,11 @@ private:
     friend class CGAME;
     friend class COBJECT;
     int mX, mY;
-    bool mState; 
+    bool mState;
     int index;
     string textureFile = "Player.png";
-    int gender, side, score;
-    
+    int gender, side, score, level;
+
     sf::Texture mTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;
@@ -29,7 +28,6 @@ public:
     static int RIGHT, LEFT, UP, DOWN;
     static int MALE, FEMALE;
     static double MOVEABLE_DIST;
-
 
     CPEOPLE(sf::RenderWindow* window, int gender, int side = UP, int x = -1, int y = -1, int index = 0);
 

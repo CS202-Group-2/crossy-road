@@ -2,6 +2,7 @@
 #include <iostream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h> 
+#include <string>
 #include <SFML/Graphics.hpp>
 #include <SFML/audio.hpp>
 #include "../include/COBJECT.h"

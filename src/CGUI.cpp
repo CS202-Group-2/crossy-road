@@ -7,6 +7,7 @@ CGUI::CGUI(float width, float height) {
 		cout << "Cannot find texture file" << endl;
 		return;
 	}
+	pauseButtonTexture.setSmooth(true);
 	pauseButton.setTexture(pauseButtonTexture);
 	pauseButton.setPosition(0, 0);
 	pauseButton.setScale(0.2f, 0.2f);
@@ -86,25 +87,25 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 	}
 
 	options.clear();
-	options.assign(4, sf::Text());
+	options.assign(3, sf::Text());
 	options[0].setFont(font);
 	options[0].setColor(sf::Color::Yellow);
-	options[0].setString("Exit to main menu");
+	options[0].setString("Save and exit");
 
 
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
-	options[1].setString("Save Game");
+	options[1].setString("Restart");
 	//options[1].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 2));
 
 	options[2].setFont(font);
 	options[2].setColor(sf::Color::White);
-	options[2].setString("Load Game");
+	options[2].setString("Continue");
 	//options[2].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 3));
 	
-	options[3].setFont(font);
-	options[3].setColor(sf::Color::White);
-	options[3].setString("Continue");
+	//options[3].setFont(font);
+	//options[3].setColor(sf::Color::White);
+	//options[3].setString("Continue");
 	//options[3].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 4));
 }
 
@@ -121,7 +122,7 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
 
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
-	options[1].setString("Load Game");
+	options[1].setString("Back to main menu");
 
 }
 

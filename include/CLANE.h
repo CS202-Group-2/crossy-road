@@ -5,15 +5,12 @@
 #include "COBJECTFACTORY.h"
 #include "CCOINFACTORY.h"
 #include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CPEOPLE.h"
-#include "CTRUCK.h"
 #include "CCAR.h"
+#include "CANIMAL.h"
 #include "COBJECT.h"
-#include "CDINAUSOR.h"
-#include "CBIRD.h"
 #include "Constants.h"
 #include "CTRAFFIC.h"
+#include "CTRANSITION.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -40,6 +37,7 @@ protected:
     sf::Texture textureLane;
     sf::RenderWindow* window;
 public:
+    CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, float coinX = -1e9, float coinY = -1e9);
     CLANE(int index, COBJECTFACTORY *factory, sf::RenderWindow *window);
     ~CLANE();
     void initObject();
@@ -48,7 +46,7 @@ public:
     void shiftBackground();
     bool checkBlock(float x, float y);
     void saveLane(ofstream& out);
-
+    void setupLaneBackground();
 };
 
 #endif

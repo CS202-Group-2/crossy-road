@@ -3,7 +3,7 @@
 COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window) {
     //srand(time(NULL));
     int dir = rand() % 2;
-    COBJECT* object = nullptr;
+    //COBJECT* object = nullptr;
     /*
     if (dir == 0) object = (COBJECT*)new CCAR(-100, (index - 3) * Constants::GetInstance().LANE_WIDTH, true);
     else object = (COBJECT*)new CCAR(window->getSize().x+100,

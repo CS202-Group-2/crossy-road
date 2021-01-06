@@ -16,9 +16,10 @@ private:
     friend class CGAME;
     bool isStopping = false;
 public:
+    CCAR(string textureFile, float x, float y, float speed);
     CCAR(int index, int windowX);
     CCAR(float x, float y);
     CCAR(float x, float y, bool direction);
-    void move(float x, float y, sf::RenderWindow &window);
+    void move(float x, float y);
     void trafficStop(bool state);
 };

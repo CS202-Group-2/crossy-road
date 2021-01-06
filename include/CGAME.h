@@ -19,6 +19,7 @@
 #include "CSOUND.h"
 #include "CJUMP.h"
 #include "CSOUNDFACTORY.h"
+#include "CTRANSITION.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -79,14 +80,15 @@ public:
     CGAME(); 
     void drawGame(); 
     ~CGAME(); 
-    CPEOPLE* getPlayer();
+    CPEOPLE* getPlayer(bool newPlayer = false);
     COBJECT* getVehicle();
   //  COBJECT* getAnimal(); 
     void resetGame(); 
     void exitGame(HANDLE); 
     void startGame(); 
-    bool loadGame(string loadFile); 
-    bool saveGame(string saveFile);
+    bool loadGame(); 
+    void clearSavedGame();
+    bool saveGame();
     void pauseGame(HANDLE); 
 
     void resumeGame(HANDLE); 

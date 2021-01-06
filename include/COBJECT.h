@@ -10,6 +10,7 @@
 #include <string>
 #include "../include/CTRAFFIC.h"
 #include "Constants.h"
+#include "CTRANSITION.h"
 
 using namespace std;
 
@@ -26,21 +27,23 @@ protected:
     bool interacted = false;
     bool direction; // true: forward, false: backward
     float initY = 0;
-    float speedMult = 5.0f;
+    float speedMult;// = 5.0f;
     int type, index;
     string sound;
     string getTextureFile();
+    void setupTexture();
     COBJECT();
 public:
     COBJECT(float x, float y);
     COBJECT(float x, float y, int index);
+    void initSpeedMult();
     void update(float x, float y, sf::RenderWindow& window, vector<COBJECT*>& objects, CPEOPLE& player);
     virtual int update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index);
     void shiftObject();
     //int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player, vector< CTRAFFIC> traffics);
     int checkCollision(vector<COBJECT*>& objects, CPEOPLE& player);
     bool checkOutWindow (sf::RenderWindow& window);
-    virtual void move(float x, float y, sf::RenderWindow& window);
+    virtual void move(float x, float y);
     virtual void drawObject(sf::RenderWindow& window);
     virtual void trafficStop(bool state) = 0;
     // virtual void tell() = 0;
