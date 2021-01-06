@@ -106,8 +106,6 @@ void CGAME::startGame() {
 }
 
 bool CGAME::loadGame() {
-    if (player != nullptr)
-        delete player;
     ifstream infile("game_log/game.txt");
     if (!infile.is_open()) {
         cout << "Load file not found. Error." << endl;
@@ -126,7 +124,7 @@ bool CGAME::loadGame() {
     while (infile >> index >> textureFile) {
         if (textureFile != "none") {
             infile >> x >> y >> speed;
-            if (textureFile[0] == 'a')
+            if (textureFile[textureFile.size()-5] == 'a')
                 factory = new CANIMALFACTORY();
             else
                 factory = new CCARFACTORY();
@@ -142,8 +140,11 @@ bool CGAME::loadGame() {
 
     if (lanes.empty())
         resetGame();
-    else
+    else {
+        if (player != nullptr)
+            delete player;
         player = getPlayer();
+    }
 
     infile.close();
 
@@ -479,9 +480,9 @@ void CGAME::pollEvents() {
                         }
                         else {
                             gameState = GAME_STATE::WARNING;
+                            warning = "No saved game\n     available.";
                             cgui->drawWarningGUI(window, warning);
                             cgui->isPause = true;
-                            warning = "No saved game\n     available.";
                         }
                         break;
                     case 2:

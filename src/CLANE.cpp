@@ -18,7 +18,7 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 	else
 		this->coin = nullptr;
 	if (textureFile != "none") {
-		if (textureFile[0] == 'a')
+		if (textureFile[textureFile.size()-5] == 'a')
 			this->object = new CANIMAL(textureFile, objX, objY, objSpeed);
 		else
 			this->object = new CCAR(textureFile, objX, objY, objSpeed);
