@@ -30,19 +30,19 @@ sf::Sprite CTRAFFIC::getSprite() {
 void CTRAFFIC::drawTraffic(sf::RenderWindow *window) {
 	switch (color) {
 	case -1:
-		if (!texture.loadFromFile("Traffic_red.png")) {
+		if (!texture.loadFromFile("assets/graphics/Traffic_red.png")) {
 			cout << "Failed to load traffic" << endl;
 			return;
 		}
 		break;
 	case 0:
-		if (!texture.loadFromFile("Traffic_yellow.png")) {
+		if (!texture.loadFromFile("assets/graphics/Traffic_yellow.png")) {
 			cout << "Failed to load traffic" << endl;
 			return;
 		}
 		break;
 	case 1:
-		if (!texture.loadFromFile("Traffic_green.png")) {
+		if (!texture.loadFromFile("assets/graphics/Traffic_green.png")) {
 			cout << "Failed to load traffic" << endl;
 			return;
 		}

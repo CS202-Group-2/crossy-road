@@ -7,22 +7,49 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window) {
 	this->initObject();
 }
 
+// For loading saved game.
+CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile, float objX, float objY, float objSpeed, float coinX, float coinY) {
+	this->index = index;
+	this->window = window;
+	this->factory = factory;
+	if (coinX != -1e9)
+		this->coin = new CCOIN(coinX, coinY, index);
+	else
+		this->coin = nullptr;
+	if (textureFile != "none") {
+		if (textureFile[0] == 'a')
+			this->object = new CANIMAL(textureFile, objX, objY, objSpeed);
+		else
+			this->object = new CCAR(textureFile, objX, objY, objSpeed);
+	}
+	else
+		this->object = nullptr;
+	factory->initBackground(index, textureLane);
+	setupLaneBackground();
+}
+
+void CLANE::setupLaneBackground() {
+	laneBackground.setTexture(textureLane);
+	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
+	laneBackground.setScale(scaleX, scaleX);
+	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
+}
+
 CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
+	//for (int i = 0; i < blocks.size(); ++i) delete blocks[i];
 }
 
 void CLANE::initObject() {
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	coin = coinFactory->initObject(index, window);
 	object = factory->initObject(index, window);
 	factory->initBackground(index, textureLane);
 	delete coinFactory;
-	laneBackground.setTexture(textureLane);
-	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
-	laneBackground.setScale(scaleX, scaleX);
-	laneBackground.setPosition(0, (index - 2) * Constants::GetInstance().LANE_WIDTH);
+	setupLaneBackground();
 }
 
 bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic) {
@@ -31,12 +58,13 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 	if (object == nullptr) return true;
 	if (object->checkOutWindow(window)) {
-		
+
 		delete object;
 		object = factory->initObject(index, this->window);
 	}
 	object->trafficStop(traffic.checkStop());
-	coin->update(x, y, window, player, index);
+	if (coin != nullptr)
+		coin->update(x, y, window, player, index);
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
@@ -46,7 +74,12 @@ void CLANE::shiftLane() {
 	//this->shiftBackground();
 	if (object != nullptr) object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
-	
+
+}
+
+bool CLANE::checkBlock(float x, float y) {
+	//for (int i = 0; i < blocks.size(); ++i) if (blocks[i]->checkBlock(x, y)) return true;
+	return false;
 }
 
 void CLANE::shiftBackground() {
@@ -66,8 +99,8 @@ void CLANE::saveLane(ofstream& out) {
 	if (object != nullptr)
 		out << object->getTextureFile() << " " << object->mX << " " << object->mY << " " << object->speedMult << " ";
 	else
-		out << "none";
-	if (coin != nullptr)
+		out << "none ";
+	if (coin != nullptr && coin->sprite.getColor() != sf::Color::Transparent)
 		out << "Coin " << coin->mX << " " << coin->mY;
 	else
 		out << "none";

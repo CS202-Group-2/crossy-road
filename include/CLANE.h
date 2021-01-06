@@ -5,13 +5,9 @@
 #include "COBJECTFACTORY.h"
 #include "CCOINFACTORY.h"
 #include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CPEOPLE.h"
-#include "CTRUCK.h"
 #include "CCAR.h"
+#include "CANIMAL.h"
 #include "COBJECT.h"
-#include "CDINAUSOR.h"
-#include "CBIRD.h"
 #include "Constants.h"
 #include "CTRAFFIC.h"
 #include "CTRANSITION.h"
@@ -35,19 +31,22 @@ protected:
     friend class CGAME;
     COBJECT* object;
     COBJECT* coin;
+    //vector<COBJECT*> blocks;
     COBJECTFACTORY* factory;
     sf::Sprite laneBackground;
     sf::Texture textureLane;
     sf::RenderWindow* window;
 public:
+    CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, float coinX = -1e9, float coinY = -1e9);
     CLANE(int index, COBJECTFACTORY *factory, sf::RenderWindow *window);
     ~CLANE();
     void initObject();
     bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic);
     void shiftLane();
     void shiftBackground();
+    bool checkBlock(float x, float y);
     void saveLane(ofstream& out);
-
+    void setupLaneBackground();
 };
 
 #endif

@@ -1,9 +1,9 @@
-#include "../include/CCOIN.h"
+#include "../include/CTREE.h"
 
-CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) {
+CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
-	type = Constants::GetInstance().INTERACTABLE;
-	textureFile = "assets/graphics/Coin.png";
+	type = Constants::GetInstance().BLOCK;
+	textureFile = "assets/graphics/Bush.png";
 	if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
 		return;
@@ -13,8 +13,8 @@ CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) {
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 
 	sprite.setScale(sf::Vector2f(0.3f, 0.3f));
-	
+
 }
 
-void CCOIN::tell() {}
-void CCOIN::trafficStop(bool state) {}
+void CTREE::tell() {}
+void CTREE::trafficStop(bool state) {}

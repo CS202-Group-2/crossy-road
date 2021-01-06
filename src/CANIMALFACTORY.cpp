@@ -10,7 +10,7 @@ COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window) {
 }
 
 void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane) {
-    if (!textureLane.loadFromFile("Road.png")) {
+    if (!textureLane.loadFromFile("assets/graphics/Road.png")) {
         return;
     }
 }
