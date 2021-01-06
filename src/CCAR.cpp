@@ -9,7 +9,7 @@ CCAR::CCAR(int index, int windowX) {
 	direction = rand() % 2;
 	type = Constants::GetInstance().VEHICLE;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
-	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);
+	textureFile = "assets/graphics/c_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
 		mY = (index - 3) * Constants::GetInstance().LANE_WIDTH;
@@ -35,7 +35,7 @@ CCAR::CCAR(float x, float y) : COBJECT(x, y) {
 	//int choice = std::default_random_engine
 	textureFile = "assets/graphics/";
 	int choice = rand() % 4;
-	textureFile = "car" + to_string(choice);
+	//textureFile = "car" + to_string(choice);
 	switch (choice) {
 	case 0:
 		textureFile += "Car";
