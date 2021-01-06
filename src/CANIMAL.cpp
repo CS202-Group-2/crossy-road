@@ -28,7 +28,7 @@ CANIMAL::CANIMAL(int index, int windowX) {
 	direction = rand() % 2;
 	type = Constants::GetInstance().ANIMAL;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
-	textureFile = "a_" + to_string(choice) + "_" + to_string(direction);
+	textureFile = "assets/graphics/a_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
 		mY = (index - 3) * Constants::GetInstance().LANE_WIDTH;

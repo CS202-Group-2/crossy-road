@@ -13,11 +13,11 @@ private:
     friend class CGAME;
     friend class COBJECT;
     int mX, mY;
-    bool mState; 
+    bool mState;
     int index;
     string textureFile = "Player.png";
     int gender, side, score, level;
-    
+
     sf::Texture mTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;

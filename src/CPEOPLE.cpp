@@ -24,7 +24,9 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, i
 
 bool CPEOPLE::canMoveDown() {
     // In moving down, we must decrease x and increase y with respect to BETA.
-    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA) >= 0);
+    float dx = mSprite.getGlobalBounds().left - Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+
+    bool canDecreaseX = (dx >= 0);
 
     bool canIncreaseY = (
         (double)mSprite.getGlobalBounds().top
@@ -33,26 +35,25 @@ bool CPEOPLE::canMoveDown() {
         <= mWindow->getSize().y
         );
 
-    return canDecreaseX && canIncreaseY;
+    return canDecreaseX && canIncreaseY; //&& !lane->checkBlock(dx, 0);
 }
 
 bool CPEOPLE::canMoveUp() {
     // The character only moves up when the distance between the character and the bottom
     // has not exceeded MOVEABLE_DIST.
     // Otherwise, other figures in the screen will move down and player stays still.
+    float dx = Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
     bool isInMovableDist = (mWindow->getSize().y - mSprite.getGlobalBounds().top) <= MOVEABLE_DIST * sin(Constants::GetInstance ().BETA);
 
-    return isInMovableDist;
+    return isInMovableDist; //&& !lane->checkBlock(dx, 0);
 }
 
 bool CPEOPLE::canMoveRight() {
     // In moving right, we must increase x and increase y with respect to ALPHA.
-    bool canIncreaseX = (
-        (double)mSprite.getGlobalBounds().left
+    float dx = (double)mSprite.getGlobalBounds().left
         + (double)mSprite.getGlobalBounds().width
-        + Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA)
-        <= mWindow->getSize().x
-        );
+        + Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+    bool canIncreaseX = (dx <= mWindow->getSize().x);
 
     bool canIncreaseY = (
         mSprite.getGlobalBounds().top
@@ -61,16 +62,17 @@ bool CPEOPLE::canMoveRight() {
         <= mWindow->getSize().y
         );
 
-    return canIncreaseX && canIncreaseY;
+    return canIncreaseX && canIncreaseY; //&& !lane->checkBlock(dx, 0);
 }
 
 bool CPEOPLE::canMoveLeft() {
     // In moving left, we must decrease x and decrease y with respect to ALPHA.
-    bool canDecreaseX = (mSprite.getGlobalBounds().left - Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA) >= 0);
+    int dx = mSprite.getGlobalBounds().left - Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+    bool canDecreaseX = (dx >= 0);
 
     bool canDecreaseY = (mSprite.getGlobalBounds().top - Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA) >= 0);
 
-    return canDecreaseX && canDecreaseY;
+    return canDecreaseX && canDecreaseY; //&& !lane->checkBlock(dx, 0);
 }
 
 void CPEOPLE::setGender(int gender) {

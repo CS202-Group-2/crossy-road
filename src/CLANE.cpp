@@ -39,10 +39,12 @@ CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
+	//for (int i = 0; i < blocks.size(); ++i) delete blocks[i];
 }
 
 void CLANE::initObject() {
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	coin = coinFactory->initObject(index, window);
 	object = factory->initObject(index, window);
 	factory->initBackground(index, textureLane);
@@ -55,7 +57,7 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 	if (object == nullptr) return true;
 	if (object->checkOutWindow(window)) {
-		
+
 		delete object;
 		object = factory->initObject(index, this->window);
 	}
@@ -69,10 +71,15 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 void CLANE::shiftLane() {
 	index++;
 	this->shiftBackground();
-	if (object != nullptr) 
+	if (object != nullptr)
 		object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
-	
+
+}
+
+bool CLANE::checkBlock(float x, float y) {
+	//for (int i = 0; i < blocks.size(); ++i) if (blocks[i]->checkBlock(x, y)) return true;
+	return false;
 }
 
 void CLANE::shiftBackground() {

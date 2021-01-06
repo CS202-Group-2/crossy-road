@@ -26,7 +26,7 @@ Menu::~Menu() {
 }
 
 void Menu::draw(sf::RenderWindow& window) {
-	if (!title.loadFromFile("CrossyRoadTitle.png")) {
+	if (!title.loadFromFile("assets/graphics/CrossyRoadTitle.png")) {
 		return;
 	}
 	sf::RectangleShape rectangle(sf::Vector2f(250, 350));

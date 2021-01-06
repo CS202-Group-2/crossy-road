@@ -185,7 +185,7 @@ void CGAME::updateSound() {
 void CGAME::updateLanes() {
     //srand(time(NULL));
     for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == false) {
+        if ((*it)->updatePosObject(level/10+1, level/10+1, *window, *player, *traffic) == 0) {
            gameState = GAME_STATE::GAMEOVER;
            cgui->isPause = true;
            cgui->drawGameOverGUI(score, level, window);
@@ -307,7 +307,7 @@ void CGAME::initWindow() {
     this->window = new sf::RenderWindow(this->videoMode, "Crossy Road");
     window->setFramerateLimit(30);
     menu = new Menu(window->getSize().x, window->getSize().y);
-    drawBackground("menu.jpg");
+    drawBackground("assets/graphics/menu.jpg");
 
 }
 
@@ -326,6 +326,7 @@ const bool CGAME::running() const {
 
 void CGAME::pollEvents() {
     while (window->pollEvent(event)) {
+        CLANE* temp = nullptr;
         switch (event.type) {
         case sf::Event::Closed:
             window->close();
@@ -344,6 +345,7 @@ void CGAME::pollEvents() {
                     cgui->MoveUp();
                 else {
                     player->setSide(CPEOPLE::UP);
+                    
                     if (player->canMoveUp())
                         player->moveUp(), level++;
                     else {
@@ -360,6 +362,7 @@ void CGAME::pollEvents() {
                     cgui->MoveDown();
                 else {
                     player->setSide(CPEOPLE::DOWN);
+                    
                     if (player->canMoveDown())
                         player->moveDown(), level--;
                 }
@@ -367,12 +370,14 @@ void CGAME::pollEvents() {
             case sf::Keyboard::Left:
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::LEFT);
+                
                 if (player->canMoveLeft())
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
+                
                 if (player->canMoveRight())
                     player->moveRight();
                 break;
@@ -460,7 +465,7 @@ void CGAME::pollEvents() {
             }
             }
         }
-
+        delete temp;
     }
 }
 void CGAME::resizeImage(sf::Sprite& sprite) {

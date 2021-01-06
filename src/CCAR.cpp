@@ -2,7 +2,7 @@
 
 void CCAR::move(float x, float y, sf::RenderWindow &window) {
 	if (!isStopping) COBJECT::move(x, y, window);
-	
+
 }
 
 CCAR::CCAR(string textureFile, float x, float y, float speed) {
@@ -29,7 +29,7 @@ CCAR::CCAR(int index, int windowX) {
 	direction = rand() % 2;
 	type = Constants::GetInstance().VEHICLE;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
-	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);
+	textureFile = "assets/graphics/c_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
 		mY = (index - 3) * Constants::GetInstance().LANE_WIDTH;
@@ -91,4 +91,3 @@ void CCAR::trafficStop(bool state) {
 	//cout << "state " << std::boolalpha << state << endl;
 	isStopping = state;
 }
-

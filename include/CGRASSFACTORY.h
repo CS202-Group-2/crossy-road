@@ -6,6 +6,7 @@
 #include <SFML/audio.hpp>
 #include "../include/COBJECT.h"
 #include "../include/COBJECTFACTORY.h"
+#include "../include/CTREEFACTORY.h"
 #include "../include/CCAR.h"
 #include "../include/Constants.h"
 

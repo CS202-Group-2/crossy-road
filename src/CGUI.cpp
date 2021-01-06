@@ -3,7 +3,7 @@
 CGUI::CGUI(float width, float height) {
 	this->width = width;
 	this->height = height;
-	if (!pauseButtonTexture.loadFromFile("Pause.png")) {
+	if (!pauseButtonTexture.loadFromFile("assets/graphics/Pause.png")) {
 		cout << "Cannot find texture file" << endl;
 		return;
 	}
