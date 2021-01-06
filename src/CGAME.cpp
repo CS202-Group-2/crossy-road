@@ -308,7 +308,7 @@ void CGAME::initVariables() {
 void CGAME::initWindow() {
     GetDesktopResolution();
     this->window = new sf::RenderWindow(this->videoMode, "Crossy Road");
-    window->setFramerateLimit(30);
+    window->setFramerateLimit(Constants::GetInstance().FPS);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("assets/graphics/menu.jpg");
 
