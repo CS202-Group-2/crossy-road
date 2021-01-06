@@ -9,11 +9,12 @@ COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window, int lev
     //return object;
 }
 
-void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane) {
+void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane, bool &isGrass) {
     int k = rand() % 100;
     string filepath = "assets/graphics/";
     filepath += (k < 50 ? "Road.png" : "Grass.png");
     if (!textureLane.loadFromFile(filepath)) {
         return;
     }
+    if (filepath == "assets/graphics/Grass.png") isGrass = true;
 }

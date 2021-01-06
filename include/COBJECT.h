@@ -51,6 +51,7 @@ public:
     // virtual void tell() = 0;
     bool checkCollision(CPEOPLE& player, int index);
     bool checkBlock(float x, float y);
+    
 };
 
 #endif

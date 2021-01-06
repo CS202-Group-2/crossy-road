@@ -199,7 +199,7 @@ void CGAME::createNewLane(int index, int level) {
 
     CLANE* lane;
     if (index == 7 || k < 10) // Initially, players always stand on grass
-        lane = new CLANE(index, new CGRASSFACTORY(), window, level);
+        lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, level);
     else
@@ -233,6 +233,45 @@ void CGAME::initLanes() {
     CLANE* lane;
     for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
         createNewLane(i-10, level);
+    }
+}
+
+bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
+    float coordX = player->mX, coordY = player->mY;
+    switch (direction) {
+    case 1:
+        // up
+        coordX += Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+        coordY += -Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+        break;
+    case 2:
+        // left
+        coordX += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+        coordY += -Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+        break;
+    case 3:
+        // right
+        coordX += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
+        coordY += Constants::GetInstance().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance().ALPHA);
+        break;
+    case 4:
+        // down
+        coordX += -Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+        coordY += Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+        break;
+
+    }
+    int padding = 10;
+    for (int i = 0; i < lane->blocks.size(); ++i) {
+        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - 20 && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
+            + lane->blocks[i]->sprite.getGlobalBounds().width - padding) return false;
+    }
+    return true;
+}
+
+CLANE* CGAME::findLane(int index) {
+    for (auto it = lanes.begin(); it != lanes.end(); ++it) {
+        if ((*it)->index == index) return (*it);
     }
 }
 
@@ -329,7 +368,7 @@ const bool CGAME::running() const {
 
 void CGAME::pollEvents() {
     while (window->pollEvent(event)) {
-        CLANE* temp = nullptr;
+        
         switch (event.type) {
         case sf::Event::Closed:
             window->close();
@@ -349,9 +388,9 @@ void CGAME::pollEvents() {
                 else {
                     player->setSide(CPEOPLE::UP);
                     
-                    if (player->canMoveUp())
+                    if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
                         player->moveUp(), level++;
-                    else {
+                    else if (checkMove(findLane(player->index - 1), player, 1)) {
                         level++;
                         shiftLanesUp();
                     }
@@ -366,7 +405,7 @@ void CGAME::pollEvents() {
                 else {
                     player->setSide(CPEOPLE::DOWN);
                     
-                    if (player->canMoveDown())
+                    if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
                         player->moveDown(), level--;
                 }
                 break;
@@ -374,14 +413,14 @@ void CGAME::pollEvents() {
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::LEFT);
                 
-                if (player->canMoveLeft())
+                if (player->canMoveLeft() && checkMove(findLane(player->index), player, 2))
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
                 soundFactory->playSound (2);
                 player->setSide(CPEOPLE::RIGHT);
                 
-                if (player->canMoveRight())
+                if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
                     player->moveRight();
                 break;
             case sf::Keyboard::Return:
@@ -413,7 +452,7 @@ void CGAME::pollEvents() {
                     soundFactory->playSound (2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
-                    case 0:
+                    case 2:
                         cout << "Save and exit" << endl;
                         saveGame();
                         gameState = GAME_STATE::MENU;
@@ -423,7 +462,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         resetGame();
                         break;
-                    case 2:
+                    case 0:
                         cout << "Continued the game..." << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         break;
@@ -468,7 +507,7 @@ void CGAME::pollEvents() {
             }
             }
         }
-        delete temp;
+       
     }
 }
 void CGAME::resizeImage(sf::Sprite& sprite) {

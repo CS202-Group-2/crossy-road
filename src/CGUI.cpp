@@ -90,8 +90,8 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 	options.assign(3, sf::Text());
 	options[0].setFont(font);
 	options[0].setColor(sf::Color::Yellow);
-	options[0].setString("Save and exit");
-
+	options[0].setString("Continue");
+	options[0].setCharacterSize (options[0].getCharacterSize () + 15);
 
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
@@ -100,7 +100,7 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 
 	options[2].setFont(font);
 	options[2].setColor(sf::Color::White);
-	options[2].setString("Continue");
+	options[2].setString("Save and exit");
 	//options[2].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 3));
 	
 	//options[3].setFont(font);
@@ -119,6 +119,7 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
 	options[0].setFont(font);
 	options[0].setColor(sf::Color::Yellow);
 	options[0].setString("Restart");
+	options[0].setCharacterSize (options[0].getCharacterSize () + 15);
 
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
@@ -135,22 +136,31 @@ void CGUI::MoveUp() {
 	if (selectedItemIndex - 1 >= 0) {
 		options[selectedItemIndex--].setColor(sf::Color::White);
 		options[selectedItemIndex].setColor(sf::Color::Yellow);
+		options[selectedItemIndex].setCharacterSize (options[selectedItemIndex].getCharacterSize () + 15);
+		options[selectedItemIndex + 1].setCharacterSize (options[selectedItemIndex].getCharacterSize () - 15);
 	}
 	else {
 		options[selectedItemIndex].setColor(sf::Color::White);
 		options[(int)options.size() - 1].setColor(sf::Color::Yellow);
+		options[(int)options.size() - 1].setCharacterSize (options[(int)options.size () - 1].getCharacterSize () + 15);
+		options[0].setCharacterSize (options[0].getCharacterSize () - 15);
 		selectedItemIndex = (int)options.size() - 1;
 	}
+	//options[selectedItemIndex].setCharacterSize (options[selectedItemIndex].getCharacterSize () - 15);
 }
 
 void CGUI::MoveDown() {
 	if (selectedItemIndex + 1 < (int)options.size()) {
 		options[selectedItemIndex++].setColor(sf::Color::White);
 		options[selectedItemIndex].setColor(sf::Color::Yellow);
+		options[selectedItemIndex].setCharacterSize (options[selectedItemIndex].getCharacterSize () + 15);
+		options[selectedItemIndex-1].setCharacterSize (options[selectedItemIndex].getCharacterSize () - 15);
 	}
 	else {
 		options[selectedItemIndex].setColor(sf::Color::White);
 		options[0].setColor(sf::Color::Yellow);
+		options[0].setCharacterSize (options[selectedItemIndex].getCharacterSize () + 15);
+		options[(int)options.size()-1].setCharacterSize (options[selectedItemIndex].getCharacterSize () - 15);
 		selectedItemIndex = 0;
 	}
 }

@@ -13,6 +13,6 @@ class CCARFACTORY : public COBJECTFACTORY {
 protected:
 	
 public:
-	void initBackground(int index, sf::Texture& textureLane);
+	void initBackground(int index, sf::Texture& textureLane, bool& isGrass);
 	COBJECT* initObject(int index, sf::RenderWindow* window, int level);
 };

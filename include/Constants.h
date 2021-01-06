@@ -20,7 +20,7 @@ public:
 	const float LANE_WIDTH = 100;
 	const int MAX_NUMBER_OF_LANES = 30; // 432 : 768
 	const int MAX_NUMBER_OF_VEHICLES_EACH_LANE = 1;
-	const int MAX_TREE_PER_LANE = 2;
+	const int MAX_TREE_PER_LANE = 1;
 	const float TIME_BETWEEN_TRAFFIC = 10;
 	const float MAX_TRAFFIC_STOP = 3;
 	const int NUMBER_OF_MENU_ITEMS = 3;

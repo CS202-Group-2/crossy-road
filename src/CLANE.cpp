@@ -1,7 +1,8 @@
 #include "../include/CLANE.h"
 
-CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, int level) {
+CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool isGrass, int level) {
 	this->index = index;
+	this->isGrass = isGrass;
 	this->factory = factory;
 	this->window = window;
 	this->initObject(level);
@@ -25,7 +26,7 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 	else
 		this->object = nullptr;
 
-	factory->initBackground(index, textureLane);
+	factory->initBackground(index, textureLane, isGrass);
 	setupLaneBackground();
 }
 
@@ -41,19 +42,36 @@ CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
-	//for (int i = 0; i < blocks.size(); ++i) delete blocks[i];
+	for (int i = 0; i < blocks.size(); ++i) if(blocks[i] != nullptr) delete blocks[i];
 }
 
 void CLANE::initObject(int level) {
+	factory->initBackground(index, textureLane, isGrass);
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	CTREEFACTORY* treeFactory = new CTREEFACTORY();
+	COBJECT* tree = nullptr;
+	if (isGrass) {
+		//cout << "Acas" << endl;
+		
+		float x = rand() % (window->getSize().x - 25) + 25;
+		for (int i = 0; i < Constants::GetInstance().MAX_TREE_PER_LANE; ++i) {
+			tree = treeFactory->initObject(index, window, level);
+			blocks.push_back(tree);
+		}
+		
+	}
+	// delete tree;
+	delete treeFactory;
+	
+
+	
 	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	coin = coinFactory->initObject(index, window, level);
 
 	object = factory->initObject(index, window, level);
 	int initialMove = rand() % 500;
 	if (object != nullptr) object->move(initialMove, initialMove);
-
-	factory->initBackground(index, textureLane);
+	
 	delete coinFactory;
 	setupLaneBackground();
 }
@@ -71,6 +89,8 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 	object->trafficStop(traffic.checkStop());
 	if (coin != nullptr)
 		coin->update(x, y, window, player, index);
+	for (int i = 0; i < blocks.size(); ++i)
+		if (blocks[i] != nullptr) blocks[i]->update(x, y, window, player, index);
 	if (!object->update(x, y, window, player, index)) return false;
 	return true;
 }
@@ -80,7 +100,7 @@ void CLANE::shiftLane() {
 	//this->shiftBackground();
 	if (object != nullptr) object->shiftObject();
 	if (coin != nullptr) coin->shiftObject();
-
+	for (int i = 0; i < blocks.size(); ++i) blocks[i]->shiftObject();
 }
 
 bool CLANE::checkBlock(float x, float y) {
