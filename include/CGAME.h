@@ -6,12 +6,8 @@
 #include "CGRASSFACTORY.h"
 #include "CANIMALFACTORY.h"
 #include "CPEOPLE.h"
-#include "CVEHICLE.h"
-#include "CTRUCK.h"
 #include "CCAR.h"
 #include "../include/COBJECT.h"
-#include "CDINAUSOR.h"
-#include "CBIRD.h"
 #include "Menu.h"
 #include "Constants.h"
 #include "CTRAFFIC.h"
@@ -40,15 +36,9 @@ typedef void* HANDLE;
 
 class CGAME {
 private:
-    CTRUCK* axt;
-    CCAR* axh;
-    CDINAUSOR* akl;
-    CBIRD* ac;
     CPEOPLE* player;
     CSOUNDFACTORY* soundFactory;
 
-   // vector<COBJECT*> animals;
-    vector<COBJECT*> vehicles;
     CTRAFFIC* traffic;
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;

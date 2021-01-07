@@ -5,6 +5,7 @@ void CCAR::move(float x, float y) {
 
 }
 
+// THIS IS FOR LOADING SAVED GAME.
 CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	type = Constants::GetInstance().VEHICLE;
 
@@ -14,9 +15,10 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	mX = x;
 	mY = y;
 	initY = y;
+	speedMult = speed;
 	this->textureFile = textureFile;
 
-	if (!texture.loadFromFile(textureFile + ".png")) {
+	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find car texture." << endl;
 		return;
 	}
@@ -28,7 +30,7 @@ CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().VEHICLE;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
-	textureFile = "assets/graphics/c_" + to_string(choice) + "_" + to_string(direction);
+	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
 		mY = (index - 3) * Constants::GetInstance().LANE_WIDTH;
@@ -38,7 +40,7 @@ CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 		mY = windowX * tan(Constants::GetInstance().ALPHA) + (index - 2) * Constants::GetInstance().LANE_WIDTH - 25;
 	}
 	initY = mY;
-	if (!texture.loadFromFile(textureFile + ".png")) {
+	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find car texture." << endl;
 		return;
 	}
