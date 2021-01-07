@@ -97,7 +97,6 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 	}
 
 	if (checkCollision(player, index)) {
-		// TODO: implement onCollision
 		cout << "Hit by " << type << endl;
 
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)

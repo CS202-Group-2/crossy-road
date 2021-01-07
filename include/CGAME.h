@@ -47,6 +47,7 @@ private:
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
     sf::Clock clock;
+    sf::Clock dieClock;
     bool isGameOver = false;
     bool pressed = false;
     int score = 0, level = 1;

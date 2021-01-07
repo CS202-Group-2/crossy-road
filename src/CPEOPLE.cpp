@@ -95,27 +95,27 @@ void CPEOPLE::setSide(int side) {
     mSprite.setTextureRect(sf::IntRect(FIG_WIDTH * side, 0, FIG_WIDTH, FIG_HEIGHT));
 }
 
-void CPEOPLE::render() {
-    mSprite.setPosition(mX + CTRANSITION::offset().getObjectX(),
-        mY + CTRANSITION::offset().getObjectY());
-    mWindow->draw(mSprite);
-   // cout << mSprite.getGlobalBounds ().height << endl;
-  //  cout << mSprite.getGlobalBounds ().width << endl;
-  //  cout << mSprite.getGlobalBounds ().top << endl;
-  //  cout << mSprite.getGlobalBounds ().left << endl;
-    /*
-    167.85
-75.15
-373
-265
-    */
-    /*
-    373
-167
-0
-0
-    */
+void CPEOPLE::setDie() {
+    sf::Texture dieTexture;
+    string dieFile = "assets/graphics/die_";
+    if (gender == MALE)
+        dieFile += "boy";
+    else
+        dieFile += "girl";
+    dieFile += ".png";
+    if (!dieTexture.loadFromFile(dieFile)) {
+        cout << "Cannot load " << dieFile << endl;
+        return;
+    }
+    mSprite.setTexture(dieTexture);
+}
 
+void CPEOPLE::render(bool isGameOver) {
+    if (!isGameOver) {
+        mSprite.setPosition(mX + CTRANSITION::offset().getObjectX(),
+            mY + CTRANSITION::offset().getObjectY());
+    }
+    mWindow->draw(mSprite);
 }
 
 void CPEOPLE::moveUp() {
@@ -153,9 +153,6 @@ void CPEOPLE::moveRight() {
 }
 
 
-//bool CPEOPLE::isImpact(const CVEHICLE*&) {
-  //  return false;
-//}
 
 bool CPEOPLE::isImpact(const COBJECT*&) {
     return false;
@@ -170,6 +167,7 @@ bool CPEOPLE::isDead() {
 }
 
 void CPEOPLE::resetPlayer() {
+    setGender(this->gender);
     side = 1;
     index = 7;
     score = 0;

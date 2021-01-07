@@ -219,11 +219,17 @@ void CGAME::updateLanes() {
     //srand(time(NULL));
 
     for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
-        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
-            gameState = GAME_STATE::GAMEOVER;
-            cgui->isPause = true;
-            cgui->drawGameOverGUI(score, level, window);
+        int canUpdateLane = (*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory);
+        if (canUpdateLane == 0 && !isGameOver) {
+            isGameOver = true;
+            dieClock.restart();
+            player->setDie();
         };
+    }
+    if (isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
+        gameState = GAME_STATE::GAMEOVER;
+        cgui->isPause = true;
+        cgui->drawGameOverGUI(score, level, window);
     }
     coinMoveMark++;
     this->score = player->score;
@@ -336,9 +342,6 @@ void CGAME::render() {
     window->draw(background);
     switch (gameState) {
     case GAME_STATE::MENU: {
-
-        //window->draw(background);
-
         menu->draw(*window);
         break;
     }
@@ -346,14 +349,8 @@ void CGAME::render() {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        //updatePosVehicle();
-        //updatePosAnimal();
-        if (!isGameOver) {
-            player->render();
-        }
+        player->render(isGameOver);
         cgui->drawGUI(score, level, window);
-
-        //for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
         break;
     }
     case GAME_STATE::PAUSE:
@@ -361,7 +358,6 @@ void CGAME::render() {
         cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GENDER_CHOICE:
-        //cgui->drawGenderChoiceGUI(window);
         cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::WARNING:
