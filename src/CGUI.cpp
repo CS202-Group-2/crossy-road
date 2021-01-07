@@ -70,12 +70,8 @@ void CGUI::drawGUIText(int score, int level, sf::RenderWindow* window) {
 	sf::FloatRect textRect2 = levelText.getLocalBounds();
 	levelText.setOrigin(textRect2.left + textRect2.width, textRect2.top);
 
-	sf::FloatRect textRect3 = hiScoreText.getLocalBounds();
-	hiScoreText.setOrigin((textRect3.left + textRect3.width)/2, (textRect3.top + textRect3.height)/2);
-
 	scoreText.setPosition(sf::Vector2f(width - 10, 10));
 	levelText.setPosition(sf::Vector2f(width - 10, 35));
-	hiScoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
 
 	scoreText.setOutlineColor(sf::Color(0, 0, 0, 255));
 	scoreText.setOutlineThickness(3);
@@ -86,6 +82,17 @@ void CGUI::drawGUIText(int score, int level, sf::RenderWindow* window) {
 
 	
 	// cout << "drawn" << endl;
+}
+
+void CGUI::drawHighScore(sf::RenderWindow* window) {
+	sf::FloatRect textRect3 = hiScoreText.getLocalBounds();
+	hiScoreText.setOrigin((textRect3.left + textRect3.width) / 2, (textRect3.top + textRect3.height) / 2);
+	hiScoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
+	hiScoreText.setColor(sf::Color::White);
+}
+
+void CGUI::disableHighScore(sf::RenderWindow* window) {
+	hiScoreText.setColor(sf::Color::Transparent);
 }
 
 void CGUI::drawGameOverText(sf::RenderWindow* window) {
@@ -182,10 +189,7 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window, int h
 	if (hiScore > score)
 	hiScoreText.setString("High score: " + to_string(hiScore));
 	else hiScoreText.setString("You beat your high score: " + to_string(score));
-	hiScoreText.setFont(font);
-	hiScoreText.setCharacterSize(15);
-	hiScoreText.setColor(sf::Color::White);
-	hiScoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
+	
 
 	selectedItemIndex = 0;
 

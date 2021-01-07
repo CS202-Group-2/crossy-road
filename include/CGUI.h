@@ -39,6 +39,7 @@ public:
 	void MoveUp();
 	void MoveDown();
 	int getPressedItem();
-    
+    void drawHighScore(sf::RenderWindow* window);
+    void disableHighScore(sf::RenderWindow* window);
 
 };
