@@ -439,7 +439,7 @@ void CGAME::pollEvents() {
                 soundFactory->playSound (2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
-                else if (gameState == GAME_STATE::LEVEL_1 && !pressed) {
+                else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::DOWN);
                     pressed = true;
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
