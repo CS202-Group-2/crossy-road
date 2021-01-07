@@ -5,10 +5,11 @@ CGAME::CGAME() {
     this->initVariables();
     this->initWindow();
     this->initSound ();
+    this->initLanes();
     //this->initVehicle();
     //this->player = getPlayer();
     //this->player->resetPlayer();
-    this->player = nullptr;
+    this->player = getPlayer(true);
     level = 0;
     coinMoveMark = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
@@ -308,9 +309,18 @@ void CGAME::drawBackground(const string& backgroundIMG) {
         return;
     }
     texture.setSmooth(true);
-    background.setTexture(texture);
-    resizeImage(background);
+    //background.setTexture(texture);
+    //resizeImage(background);
 
+}
+
+void CGAME::drawLogo(const string& logoIMG) {
+    static sf::Texture textureLogo;
+    if (!textureLogo.loadFromFile(logoIMG)) {
+        return;
+    }
+    textureLogo.setSmooth(true);
+    logo.setTexture(textureLogo);
 }
 
 
@@ -323,25 +333,30 @@ void CGAME::render() {
     sprites.clear();
     window->draw(background);
     switch (gameState) {
-    case GAME_STATE::MENU: {
-
-        //window->draw(background);
-
-        menu->draw(*window);
+    case GAME_STATE::LOGO: {
+        window->draw(logo);
+        window->display();
+        sf::Clock clock;
+        while (clock.getElapsedTime().asSeconds() < 2);
+        window->draw(background);
+        gameState = GAME_STATE::MENU;
         break;
     }
     case GAME_STATE::LEVEL_1: {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        //updatePosVehicle();
-        //updatePosAnimal();
-        if (!isGameOver) {
-            player->render();
-        }
+        if (!isGameOver) player->render();
         cgui->drawGUI(score, level, window);
-
-        //for (int i = 0; i < sprites.size(); ++i) window->draw(sprites[i]);
+        break;
+    }
+    case GAME_STATE::MENU: {
+        CTRANSITION::offset().update();
+        updateLanes();
+        traffic->drawTraffic(window);
+        if (!isGameOver) player->render();
+        cgui->drawGUI(score, level, window);
+        menu->draw(*window);
         break;
     }
     case GAME_STATE::PAUSE:
@@ -357,9 +372,12 @@ void CGAME::render() {
         //cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GAMEOVER: {
-        //cout << "Is pausing" << endl;
-        cgui->drawGUI(score, level, window);
+        CTRANSITION::offset().update();
+        updateLanes();
+        traffic->drawTraffic(window);
+        if (!isGameOver) player->render();
 
+        cgui->drawGUI(score, level, window);
         soundFactory->playSound(4);
         break;
     }
@@ -385,7 +403,7 @@ void CGAME::initWindow() {
     window->setFramerateLimit(Constants::GetInstance().FPS);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("assets/graphics/menu.jpg");
-
+    drawLogo("assets/graphics/logo.png");
 }
 
 void CGAME::GetDesktopResolution()
@@ -467,10 +485,10 @@ void CGAME::pollEvents() {
                             clearSavedGame();
 
                             cout << "Started the game" << endl;
-                            this->initLanes();
+                            //this->initLanes();
                             soundFactory->playSound(1);
-                            this->player = getPlayer(true);
-                            level = 0;
+                            //this->player = getPlayer(true);
+                            //level = 0;
                             gameState = GAME_STATE::LEVEL_1;
                         }
                         else {

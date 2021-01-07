@@ -31,10 +31,11 @@
 #include <time.h> 
 #include <vector>
 #include <deque>
+#include <thread>
 
 using namespace std;
 
-enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE};
+enum class GAME_STATE{LOGO, MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE};
 
 typedef void* HANDLE;
 
@@ -53,7 +54,7 @@ private:
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
-    GAME_STATE gameState = GAME_STATE::MENU;
+    GAME_STATE gameState = GAME_STATE::LOGO;
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
     sf::Clock clock;
@@ -75,6 +76,7 @@ private:
     sf::RectangleShape enemy;
     sf::Texture texture;
     sf::Sprite background;
+    sf::Sprite logo;
     sf::Texture textureRoad;
 
 public:
@@ -105,6 +107,7 @@ public:
     void drawLane();
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
+    void drawLogo(const string& logoIMG);
     void resizeImage(sf::Sprite& sprite);
     bool checkMove(CLANE* lane, CPEOPLE* player, int direction);
     CLANE* findLane(int index);
