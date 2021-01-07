@@ -252,12 +252,16 @@ void CGAME::createNewLane(int index, int level) {
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 30) // Initially, players always stand on grass
+    if (BackgroundCounter::contGrass >= 2)
+        lane = new CLANE(index, new CCARFACTORY(), window, true, level);
+    else if (BackgroundCounter::contRoad >= 3 + (level / 15))
+        lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
+    else if (index == 7 || k < 20) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
-        lane = new CLANE(index, new CANIMALFACTORY(), window, level);
+        lane = new CLANE(index, new CANIMALFACTORY(), window, true, level);
     else
-        lane = new CLANE(index, new CCARFACTORY(), window, level);
+        lane = new CLANE(index, new CCARFACTORY(), window, true, level);
 
     lanes.push_back(lane);
 }

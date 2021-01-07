@@ -12,6 +12,9 @@ void CGRASSFACTORY::initBackground(int index, sf::Texture& textureLane, bool& is
         return;
     }
     isGrass = true;
+
+    BackgroundCounter::contGrass++;
+    BackgroundCounter::contRoad = 0;
 }
 
 bool CGRASSFACTORY::isGrass() {

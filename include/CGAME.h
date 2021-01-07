@@ -1,3 +1,4 @@
+#pragma once
 
 
 #include "CLANE.h"
@@ -54,6 +55,7 @@ private:
     int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
+
         
     void initVariables();
     void initWindow();

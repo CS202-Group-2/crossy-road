@@ -6,16 +6,23 @@ CTRAFFIC::CTRAFFIC(float startTime) {
 	curTime = startTime;
 }
 
+void CTRAFFIC::updateTimeTrafficStop() {
+	timeTrafficStop = (float) (rand() % 1000) / 1000 + 2;
+	if (rand() % 1000 >= 750) timeTrafficStop = 0.8; //25%
+
+	cout << timeTrafficStop << endl;
+}
+
 bool CTRAFFIC::checkStop() {
 	//cout << clock.getElapsedTime().asSeconds() << endl;
 	if (clock.getElapsedTime().asSeconds() >= Constants::GetInstance().TIME_BETWEEN_TRAFFIC
-		&& clock.getElapsedTime().asSeconds() <= Constants::GetInstance().TIME_BETWEEN_TRAFFIC
-		+ Constants::GetInstance().MAX_TRAFFIC_STOP) {
+		&& clock.getElapsedTime().asSeconds() <= Constants::GetInstance().TIME_BETWEEN_TRAFFIC + timeTrafficStop) {
 		color = -1;
 		return true;
 	}
-	else if (clock.getElapsedTime().asSeconds() >= Constants::GetInstance().TIME_BETWEEN_TRAFFIC + Constants::GetInstance().MAX_TRAFFIC_STOP) {
+	else if (clock.getElapsedTime().asSeconds() >= Constants::GetInstance().TIME_BETWEEN_TRAFFIC + timeTrafficStop) {
 		clock.restart();
+		updateTimeTrafficStop();
 		return false;
 	}
 	else if (clock.getElapsedTime().asSeconds() < Constants::GetInstance().TIME_BETWEEN_TRAFFIC - 3) color = 1;

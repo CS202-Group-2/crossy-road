@@ -21,7 +21,7 @@ COBJECT::COBJECT(float x, float y) {
 }
 
 float logXFactor(int level) {
-	return log((float) level / 3) / log(1.3);
+	return log(1 + (float) level / 3) / log(1.25);
 }
 
 void COBJECT::initSpeedMult(int level) {
@@ -30,7 +30,7 @@ void COBJECT::initSpeedMult(int level) {
 	speedMult = max((float)(rand() % m) / 100, (float)2);*/
 
 
-	speedMult = (float) (rand() % 200) / 100 + 2;
+	speedMult = (float) (rand() % 350) / 100 + 2;
 
 	bool xFactor = ((rand() % 1000) < 10 * logXFactor(level));
 	if (xFactor) speedMult = 20;
