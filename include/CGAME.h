@@ -45,10 +45,11 @@ private:
     deque<CLANE*> lanes;
     //vector<sf::Sprite> lanes;
     vector<sf::Sprite> sprites;
-    GAME_STATE gameState = GAME_STATE::LOGO;
+    GAME_STATE gameState = GAME_STATE::MENU;
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
     sf::Clock clock;
+    sf::Clock logoClock;
     sf::Clock dieClock;
     bool isGameOver = false;
     bool pressed = false;

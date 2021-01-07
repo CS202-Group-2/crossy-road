@@ -17,6 +17,8 @@ CGAME::CGAME() {
     level = 0;
     coinMoveMark = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
+
+    logoClock.restart();
 }
 
 void CGAME::drawGame() {
@@ -376,6 +378,9 @@ void CGAME::render() {
         traffic->drawTraffic(window);
         player->render(isGameOver);
         cgui->drawGUI(score, level, window);
+
+        logo.setColor(sf::Color(255, 255, 255, min(255.f, max(0.f, 500 - 500 * logoClock.getElapsedTime().asSeconds()))));
+        window->draw(logo);
         break;
     }
     case GAME_STATE::MENU: {
@@ -385,6 +390,9 @@ void CGAME::render() {
         player->render(isGameOver);
         cgui->drawGUI(score, level, window);
         menu->draw(*window);
+
+        logo.setColor(sf::Color(255, 255, 255, min(255.f, max(0.f, 500 - 500 * logoClock.getElapsedTime().asSeconds()))));
+        window->draw(logo);
         break;
     }
     case GAME_STATE::PAUSE:
