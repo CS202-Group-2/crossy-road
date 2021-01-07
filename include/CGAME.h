@@ -34,7 +34,7 @@
 
 using namespace std;
 
-enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE};
+enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE, SETTINGS};
 
 typedef void* HANDLE;
 
@@ -59,7 +59,7 @@ private:
     sf::Clock clock;
     bool isGameOver = false;
     bool pressed = false;
-    int score = 0, level = 1;
+    int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
         

@@ -212,11 +212,13 @@ void CGAME::updateLanes() {
         if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
             gameState = GAME_STATE::GAMEOVER;
             cgui->isPause = true;
-            cgui->drawGameOverGUI(score, level, window);
+            cgui->drawGameOverGUI(score, level, window, hiScore);
+            if (score > hiScore) hiScore = score;
         };
     }
     coinMoveMark++;
     this->score = player->score;
+    
 }
 
 void CGAME::createNewLane(int index, int level) {
@@ -420,21 +422,21 @@ void CGAME::pollEvents() {
                     cgui->drawPauseGUI(score, level, window);
                     cgui->isPause = true;
                 }
-                
+
                 break;
             case sf::Keyboard::Up:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
-                else if (gameState == GAME_STATE::LEVEL_1 ) {
+                else if (gameState == GAME_STATE::LEVEL_1) {
                     if (clock.getElapsedTime().asSeconds() >= 0.1) {
                         clock.restart();
                     }
                     else break;
                     player->setSide(CPEOPLE::UP);
                     pressed = true;
-                    if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
+                    if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
                         player->moveUp(), level++;
                     else if (checkMove(findLane(player->index - 1), player, 1)) {
                         level++;
@@ -445,7 +447,7 @@ void CGAME::pollEvents() {
                     cgui->MoveUp();
                 break;
             case sf::Keyboard::Down:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::LEVEL_1) {
@@ -458,14 +460,14 @@ void CGAME::pollEvents() {
                     cgui->MoveDown();
                 break;
             case sf::Keyboard::Left:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 player->setSide(CPEOPLE::LEFT);
 
                 if (player->canMoveLeft() && checkMove(findLane(player->index), player, 2))
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 player->setSide(CPEOPLE::RIGHT);
 
                 if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
@@ -508,6 +510,13 @@ void CGAME::pollEvents() {
                         }
                         break;
                     case 2:
+                        cout << "Enter settings" << endl;
+                        gameState = GAME_STATE::SETTINGS;
+                        cgui->isPause = true;
+                        cgui->drawSettingsGUI(window);
+                        break;
+
+                    case 3:
                         cout << "Exited the game" << endl;
                         window->close();
                         break;
@@ -515,9 +524,9 @@ void CGAME::pollEvents() {
                 else if (gameState == GAME_STATE::WARNING) {
                     //switch (cgui->getPressedItem()) {
                     //case 0:
-                        gameState = GAME_STATE::MENU;
-                        //break;
-                    //}
+                    gameState = GAME_STATE::MENU;
+                    //break;
+                //}
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GENDER_CHOICE) {
@@ -543,7 +552,7 @@ void CGAME::pollEvents() {
                     gameState = GAME_STATE::LEVEL_1;
                 }
                 else if (gameState == GAME_STATE::PAUSE) {
-                    soundFactory->playSound (2);
+                    soundFactory->playSound(2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 2:
@@ -571,22 +580,53 @@ void CGAME::pollEvents() {
                     // soundFactory->playSound (4);
                     switch (cgui->getPressedItem()) {
                     case 0:
-                       // soundFactory->playSound (2);
+                        // soundFactory->playSound (2);
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         resetGame();
                         break;
                     case 1:
-                       // soundFactory->playSound (2);
+                        // soundFactory->playSound (2);
                         cout << "Exit to main menu" << endl;
                         gameState = GAME_STATE::MENU;
                         break;
                     }
                     cgui->isPause = false;
                 }
-
+                else if (gameState == GAME_STATE::SETTINGS) {
+                    switch (cgui->getPressedItem()) {
+                    case 0:
+                        // soundFactory->playSound (2);
+                        cout << "Disabled volume" << endl;
+                        this->soundFactory->muted = true;
+                        break;
+                    case 1:
+                        // soundFactory->playSound (2);
+                        cout << "Enable sound" << endl;
+                        this->soundFactory->muted = false;
+                        break;
+                    }
+                    case 2:
+                        // soundFactory->playSound (2);
+                        cout << "Set gender to boy" << endl;
+                        this->player->setGender(0);
+                        break;
+                
+                    case 3:
+                        // soundFactory->playSound (2);
+                        cout << "Set gender to girl" << endl;
+                        this->player->setGender(1);
+                        break;
+            
+                    case 4:
+                        // soundFactory->playSound (2);
+                        cout << "Exit to main menu" << endl;
+                        gameState = GAME_STATE::MENU;
+                        cgui->isPause = false;
+                        break;
+                }
             }
-        
+    
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
             case sf::Mouse::Left: {

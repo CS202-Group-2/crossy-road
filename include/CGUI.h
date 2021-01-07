@@ -18,6 +18,7 @@ private:
 	sf::Font font;
     sf::Text scoreText;
     sf::Text levelText;
+    sf::Text hiScoreText;
     sf::Text gameOverText;
 	vector<sf::Text> options;
 	int selectedItemIndex = 0;
@@ -29,8 +30,9 @@ public:
     void drawGUI(int score, int level, sf::RenderWindow *window);
     void drawGenderChoiceGUI(sf::RenderWindow* window);
     void drawWarningGUI(sf::RenderWindow* window, string warning);
-    void drawGameOverGUI(int score, int level, sf::RenderWindow* window);
+    void drawGameOverGUI(int score, int level, sf::RenderWindow* window, int hiScore);
     void drawPauseGUI(int score, int level, sf::RenderWindow* window);
+    void drawSettingsGUI(sf::RenderWindow* window);
     int GUICheck(float x, float y); // 1: pause menu, 0: play, -1: quit
     void drawGUIText(int score, int level, sf::RenderWindow* window);
     void drawGameOverText(sf::RenderWindow* window);
