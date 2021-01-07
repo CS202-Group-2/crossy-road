@@ -212,11 +212,12 @@ void CGAME::updateSound() {
 }
 
 float logLevel(int level) {
-    return level > 3 ? 1.5 * log(level * 0.5) / log(2) : 1;
+    return level > 3 ? 1.25 * log(level * 0.5) / log(2) : 1;
 }
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
+
     for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
         if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
             gameState = GAME_STATE::GAMEOVER;
@@ -233,7 +234,7 @@ void CGAME::createNewLane(int index, int level) {
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 30) // Initially, players always stand on grass 
+    if (index == 7 || k < 30) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, level);
@@ -296,9 +297,9 @@ bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
         break;
 
     }
-    int padding = 10;
+    int padding = 20;
     for (int i = 0; i < lane->blocks.size(); ++i) {
-        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - 20 && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
+        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - padding && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
             + lane->blocks[i]->sprite.getGlobalBounds().width - padding) return false;
     }
     return true;
@@ -356,20 +357,24 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::PAUSE:
-        //cgui->drawGUI(score, level, window);
+
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GENDER_CHOICE:
         //cgui->drawGenderChoiceGUI(window);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::WARNING:
+
         //cgui->drawWarningGUI(window, warning);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GAMEOVER: {
         //cout << "Is pausing" << endl;
         cgui->drawGUI(score, level, window);
+
         soundFactory->playSound(4);
+        break;
     }
     default: {
         break;
@@ -419,16 +424,26 @@ void CGAME::pollEvents() {
         case sf::Event::KeyPressed:
             switch (event.key.code) {
             case sf::Keyboard::Escape:
-                window->close();
+                if (gameState == GAME_STATE::LEVEL_1) {
+                    cout << "Paused the game" << endl;
+                    gameState = GAME_STATE::PAUSE;
+                    cgui->drawPauseGUI(score, level, window);
+                    cgui->isPause = true;
+                }
+
                 break;
             case sf::Keyboard::Up:
                 soundFactory->playSound (2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
-                else if (gameState == GAME_STATE::LEVEL_1) {
+                else if (gameState == GAME_STATE::LEVEL_1 ) {
+                    if (clock.getElapsedTime().asSeconds() >= 0.1) {
+                        clock.restart();
+                    }
+                    else break;
                     player->setSide(CPEOPLE::UP);
-
+                    pressed = true;
                     if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
                         player->moveUp(), level++;
                     else if (checkMove(findLane(player->index - 1), player, 1)) {
@@ -445,9 +460,9 @@ void CGAME::pollEvents() {
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::DOWN);
-
+                    pressed = true;
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
-                        player->moveDown(), level--;
+                        player->moveDown();
                 }
                 else
                     cgui->MoveDown();
@@ -508,11 +523,11 @@ void CGAME::pollEvents() {
                         break;
                     }
                 else if (gameState == GAME_STATE::WARNING) {
-                    switch (cgui->getPressedItem()) {
-                    case 0:
+                    //switch (cgui->getPressedItem()) {
+                    //case 0:
                         gameState = GAME_STATE::MENU;
-                        break;
-                    }
+                        //break;
+                    //}
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GENDER_CHOICE) {
@@ -581,6 +596,7 @@ void CGAME::pollEvents() {
                 }
 
             }
+
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
             case sf::Mouse::Left: {

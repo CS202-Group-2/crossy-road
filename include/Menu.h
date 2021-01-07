@@ -9,7 +9,7 @@ public:
 	Menu(float width, float height);
 	~Menu();
 
-	const float titlePadding = 300;
+	const float titlePadding = 270;
 	
 
 	void draw(sf::RenderWindow& window);
