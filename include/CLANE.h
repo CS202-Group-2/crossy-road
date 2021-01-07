@@ -39,8 +39,11 @@ protected:
     sf::Texture textureLane;
     sf::RenderWindow* window;
     bool isGrass;
+    string background;
 public:
-    CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, float coinX = -1e9, float coinY = -1e9);
+    CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, vector<pair<float, float>>& bushes, 
+        string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, 
+        float coinX = -1e9, float coinY = -1e9);
     CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow* window, bool isGrass = false, int level = 0);
     ~CLANE();
     void initObject(int level);

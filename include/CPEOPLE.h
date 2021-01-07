@@ -3,7 +3,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
-#include "CVEHICLE.h"
 #include "CTRANSITION.h"
 #include <fstream>
 #include <math.h>

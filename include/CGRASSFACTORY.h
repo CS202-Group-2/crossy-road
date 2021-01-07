@@ -14,7 +14,7 @@ class CGRASSFACTORY : public COBJECTFACTORY {
 protected:
 
 public:
-	void initBackground(int index, sf::Texture& textureLane, bool &isGrass);
+	void initBackground(int index, sf::Texture& textureLane, bool &isGrass, string& background);
 	COBJECT* initObject(int index, sf::RenderWindow* window, int level);
 	bool isGrass();
 };

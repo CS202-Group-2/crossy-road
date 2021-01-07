@@ -8,7 +8,7 @@ COBJECT* CCOINFACTORY::initObject(int index, sf::RenderWindow* window, int level
     return object;
 }
 
-void CCOINFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass) {
+void CCOINFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass, string& background) {
 
 }
 //void CCOINFACTORY::shiftBackground(int index, sf::Sprite& laneBackground) {}

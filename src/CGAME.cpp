@@ -120,14 +120,16 @@ bool CGAME::loadGame() {
     lanes.clear();
 
     int index;
-    string textureFile, texture;
-    float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, speed = -1e9;
+    string textureFile, texture, background;
+    float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, bX, bY, speed = -1e9;
+    int bushCount;
     CLANE* lane = nullptr;
     COBJECTFACTORY* factory = nullptr;
-    while (infile >> index >> textureFile) {
+    vector<pair<float, float>> bushes;
+    while (infile >> index >> background >> textureFile) {
         if (textureFile != "none") {
             infile >> x >> y >> speed;
-            if (textureFile[textureFile.size()-5] == 'a')
+            if (textureFile[0] == 'a')
                 factory = new CANIMALFACTORY();
             else
                 factory = new CCARFACTORY();
@@ -137,8 +139,17 @@ bool CGAME::loadGame() {
         infile >> texture;
         if (texture != "none")
             infile >> cX >> cY;
-        lane = new CLANE(index, this->window, factory, textureFile, x, y, speed, cX, cY);
+        infile >> texture;
+        if (texture != "none") {
+            infile >> bushCount;
+            while (bushCount--) {
+                infile >> bX >> bY;
+                bushes.push_back(make_pair(bX, bY));
+            }
+        }
+        lane = new CLANE(index, background, this->window, factory, bushes, textureFile, x, y, speed, cX, cY);
         lanes.push_back(lane);
+        bushes.clear();
     }
 
     if (lanes.empty())
@@ -206,7 +217,7 @@ float logLevel(int level) {
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
-    for (deque<CLANE*>::iterator it = lanes.end(); it != lanes.begin(); --it) {
+    for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
         if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
             gameState = GAME_STATE::GAMEOVER;
             cgui->isPause = true;
@@ -222,7 +233,7 @@ void CGAME::createNewLane(int index, int level) {
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 20) // Initially, players always stand on grass 
+    if (index == 7 || k < 30) // Initially, players always stand on grass 
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, level);
@@ -236,7 +247,7 @@ void CGAME::shiftLanesUp() {
     CTRANSITION::offset().reset();
 
     //cout << "Called" << endl;
-    for (auto it = lanes.end(); it != lanes.begin(); --it) {
+    for (auto it = lanes.rbegin(); it != lanes.rend(); ++it) {
         (*it)->shiftLane();
     }
     CLANE* lane = lanes.front();

@@ -12,7 +12,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		src\CANIMALFACTORY.cpp = src\CANIMALFACTORY.cpp
 		include\CANIMALFACTORY.h = include\CANIMALFACTORY.h
 		src\CBIRD.cpp = src\CBIRD.cpp
-		include\CBIRD.h = include\CBIRD.h
 		src\CCAR.cpp = src\CCAR.cpp
 		include\CCAR.h = include\CCAR.h
 		src\CCARFACTORY.cpp = src\CCARFACTORY.cpp

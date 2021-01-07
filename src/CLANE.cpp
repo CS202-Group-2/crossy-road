@@ -9,24 +9,34 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool
 }
 
 // For loading saved game.
-CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, string textureFile, float objX, float objY, float objSpeed, float coinX, float coinY) {
+CLANE::CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, 
+	vector<pair<float, float>>& bushes, string textureFile, float objX, float objY, float objSpeed, 
+	float coinX, float coinY) {
+
 	this->index = index;
 	this->window = window;
+	this->background = background;
 	this->factory = factory;
 	if (coinX != -1e9)
 		this->coin = new CCOIN(coinX, coinY, index);
 	else
 		this->coin = nullptr;
 	if (textureFile != "none") {
-		if (textureFile[textureFile.size()-5] == 'a')
+		if (textureFile[0] == 'a')
 			this->object = new CANIMAL(textureFile, objX, objY, objSpeed);
 		else
 			this->object = new CCAR(textureFile, objX, objY, objSpeed);
 	}
 	else
 		this->object = nullptr;
+	for (auto& bush : bushes) {
+		blocks.push_back(new CTREE(bush.first, bush.second, index));
+	}
 
-	factory->initBackground(index, textureLane, isGrass);
+	if (!textureLane.loadFromFile("assets/graphics/" + background + ".png")) {
+		cout << "Cannot load background " << background << endl;
+		return;
+	}
 	setupLaneBackground();
 }
 
@@ -48,11 +58,14 @@ CLANE::~CLANE() {
 
 void CLANE::initObject(int level) {
 	// Create background for lane.
-	factory->initBackground(index, textureLane, isGrass);
+	factory->initBackground(index, textureLane, isGrass, background);
 
 	// Create coin
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
 	coin = coinFactory->initObject(index, window, level);
+	if (coin != nullptr) {
+		cout << "coin lane " << index << endl;
+	}
 
 	// Create object
 	object = factory->initObject(index, window, level);
@@ -133,14 +146,22 @@ void CLANE::shiftBackground() {
 }
 
 void CLANE::saveLane(ofstream& out) {
-	out << index << " ";
+	out << index << " " << background << " ";
 	if (object != nullptr)
 		out << object->getTextureFile() << " " << object->mX << " " << object->mY << " " << object->speedMult << " ";
 	else
 		out << "none ";
 	if (coin != nullptr && coin->sprite.getColor() != sf::Color::Transparent)
-		out << "Coin " << coin->mX << " " << coin->mY;
+		out << "Coin " << coin->mX << " " << coin->mY << " ";
 	else
+		out << "none ";
+	if (blocks.empty())
 		out << "none";
+	else {
+		out << "Tree " << blocks.size();
+		for (auto& treeBlock : blocks) {
+			out << " " << treeBlock->mX << " " << treeBlock->mY;
+		}
+	}
 	out << endl;
 }
