@@ -26,7 +26,7 @@ Menu::~Menu() {
 }
 
 void Menu::draw(sf::RenderWindow& window) {
-	if (!title.loadFromFile("assets/graphics/CrossyRoadTitle.png")) {
+	if (!title.loadFromFile("assets/graphics/TitleGame.png")) {
 		return;
 	}
 	sf::RectangleShape rectangle(sf::Vector2f(250, 350));
@@ -38,7 +38,7 @@ void Menu::draw(sf::RenderWindow& window) {
 	sf::Sprite titleText(title);
 	titleText.setOrigin(titleText.getLocalBounds().left + titleText.getLocalBounds().width / 2,
 		titleText.getLocalBounds().top + titleText.getLocalBounds().height / 2);
-	titleText.setScale(sf::Vector2f(1.25, 1.25));
+	titleText.setScale(sf::Vector2f(0.4, 0.4));
 	titleText.setPosition(window.getSize().x / 2, titlePadding/2 + 50);
 	window.draw(titleText);
 	for (int i = 0; i < Constants::GetInstance().NUMBER_OF_MENU_ITEMS; ++i) {

@@ -352,13 +352,16 @@ void CGAME::render() {
         //cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::WARNING:
+        
         //cgui->drawWarningGUI(window, warning);
         //cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GAMEOVER: {
         //cout << "Is pausing" << endl;
         cgui->drawGUI(score, level, window);
+
         soundFactory->playSound(4);
+        break;
     }
     default: {
         break;
@@ -436,7 +439,7 @@ void CGAME::pollEvents() {
                     player->setSide(CPEOPLE::DOWN);
 
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
-                        player->moveDown(), level--;
+                        player->moveDown();
                 }
                 else
                     cgui->MoveDown();
@@ -497,11 +500,11 @@ void CGAME::pollEvents() {
                         break;
                     }
                 else if (gameState == GAME_STATE::WARNING) {
-                    switch (cgui->getPressedItem()) {
-                    case 0:
+                    //switch (cgui->getPressedItem()) {
+                    //case 0:
                         gameState = GAME_STATE::MENU;
-                        break;
-                    }
+                        //break;
+                    //}
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GENDER_CHOICE) {
@@ -545,7 +548,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     }
-                    cgui->isPause = false;
+                    cgui->isPause = true;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
                     // Clear saved stuff when gameover.
