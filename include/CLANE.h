@@ -12,6 +12,7 @@
 #include "Constants.h"
 #include "CTRAFFIC.h"
 #include "CTRANSITION.h"
+#include "BackgroundCounter.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>

@@ -24,6 +24,8 @@ void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGr
     if (!textureLane.loadFromFile("assets/graphics/Road.png")) {
         return;
     }
+    BackgroundCounter::contGrass = 0;
+    BackgroundCounter::contRoad++;
 }
 
 

@@ -123,6 +123,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\BackgroundCounter.cpp" />
     <ClCompile Include="src\CANIMAL.cpp" />
     <ClCompile Include="src\CANIMALFACTORY.cpp" />
     <ClCompile Include="src\CCARFACTORY.cpp" />
@@ -147,6 +148,7 @@
     <ClCompile Include="src\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BackgroundCounter.h" />
     <ClInclude Include="include\CANIMAL.h" />
     <ClInclude Include="include\CANIMALFACTORY.h" />
     <ClInclude Include="include\CCARFACTORY.h" />
