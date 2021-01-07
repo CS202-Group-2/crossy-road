@@ -8,7 +8,7 @@ CTRAFFIC::CTRAFFIC(float startTime) {
 
 void CTRAFFIC::updateTimeTrafficStop() {
 	timeTrafficStop = (float) (rand() % 1000) / 1000 + 2;
-	if (rand() % 1000 > 800) timeTrafficStop = 0.8;
+	if (rand() % 1000 >= 750) timeTrafficStop = 0.8; //25%
 
 	cout << timeTrafficStop << endl;
 }
