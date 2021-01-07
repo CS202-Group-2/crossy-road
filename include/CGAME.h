@@ -59,6 +59,7 @@ private:
     sf::Clock clock;
     bool isGameOver = false;
     int score = 0, level = 1;
+    int coinMoveMark = 0;
     string warning;
         
     void initVariables();

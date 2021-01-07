@@ -13,7 +13,7 @@ class CPEOPLE {
 private:
     friend class CGAME;
     friend class COBJECT;
-    int mX, mY;
+    float mX, mY;
     bool mState;
     int index;
     string textureFile = "Player.png";
@@ -24,10 +24,10 @@ private:
     sf::RenderWindow* mWindow;
 public:
     static int FIG_WIDTH, FIG_HEIGHT;
-    static double FIG_SCALE;
+    static float FIG_SCALE;
     static int RIGHT, LEFT, UP, DOWN;
     static int MALE, FEMALE;
-    static double MOVEABLE_DIST;
+    static float MOVEABLE_DIST;
 
     CPEOPLE(sf::RenderWindow* window, int gender, int side = UP, int x = -1, int y = -1, int index = 0);
 

@@ -12,3 +12,7 @@ COBJECT* CTREEFACTORY::initObject(int index, sf::RenderWindow* window,int level)
 void CTREEFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass) {
 
 }
+
+bool CTREEFACTORY::isGrass() {
+    return false;
+}

@@ -12,3 +12,7 @@ void CCOINFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isG
 
 }
 //void CCOINFACTORY::shiftBackground(int index, sf::Sprite& laneBackground) {}
+
+bool CCOINFACTORY::isGrass() {
+    return false;
+}

@@ -33,7 +33,7 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 void CLANE::setupLaneBackground() {
 	textureLane.setSmooth(true);
 	laneBackground.setTexture(textureLane);
-	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
+	float scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
 	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
 }
@@ -42,16 +42,28 @@ CLANE::~CLANE() {
 	delete object;
 	delete factory;
 	delete coin;
-	for (int i = 0; i < blocks.size(); ++i) if(blocks[i] != nullptr) delete blocks[i];
+	for (int i = 0; i < blocks.size(); ++i) 
+		if(blocks[i] != nullptr) delete blocks[i];
 }
 
 void CLANE::initObject(int level) {
+	// Create background for lane.
 	factory->initBackground(index, textureLane, isGrass);
+
+	// Create coin
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
+	coin = coinFactory->initObject(index, window, level);
+
+	// Create object
+	object = factory->initObject(index, window, level);
+	int initialMove = rand() % 500;
+	if (object != nullptr)
+		object->move(initialMove, initialMove);
+
 	CTREEFACTORY* treeFactory = new CTREEFACTORY();
 	COBJECT* tree = nullptr;
-	if (isGrass) {
-		//cout << "Acas" << endl;
+	if (factory->isGrass()) {
+		cout << "Acas" << endl;
 
 		float x = rand() % (window->getSize().x - 25) + 25;
 		for (int i = 0; i < Constants::GetInstance().MAX_TREE_PER_LANE; ++i) {
@@ -63,36 +75,35 @@ void CLANE::initObject(int level) {
 	// delete tree;
 	delete treeFactory;
 
-
-
-	//CTREEFACTORY* treeFactory = new CTREEFACTORY();
-	coin = coinFactory->initObject(index, window, level);
-
-	object = factory->initObject(index, window, level);
-	int initialMove = rand() % 500;
-	if (object != nullptr) object->move(initialMove, initialMove);
-
 	delete coinFactory;
 	setupLaneBackground();
 }
 
-bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level) {
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level, int rand, CSOUNDFACTORY* soundFactory) {
 	window.draw(laneBackground);
 	shiftBackground();
 
-	if (object == nullptr) return true;
+	if (object == nullptr) {
+		for (int i = 0; i < blocks.size(); ++i)
+			if (blocks[i] != nullptr)
+				blocks[i]->update(x, y, window, player, index, rand, soundFactory);
+		return true;
+	}
 	if (object->checkOutWindow(window)) {
-
 		delete object;
 		object = factory->initObject(index, this->window, level);
 	}
 	object->trafficStop(traffic.checkStop());
 	if (coin != nullptr)
-		coin->update(x, y, window, player, index);
-	for (int i = 0; i < blocks.size(); ++i)
-		if (blocks[i] != nullptr) blocks[i]->update(x, y, window, player, index);
-	if (!object->update(x, y, window, player, index)) return false;
+		coin->update(x, y, window, player, index, rand, soundFactory);
+
+	if (!object->update(x, y, window, player, index, rand, soundFactory))
+		return false;
 	return true;
+}
+
+bool CLANE::eatCoin() {
+	return coin->interacted;
 }
 
 void CLANE::shiftLane() {
