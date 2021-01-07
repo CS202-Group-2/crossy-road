@@ -1,12 +1,12 @@
 #include "../include/CGAMEOVER.h"
 
 CGAMEOVER::CGAMEOVER () {
-	if (!jumpSoundBuffer.loadFromFile ("assets/sound/gameover.wav")) {
+	if (!jumpSoundBuffer.loadFromFile ("assets/sound/gameover-ohno.wav")) {
 		cout << "Sound file not found" << endl;
 	}
 	jumpSound.setBuffer (jumpSoundBuffer);
 	jumpSound.setLoop (false);
 }
 void CGAMEOVER::playJumpSound () {
-	jumpSound.play ();
+	if (jumpSound.getStatus() == sf::Music::Status::Stopped) jumpSound.play ();
 }

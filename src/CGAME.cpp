@@ -352,6 +352,7 @@ void CGAME::render() {
     case GAME_STATE::GAMEOVER: {
         //cout << "Is pausing" << endl;
         cgui->drawGUI(score, level, window);
+        soundFactory->playSound(4);
     }
     default: {
         break;
