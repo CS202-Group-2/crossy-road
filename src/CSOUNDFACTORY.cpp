@@ -8,6 +8,7 @@ CSOUNDFACTORY::CSOUNDFACTORY () {
 }
 
 void CSOUNDFACTORY::playSound (int state) {
+    if (muted) return;
     switch (state) {
     case 1: //background sound
         soundSystem->playBackgroundSound ();

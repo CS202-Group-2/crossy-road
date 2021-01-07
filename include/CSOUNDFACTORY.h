@@ -17,6 +17,8 @@ protected:
 	CJUMP* soundJump;
 	CEAT* soundCoin;
 	CGAMEOVER* soundLose;
+	friend class CGAME;
+	bool muted = false;
 public:
 	CSOUNDFACTORY ();
 	void playSound (int state);

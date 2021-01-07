@@ -11,6 +11,13 @@ CGUI::CGUI(float width, float height) {
 	pauseButton.setTexture(pauseButtonTexture);
 	pauseButton.setPosition(0, 0);
 	pauseButton.setScale(0.2f, 0.2f);
+	sf::FloatRect textRect = hiScoreText.getLocalBounds();
+	hiScoreText.setOrigin(textRect.left + textRect.width / 2.0f,
+		textRect.top + textRect.height / 2.0f);
+	hiScoreText.setPosition(sf::Vector2f(Constants::GetInstance().SCREEN_WIDTH / 2,
+		Constants::GetInstance().SCREEN_LENGTH / 2));
+	hiScoreText.setColor(sf::Color::Transparent);
+	
 
 }
 
@@ -41,6 +48,7 @@ void CGUI::drawGUI(int score, int level, sf::RenderWindow* window) {
 	drawGUIText(score, level, window);
 	window->draw(levelText);
 	window->draw(scoreText);
+	window->draw(hiScoreText);
 }
 
 void CGUI::drawGUIText(int score, int level, sf::RenderWindow* window) {
@@ -62,13 +70,19 @@ void CGUI::drawGUIText(int score, int level, sf::RenderWindow* window) {
 	sf::FloatRect textRect2 = levelText.getLocalBounds();
 	levelText.setOrigin(textRect2.left + textRect2.width, textRect2.top);
 
+	sf::FloatRect textRect3 = hiScoreText.getLocalBounds();
+	hiScoreText.setOrigin((textRect3.left + textRect3.width)/2, (textRect3.top + textRect3.height)/2);
+
 	scoreText.setPosition(sf::Vector2f(width - 10, 10));
 	levelText.setPosition(sf::Vector2f(width - 10, 35));
+	hiScoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
 
 	scoreText.setOutlineColor(sf::Color(0, 0, 0, 255));
 	scoreText.setOutlineThickness(3);
 	levelText.setOutlineColor(sf::Color(0, 0, 0, 255));
 	levelText.setOutlineThickness(3);
+
+	
 
 	
 	// cout << "drawn" << endl;
@@ -79,7 +93,7 @@ void CGUI::drawGameOverText(sf::RenderWindow* window) {
 	levelText.setCharacterSize(30);
 	scoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f + 100, window->getSize().y / 2.0f));
 	levelText.setPosition(sf::Vector2f(window->getSize().x / 2.0f - 100, window->getSize().y / 2.0f));
-
+	
 }
 
 void CGUI::drawGenderChoiceGUI(sf::RenderWindow* window) {
@@ -150,7 +164,7 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 	//options[3].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 4));
 }
 
-void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
+void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window, int hiScore) {
 	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		std::cout << "Failed to load" << std::endl;
 	}
@@ -165,8 +179,46 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
 	options[1].setString("Back to main menu");
+	if (hiScore > score)
+	hiScoreText.setString("High score: " + to_string(hiScore));
+	else hiScoreText.setString("You beat your high score: " + to_string(score));
+	hiScoreText.setFont(font);
+	hiScoreText.setCharacterSize(15);
+	hiScoreText.setColor(sf::Color::White);
+	hiScoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f, window->getSize().y / 2.0f));
+
 	selectedItemIndex = 0;
 
+}
+
+void CGUI::drawSettingsGUI(sf::RenderWindow* window) {
+	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
+		std::cout << "Failed to load" << std::endl;
+	}
+	options.clear();
+	options.assign(5, sf::Text());
+
+	options[0].setFont(font);
+	options[0].setColor(sf::Color::Yellow);
+	options[0].setString("Volume: Off");
+	options[0].setCharacterSize(options[0].getCharacterSize() + 15);
+
+	options[1].setFont(font);
+	options[1].setColor(sf::Color::White);
+	options[1].setString("Volume: On");
+
+	options[2].setFont(font);
+	options[2].setColor(sf::Color::White);
+	options[2].setString("Gender: Male");
+
+	options[3].setFont(font);
+	options[3].setColor(sf::Color::White);
+	options[3].setString("Gender: Female");
+
+	options[4].setFont(font);
+	options[4].setColor(sf::Color::White);
+	options[4].setString("Return to main menu");
+	selectedItemIndex = 0;
 }
 
 CGUI::~CGUI() {
