@@ -201,12 +201,14 @@ void CGAME::updateSound() {
 }
 
 float logLevel(int level) {
-    return level > 3 ? 1.5 * log(level * 0.5) / log(2) : 1;
+    return level > 3 ? 1.25 * log(level * 0.5) / log(2) : 1;
 }
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
-    for (deque<CLANE*>::iterator it = lanes.end()-1; it != lanes.begin(); --it) {
+
+    for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
+
         if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
             gameState = GAME_STATE::GAMEOVER;
             cgui->isPause = true;
@@ -236,7 +238,7 @@ void CGAME::shiftLanesUp() {
     CTRANSITION::offset().reset();
 
     //cout << "Called" << endl;
-    for (auto it = lanes.end()-1; it != lanes.begin(); --it) {
+    for (auto it = lanes.rbegin(); it != lanes.rend(); ++it) {
         (*it)->shiftLane();
     }
     CLANE* lane = lanes.front();
