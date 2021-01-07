@@ -37,7 +37,7 @@ void Menu::draw(sf::RenderWindow& window) {
 	sf::RectangleShape rectangle(sf::Vector2f(250, 350));
 	rectangle.setOrigin(rectangle.getLocalBounds().left + rectangle.getLocalBounds().width / 2,
 		rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
-	rectangle.setPosition(window.getSize().x / 2, (window.getSize().y - titlePadding) / 2 + titlePadding);
+	rectangle.setPosition(window.getSize().x / 2, (window.getSize().y - titlePadding) / 2 + titlePadding + 25);
 	rectangle.setFillColor(sf::Color(0, 0, 0, 200));
 	window.draw(rectangle);
 	sf::Sprite titleText(title);
@@ -51,9 +51,9 @@ void Menu::draw(sf::RenderWindow& window) {
 		menu[i].setOrigin(textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f);
 		menu[i].setPosition(sf::Vector2f(window.getSize().x / 2.0f, 
-			(window.getSize().y-titlePadding) / 
+			(window.getSize().y-titlePadding - 50) / 
 			(Constants::GetInstance().NUMBER_OF_MENU_ITEMS + 1) * 
-			(i+1) + titlePadding));
+			(i+1) + titlePadding + 50));
 		window.draw(menu[i]);
 	}
 }
