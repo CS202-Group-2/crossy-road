@@ -8,5 +8,5 @@ CGAMEOVER::CGAMEOVER () {
 	jumpSound.setLoop (false);
 }
 void CGAMEOVER::playJumpSound () {
-	jumpSound.play ();
+	if (jumpSound.getStatus() == sf::Music::Status::Stopped) jumpSound.play ();
 }

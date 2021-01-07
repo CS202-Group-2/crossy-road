@@ -33,7 +33,7 @@ CLANE::CLANE(int index, sf::RenderWindow* window, COBJECTFACTORY* factory, strin
 void CLANE::setupLaneBackground() {
 	textureLane.setSmooth(true);
 	laneBackground.setTexture(textureLane);
-	double scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
+	float scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
 	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
 }

@@ -20,6 +20,10 @@ COBJECT::COBJECT(float x, float y) {
 	tilted = false;
 }
 
+float logXFactor(int level) {
+	return log((float) level / 3) / log(1.3);
+}
+
 void COBJECT::initSpeedMult(int level) {
 	/*int m = max((int)(10 * log((float)level / 2) / log(2)), 2) * 100;
 
@@ -27,10 +31,9 @@ void COBJECT::initSpeedMult(int level) {
 
 
 	speedMult = (float) (rand() % 200) / 100 + 2;
-	if (level > 5) {
-		bool xFactor = (rand() % 100 < 10);
-		if (xFactor) speedMult = 30;
-	}
+
+	bool xFactor = ((rand() % 1000) < 10 * logXFactor(level));
+	if (xFactor) speedMult = 20;
 	//cout << speedMult << endl;
 
 	speedMult /= Constants::GetInstance().FPS / 30;
@@ -58,7 +61,7 @@ void COBJECT::move(float x, float y) {
 }
 
 void COBJECT::drawObject(sf::RenderWindow& window) {
-	sprite.setPosition(sf::Vector2f(mX + CTRANSITION::offset().getObjectX(), 
+	sprite.setPosition(sf::Vector2f(mX + CTRANSITION::offset().getObjectX(),
 									mY + CTRANSITION::offset().getObjectY()));
 	if (checkOutWindow (window) == 0) window.draw (sprite);
 }
@@ -78,7 +81,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 
 int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index, int rand, CSOUNDFACTORY* soundFactory) {
 	int oldX = mX, oldY = mY;
-	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK) 
+	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK)
 		move(x, y);
 
 	// Random coin movement
@@ -92,7 +95,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			tilted = true;
 		}
 	}
-	
+
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
 		cout << "Hit by " << type << endl;
@@ -107,7 +110,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 		else if (type == Constants::GetInstance().BLOCK) {
-			
+
 		}
 	}
 	drawObject(window);

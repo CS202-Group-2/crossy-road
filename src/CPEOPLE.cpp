@@ -3,11 +3,11 @@
 int CPEOPLE::RIGHT = 0, CPEOPLE::UP = 1, CPEOPLE::LEFT = 2, CPEOPLE::DOWN = 3;
 int CPEOPLE::MALE = 0, CPEOPLE::FEMALE = 1;
 int CPEOPLE::FIG_WIDTH = 167, CPEOPLE::FIG_HEIGHT = 373;
-double CPEOPLE::FIG_SCALE = 0.2;
-double CPEOPLE::MOVEABLE_DIST = 300;
+float CPEOPLE::FIG_SCALE = 0.2;
+float CPEOPLE::MOVEABLE_DIST = 300;
 
-//double CPEOPLE::ALPHA = 30 * 3.14 / 180, CPEOPLE::BETA = 40 * 3.14 / 180;
-//double CPEOPLE::PLAYER_STEP = 5;
+//float CPEOPLE::ALPHA = 30 * 3.14 / 180, CPEOPLE::BETA = 40 * 3.14 / 180;
+//float CPEOPLE::PLAYER_STEP = 5;
 
 CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, int index) {
     setGender(gender);
@@ -34,8 +34,8 @@ bool CPEOPLE::canMoveDown() {
     bool canDecreaseX = (dx >= 0);
 
     bool canIncreaseY = (
-        (double)mSprite.getGlobalBounds().top
-        + (double)mSprite.getGlobalBounds().height
+        (float)mSprite.getGlobalBounds().top
+        + (float)mSprite.getGlobalBounds().height
         + Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA)
         <= mWindow->getSize().y
         );
@@ -55,8 +55,8 @@ bool CPEOPLE::canMoveUp() {
 
 bool CPEOPLE::canMoveRight() {
     // In moving right, we must increase x and increase y with respect to ALPHA.
-    float dx = (double)mSprite.getGlobalBounds().left
-        + (double)mSprite.getGlobalBounds().width
+    float dx = (float)mSprite.getGlobalBounds().left
+        + (float)mSprite.getGlobalBounds().width
         + Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance().ALPHA);
     bool canIncreaseX = (dx <= mWindow->getSize().x);
 
