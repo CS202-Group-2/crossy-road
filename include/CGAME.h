@@ -58,6 +58,7 @@ private:
     CGUI* cgui = nullptr;
     sf::Clock clock;
     bool isGameOver = false;
+    bool pressed = false;
     int score = 0, level = 1;
     int coinMoveMark = 0;
     string warning;

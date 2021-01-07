@@ -206,7 +206,7 @@ float logLevel(int level) {
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
-    for (deque<CLANE*>::iterator it = lanes.end(); it != lanes.begin(); --it) {
+    for (deque<CLANE*>::iterator it = lanes.end()-1; it != lanes.begin(); --it) {
         if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
             gameState = GAME_STATE::GAMEOVER;
             cgui->isPause = true;
@@ -236,7 +236,7 @@ void CGAME::shiftLanesUp() {
     CTRANSITION::offset().reset();
 
     //cout << "Called" << endl;
-    for (auto it = lanes.end(); it != lanes.begin(); --it) {
+    for (auto it = lanes.end()-1; it != lanes.begin(); --it) {
         (*it)->shiftLane();
     }
     CLANE* lane = lanes.front();
@@ -285,9 +285,9 @@ bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
         break;
 
     }
-    int padding = 10;
+    int padding = 20;
     for (int i = 0; i < lane->blocks.size(); ++i) {
-        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - 20 && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
+        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - padding && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
             + lane->blocks[i]->sprite.getGlobalBounds().width - padding) return false;
     }
     return true;
@@ -418,9 +418,13 @@ void CGAME::pollEvents() {
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
-                else if (gameState == GAME_STATE::LEVEL_1) {
+                else if (gameState == GAME_STATE::LEVEL_1 ) {
+                    if (clock.getElapsedTime().asSeconds() >= 0.1) {
+                        clock.restart();
+                    }
+                    else break;
                     player->setSide(CPEOPLE::UP);
-
+                    pressed = true;
                     if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
                         player->moveUp(), level++;
                     else if (checkMove(findLane(player->index - 1), player, 1)) {
@@ -435,9 +439,9 @@ void CGAME::pollEvents() {
                 soundFactory->playSound (2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
-                else if (gameState == GAME_STATE::LEVEL_1) {
+                else if (gameState == GAME_STATE::LEVEL_1 && !pressed) {
                     player->setSide(CPEOPLE::DOWN);
-
+                    pressed = true;
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
                         player->moveDown();
                 }
@@ -573,6 +577,7 @@ void CGAME::pollEvents() {
                 }
 
             }
+        
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {
             case sf::Mouse::Left: {
