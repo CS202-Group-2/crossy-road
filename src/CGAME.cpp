@@ -4,6 +4,10 @@ CGAME::CGAME() {
     //srand(time(NULL));
     this->initVariables();
     this->initWindow();
+
+    window->draw(logo);
+    window->display();
+
     this->initSound ();
     this->initLanes();
     //this->initVehicle();
@@ -97,6 +101,7 @@ void CGAME::resetGame() {
         player->resetPlayer();
     clearSavedGame();
     level = 0;
+    isGameOver = false;
     coinMoveMark = 0;
     initLanes();
 }
@@ -121,14 +126,16 @@ bool CGAME::loadGame() {
     lanes.clear();
 
     int index;
-    string textureFile, texture;
-    float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, speed = -1e9;
+    string textureFile, texture, background;
+    float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, bX, bY, speed = -1e9;
+    int bushCount;
     CLANE* lane = nullptr;
     COBJECTFACTORY* factory = nullptr;
-    while (infile >> index >> textureFile) {
+    vector<pair<float, float>> bushes;
+    while (infile >> index >> background >> textureFile) {
         if (textureFile != "none") {
             infile >> x >> y >> speed;
-            if (textureFile[textureFile.size()-5] == 'a')
+            if (textureFile[0] == 'a')
                 factory = new CANIMALFACTORY();
             else
                 factory = new CCARFACTORY();
@@ -138,8 +145,17 @@ bool CGAME::loadGame() {
         infile >> texture;
         if (texture != "none")
             infile >> cX >> cY;
-        lane = new CLANE(index, this->window, factory, textureFile, x, y, speed, cX, cY);
+        infile >> texture;
+        if (texture != "none") {
+            infile >> bushCount;
+            while (bushCount--) {
+                infile >> bX >> bY;
+                bushes.push_back(make_pair(bX, bY));
+            }
+        }
+        lane = new CLANE(index, background, this->window, factory, bushes, textureFile, x, y, speed, cX, cY);
         lanes.push_back(lane);
+        bushes.clear();
     }
 
     if (lanes.empty())
@@ -207,15 +223,25 @@ float logLevel(int level) {
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
+
     for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
-        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
-            gameState = GAME_STATE::GAMEOVER;
-            cgui->isPause = true;
-            cgui->drawGameOverGUI(score, level, window);
+        int canUpdateLane = (*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory);
+        if (canUpdateLane == 0 && !isGameOver) {
+            isGameOver = true;
+            dieClock.restart();
+            player->setDie();
+            if (score > hiScore)
+              hiScore = score;
         };
+    }
+    if (isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
+        gameState = GAME_STATE::GAMEOVER;
+        cgui->isPause = true;
+        cgui->drawGameOverGUI(score, level, window, hiScore);
     }
     coinMoveMark++;
     this->score = player->score;
+
 }
 
 void CGAME::createNewLane(int index, int level) {
@@ -223,7 +249,7 @@ void CGAME::createNewLane(int index, int level) {
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 20) // Initially, players always stand on grass 
+    if (index == 7 || k < 30) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, level);
@@ -286,9 +312,9 @@ bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
         break;
 
     }
-    int padding = 10;
+    int padding = 20;
     for (int i = 0; i < lane->blocks.size(); ++i) {
-        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - 20 && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
+        if (coordX >= lane->blocks[i]->sprite.getGlobalBounds().left - padding && coordX <= lane->blocks[i]->sprite.getGlobalBounds().left
             + lane->blocks[i]->sprite.getGlobalBounds().width - padding) return false;
     }
     return true;
@@ -336,8 +362,6 @@ void CGAME::render() {
     case GAME_STATE::LOGO: {
         window->draw(logo);
         window->display();
-        sf::Clock clock;
-        while (clock.getElapsedTime().asSeconds() < 2);
         window->draw(background);
         gameState = GAME_STATE::MENU;
         break;
@@ -346,7 +370,7 @@ void CGAME::render() {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        if (!isGameOver) player->render();
+        player->render(isGameOver);
         cgui->drawGUI(score, level, window);
         break;
     }
@@ -354,28 +378,28 @@ void CGAME::render() {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        if (!isGameOver) player->render();
+        player->render(isGameOver);
         cgui->drawGUI(score, level, window);
         menu->draw(*window);
         break;
     }
     case GAME_STATE::PAUSE:
-        //cgui->drawGUI(score, level, window);
+
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GENDER_CHOICE:
-        //cgui->drawGenderChoiceGUI(window);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::WARNING:
-        
+
         //cgui->drawWarningGUI(window, warning);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GAMEOVER: {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        if (!isGameOver) player->render();
+        player->render(isGameOver);
 
         cgui->drawGUI(score, level, window);
         soundFactory->playSound(4);
@@ -429,17 +453,27 @@ void CGAME::pollEvents() {
         case sf::Event::KeyPressed:
             switch (event.key.code) {
             case sf::Keyboard::Escape:
-                window->close();
+                if (gameState == GAME_STATE::LEVEL_1) {
+                    cout << "Paused the game" << endl;
+                    gameState = GAME_STATE::PAUSE;
+                    cgui->drawPauseGUI(score, level, window);
+                    cgui->isPause = true;
+                }
+
                 break;
             case sf::Keyboard::Up:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
                 else if (gameState == GAME_STATE::LEVEL_1) {
+                    if (clock.getElapsedTime().asSeconds() >= 0.1) {
+                        clock.restart();
+                    }
+                    else break;
                     player->setSide(CPEOPLE::UP);
-
-                    if (player->canMoveUp() && checkMove(findLane(player->index-1), player, 1))
+                    pressed = true;
+                    if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
                         player->moveUp(), level++;
                     else if (checkMove(findLane(player->index - 1), player, 1)) {
                         level++;
@@ -450,12 +484,12 @@ void CGAME::pollEvents() {
                     cgui->MoveUp();
                 break;
             case sf::Keyboard::Down:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::LEVEL_1) {
                     player->setSide(CPEOPLE::DOWN);
-
+                    pressed = true;
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
                         player->moveDown();
                 }
@@ -463,14 +497,14 @@ void CGAME::pollEvents() {
                     cgui->MoveDown();
                 break;
             case sf::Keyboard::Left:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 player->setSide(CPEOPLE::LEFT);
 
                 if (player->canMoveLeft() && checkMove(findLane(player->index), player, 2))
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
-                soundFactory->playSound (2);
+                soundFactory->playSound(2);
                 player->setSide(CPEOPLE::RIGHT);
 
                 if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
@@ -513,6 +547,13 @@ void CGAME::pollEvents() {
                         }
                         break;
                     case 2:
+                        cout << "Enter settings" << endl;
+                        gameState = GAME_STATE::SETTINGS;
+                        cgui->isPause = true;
+                        cgui->drawSettingsGUI(window);
+                        break;
+
+                    case 3:
                         cout << "Exited the game" << endl;
                         window->close();
                         break;
@@ -520,9 +561,9 @@ void CGAME::pollEvents() {
                 else if (gameState == GAME_STATE::WARNING) {
                     //switch (cgui->getPressedItem()) {
                     //case 0:
-                        gameState = GAME_STATE::MENU;
-                        //break;
-                    //}
+                    gameState = GAME_STATE::MENU;
+                    //break;
+                //}
                     cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GENDER_CHOICE) {
@@ -548,7 +589,7 @@ void CGAME::pollEvents() {
                     gameState = GAME_STATE::LEVEL_1;
                 }
                 else if (gameState == GAME_STATE::PAUSE) {
-                    soundFactory->playSound (2);
+                    soundFactory->playSound(2);
                     string file = "";
                     switch (cgui->getPressedItem()) {
                     case 2:
@@ -566,7 +607,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     }
-                    cgui->isPause = true;
+                    cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
                     // Clear saved stuff when gameover.
@@ -576,20 +617,51 @@ void CGAME::pollEvents() {
                     // soundFactory->playSound (4);
                     switch (cgui->getPressedItem()) {
                     case 0:
-                       // soundFactory->playSound (2);
+                        // soundFactory->playSound (2);
                         cout << "Restarted the game" << endl;
                         gameState = GAME_STATE::LEVEL_1;
                         resetGame();
                         break;
                     case 1:
-                       // soundFactory->playSound (2);
+                        // soundFactory->playSound (2);
                         cout << "Exit to main menu" << endl;
                         gameState = GAME_STATE::MENU;
                         break;
                     }
                     cgui->isPause = false;
                 }
+                else if (gameState == GAME_STATE::SETTINGS) {
+                    switch (cgui->getPressedItem()) {
+                    case 0:
+                        // soundFactory->playSound (2);
+                        cout << "Disabled volume" << endl;
+                        this->soundFactory->muted = true;
+                        break;
+                    case 1:
+                        // soundFactory->playSound (2);
+                        cout << "Enable sound" << endl;
+                        this->soundFactory->muted = false;
+                        break;
+                    }
+                    case 2:
+                        // soundFactory->playSound (2);
+                        cout << "Set gender to boy" << endl;
+                        this->player->setGender(0);
+                        break;
 
+                    case 3:
+                        // soundFactory->playSound (2);
+                        cout << "Set gender to girl" << endl;
+                        this->player->setGender(1);
+                        break;
+
+                    case 4:
+                        // soundFactory->playSound (2);
+                        cout << "Exit to main menu" << endl;
+                        gameState = GAME_STATE::MENU;
+                        cgui->isPause = false;
+                        break;
+                }
             }
         case sf::Event::MouseButtonPressed:
             switch (event.mouseButton.button) {

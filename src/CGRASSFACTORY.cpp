@@ -6,7 +6,8 @@ COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window, int leve
 
 }
 
-void CGRASSFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass) {
+void CGRASSFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass, string& background) {
+    background = "Grass";
     if (!textureLane.loadFromFile("assets/graphics/Grass.png")) {
         return;
     }

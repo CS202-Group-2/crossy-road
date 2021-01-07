@@ -3,7 +3,6 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
-#include "CVEHICLE.h"
 #include "CTRANSITION.h"
 #include <fstream>
 #include <math.h>
@@ -40,13 +39,14 @@ public:
     void setSide(int side = UP);
     void addScore(int amount);
 
-    void render();
+    void setDie();
+    void render(bool isGameOver);
 
     void moveUp();
     void moveLeft();
     void moveRight();
     void moveDown();
-    //bool isImpact(const COBJECT*&);
+
     bool isImpact(const COBJECT*&);
     bool isFinish();
     bool isDead();

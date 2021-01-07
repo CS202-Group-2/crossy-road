@@ -19,7 +19,8 @@ COBJECT* CCARFACTORY::initObject(int index, sf::RenderWindow* window, int level)
     //return object;
 }
 
-void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass) {
+void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass, string& background) {
+    background = "Road";
     if (!textureLane.loadFromFile("assets/graphics/Road.png")) {
         return;
     }

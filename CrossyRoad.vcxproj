@@ -135,11 +135,8 @@
     <ClCompile Include="src\CJUMP.cpp" />
     <ClCompile Include="src\CLANE.cpp" />
     <ClCompile Include="src\COBJECT.cpp" />
-    <ClCompile Include="src\CBIRD.cpp" />
     <ClCompile Include="src\CCAR.cpp" />
-    <ClCompile Include="src\CDINAUSOR.cpp" />
     <ClCompile Include="src\CGAME.cpp" />
-    <ClCompile Include="src\COBJECTFACTORY.cpp" />
     <ClCompile Include="src\CPEOPLE.cpp" />
     <ClCompile Include="src\CSOUND.cpp" />
     <ClCompile Include="src\CSOUNDFACTORY.cpp" />
@@ -147,8 +144,6 @@
     <ClCompile Include="src\CTREE.cpp" />
     <ClCompile Include="src\CTREEFACTORY.cpp" />
     <ClCompile Include="src\CTRANSITION.cpp" />
-    <ClCompile Include="src\CTRUCK.cpp" />
-    <ClCompile Include="src\CVEHICLE.cpp" />
     <ClCompile Include="src\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +159,7 @@
     <ClInclude Include="include\CJUMP.h" />
     <ClInclude Include="include\CLANE.h" />
     <ClInclude Include="include\COBJECT.h" />
-    <ClInclude Include="include\CBIRD.h" />
     <ClInclude Include="include\CCAR.h" />
-    <ClInclude Include="include\CDINAUSOR.h" />
     <ClInclude Include="include\CGAME.h" />
     <ClInclude Include="include\COBJECTFACTORY.h" />
     <ClInclude Include="include\Constants.h" />
@@ -177,8 +170,6 @@
     <ClInclude Include="include\CTREE.h" />
     <ClInclude Include="include\CTREEFACTORY.h" />
     <ClInclude Include="include\CTRANSITION.h" />
-    <ClInclude Include="include\CTRUCK.h" />
-    <ClInclude Include="include\CVEHICLE.h" />
     <ClInclude Include="include\Menu.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
