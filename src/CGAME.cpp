@@ -347,16 +347,17 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::PAUSE:
-        //cgui->drawGUI(score, level, window);
+
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GENDER_CHOICE:
         //cgui->drawGenderChoiceGUI(window);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::WARNING:
         
         //cgui->drawWarningGUI(window, warning);
-        //cgui->drawGUI(score, level, window);
+        cgui->drawGUI(score, level, window);
         //break;
     case GAME_STATE::GAMEOVER: {
         //cout << "Is pausing" << endl;
@@ -413,7 +414,13 @@ void CGAME::pollEvents() {
         case sf::Event::KeyPressed:
             switch (event.key.code) {
             case sf::Keyboard::Escape:
-                window->close();
+                if (gameState == GAME_STATE::LEVEL_1) {
+                    cout << "Paused the game" << endl;
+                    gameState = GAME_STATE::PAUSE;
+                    cgui->drawPauseGUI(score, level, window);
+                    cgui->isPause = true;
+                }
+                
                 break;
             case sf::Keyboard::Up:
                 soundFactory->playSound (2);
@@ -554,7 +561,7 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::LEVEL_1;
                         break;
                     }
-                    cgui->isPause = true;
+                    cgui->isPause = false;
                 }
                 else if (gameState == GAME_STATE::GAMEOVER) {
                     // Clear saved stuff when gameover.

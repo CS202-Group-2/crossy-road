@@ -79,6 +79,7 @@ void CGUI::drawGameOverText(sf::RenderWindow* window) {
 	levelText.setCharacterSize(30);
 	scoreText.setPosition(sf::Vector2f(window->getSize().x / 2.0f + 100, window->getSize().y / 2.0f));
 	levelText.setPosition(sf::Vector2f(window->getSize().x / 2.0f - 100, window->getSize().y / 2.0f));
+
 }
 
 void CGUI::drawGenderChoiceGUI(sf::RenderWindow* window) {
@@ -102,9 +103,11 @@ void CGUI::drawGenderChoiceGUI(sf::RenderWindow* window) {
 	options[2].setFont(font);
 	options[2].setColor(sf::Color::White);
 	options[2].setString("Girl");
+	selectedItemIndex = 0;
 }
 
 void CGUI::drawWarningGUI(sf::RenderWindow* window, string warning) {
+
 	if (!font.loadFromFile(Constants::GetInstance().menuFont)) {
 		std::cout << "Failed to load" << std::endl;
 	}
@@ -115,6 +118,7 @@ void CGUI::drawWarningGUI(sf::RenderWindow* window, string warning) {
 	options[0].setFont(font);
 	options[0].setColor(sf::Color::Yellow);
 	options[0].setString(warning);
+	selectedItemIndex = 0;
 }
 
 void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
@@ -137,6 +141,7 @@ void CGUI::drawPauseGUI(int score, int level, sf::RenderWindow* window) {
 	options[2].setFont(font);
 	options[2].setColor(sf::Color::White);
 	options[2].setString("Save and exit");
+	selectedItemIndex = 0;
 	//options[2].setPosition(sf::Vector2f(width / 2, height / (options.size() + 1) * 3));
 	
 	//options[3].setFont(font);
@@ -160,6 +165,7 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window) {
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
 	options[1].setString("Back to main menu");
+	selectedItemIndex = 0;
 
 }
 
