@@ -13,4 +13,5 @@ protected:
 public:
 	virtual void initBackground(int index, sf::Texture& textureLane, bool &isGrass) = 0;
 	virtual COBJECT* initObject(int index, sf::RenderWindow* window, int level) = 0;
+	virtual bool isGrass() = 0;
 };

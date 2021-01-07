@@ -12,3 +12,7 @@ void CGRASSFACTORY::initBackground(int index, sf::Texture& textureLane, bool& is
     }
     isGrass = true;
 }
+
+bool CGRASSFACTORY::isGrass() {
+    return true;
+}

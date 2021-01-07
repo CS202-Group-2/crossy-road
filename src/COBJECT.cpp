@@ -4,11 +4,12 @@
 #include <time.h>
 
 COBJECT::COBJECT() {
-
+	tilted = false;
 }
 
 COBJECT::COBJECT(int level) {
 	initSpeedMult(level);
+	tilted = false;
 }
 
 COBJECT::COBJECT(float x, float y) {
@@ -16,6 +17,7 @@ COBJECT::COBJECT(float x, float y) {
 	this->mY = y;
 	initY = y;
 	initSpeedMult();
+	tilted = false;
 }
 
 void COBJECT::initSpeedMult(int level) {
@@ -25,9 +27,10 @@ void COBJECT::initSpeedMult(int level) {
 
 
 	speedMult = (float) (rand() % 200) / 100 + 2;
-
-	bool xFactor = (rand() % 100 < 10);
-	if (xFactor) speedMult = 30;
+	if (level > 5) {
+		bool xFactor = (rand() % 100 < 10);
+		if (xFactor) speedMult = 30;
+	}
 	//cout << speedMult << endl;
 
 	speedMult /= Constants::GetInstance().FPS / 30;
@@ -73,17 +76,34 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 	//	+ sprite.getGlobalBounds().width - padding);
 }
 
-int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index) {
+int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index, int rand, CSOUNDFACTORY* soundFactory) {
 	int oldX = mX, oldY = mY;
-	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK) move(x, y);
+	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK) 
+		move(x, y);
+
+	// Random coin movement
+	if (type == Constants::GetInstance().INTERACTABLE && rand % 30 == 0) {
+		if (tilted) {
+			move(0, 30);
+			tilted = false;
+		}
+		else {
+			move(0, -30);
+			tilted = true;
+		}
+	}
+	
 	if (checkCollision(player, index)) {
 		// TODO: implement onCollision
+		cout << "Hit by " << type << endl;
+
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
 			return 0;
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
 			interacted = true;
+			soundFactory->playSound(3);
 			//cout << "Earned aksjddhkajsfhkshdflkshdklfhskdlfh" << endl;
 		}
 		else if (type == Constants::GetInstance().BLOCK) {

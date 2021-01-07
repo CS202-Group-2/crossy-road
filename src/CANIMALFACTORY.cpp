@@ -18,3 +18,7 @@ void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane, bool &i
     }
     if (filepath == "assets/graphics/Grass.png") isGrass = true;
 }
+
+bool CANIMALFACTORY::isGrass() {
+    return false;
+}

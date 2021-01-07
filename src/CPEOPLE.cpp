@@ -127,6 +127,15 @@ void CPEOPLE::moveUp() {
     index--;
 }
 
+void CPEOPLE::moveDown() {
+    cout << "down\n";
+    // Decrease x and Increase y with respect to BETA.
+    mX += -Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
+    mY += Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
+    //mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
+    index++;
+}
+
 void CPEOPLE::moveLeft() {
     cout << "left\n";
     // Decrease x and Decrease y with respect to ALPHA.
@@ -143,14 +152,6 @@ void CPEOPLE::moveRight() {
     //mSprite.move(Constants::GetInstance().PLAYER_STEP_HORIZONTAL * cos(Constants::GetInstance ().ALPHA), Constants::GetInstance ().PLAYER_STEP_HORIZONTAL * sin(Constants::GetInstance ().ALPHA));
 }
 
-void CPEOPLE::moveDown() {
-    cout << "down\n";
-    // Decrease x and Increase y with respect to BETA.
-    mX += -Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance().BETA);
-    mY += Constants::GetInstance().PLAYER_STEP * sin(Constants::GetInstance().BETA);
-    //mSprite.move(-Constants::GetInstance().PLAYER_STEP * cos(Constants::GetInstance ().BETA), Constants::GetInstance ().PLAYER_STEP * sin(Constants::GetInstance ().BETA));
-    index++;
-}
 
 //bool CPEOPLE::isImpact(const CVEHICLE*&) {
   //  return false;

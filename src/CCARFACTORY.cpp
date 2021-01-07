@@ -24,3 +24,8 @@ void CCARFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGr
         return;
     }
 }
+
+
+bool CCARFACTORY::isGrass() {
+    return false;
+}

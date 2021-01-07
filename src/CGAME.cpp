@@ -10,6 +10,7 @@ CGAME::CGAME() {
     //this->player->resetPlayer();
     this->player = nullptr;
     level = 0;
+    coinMoveMark = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
 }
 
@@ -73,6 +74,7 @@ bool CGAME::haveSavedGame() {
     }
     int t = -1e9, s = -1e9;
     loadedGame >> t >> s;
+    loadedGame.close();
     // Have no saved game --> Hide load option
     if (s == -1e9)
         return false;
@@ -94,6 +96,7 @@ void CGAME::resetGame() {
         player->resetPlayer();
     clearSavedGame();
     level = 0;
+    coinMoveMark = 0;
     initLanes();
 }
 
@@ -203,21 +206,23 @@ float logLevel(int level) {
 
 void CGAME::updateLanes() {
     //srand(time(NULL));
-    for (deque<CLANE*>::iterator it = lanes.begin(); it != lanes.end(); it++)
-        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level) == 0) {
-           gameState = GAME_STATE::GAMEOVER;
-           cgui->isPause = true;
-           cgui->drawGameOverGUI(score, level, window);
+    for (deque<CLANE*>::iterator it = lanes.end(); it != lanes.begin(); --it) {
+        if ((*it)->updatePosObject(/*level/5+1*/logLevel(level), /*level/5+1*/ logLevel(level), *window, *player, *traffic, level, coinMoveMark, soundFactory) == 0) {
+            gameState = GAME_STATE::GAMEOVER;
+            cgui->isPause = true;
+            cgui->drawGameOverGUI(score, level, window);
         };
+    }
+    coinMoveMark++;
     this->score = player->score;
 }
 
 void CGAME::createNewLane(int index, int level) {
-    // We want 30% for animals, 60% for cars and 10% for grass.
+    // We want 20% for animals, 60% for cars and 20% for grass.
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 10) // Initially, players always stand on grass
+    if (index == 7 || k < 20) // Initially, players always stand on grass 
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, level);
@@ -231,7 +236,7 @@ void CGAME::shiftLanesUp() {
     CTRANSITION::offset().reset();
 
     //cout << "Called" << endl;
-    for (auto it = lanes.begin(); it != lanes.end(); ++it) {
+    for (auto it = lanes.end(); it != lanes.begin(); --it) {
         (*it)->shiftLane();
     }
     CLANE* lane = lanes.front();
@@ -239,7 +244,7 @@ void CGAME::shiftLanesUp() {
     lanes.pop_front();
     /*lane = new CLANE(0, new CCARFACTORY(), window);
     lanes.push_back(lane);*/
-    createNewLane(0, level);
+    createNewLane(-10, level);
 }
 
 void CGAME::initLanes() {
@@ -250,7 +255,7 @@ void CGAME::initLanes() {
 
 
     CLANE* lane;
-    for (int i = 0; i < Constants::GetInstance().MAX_NUMBER_OF_LANES; i++) {
+    for (int i = Constants::GetInstance().MAX_NUMBER_OF_LANES - 1; i >=0 ; --i) {
         createNewLane(i-10, level);
     }
 }
