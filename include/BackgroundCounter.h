@@ -8,5 +8,6 @@ class BackgroundCounter
 public:
 	static int contGrass;
 	static int contRoad;
+	static int contRail;
 };
 

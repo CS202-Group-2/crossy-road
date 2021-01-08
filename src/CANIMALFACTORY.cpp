@@ -12,14 +12,22 @@ COBJECT* CANIMALFACTORY::initObject(int index, sf::RenderWindow* window, int lev
 void CANIMALFACTORY::initBackground(int index, sf::Texture& textureLane, bool &isGrass, string& background) {
     int k = rand() % 100;
     string filepath = "assets/graphics/";
-    if (k < 50) {
+    if (k < 33) {
         background = "Road";
         BackgroundCounter::contGrass = 0;
         BackgroundCounter::contRoad++;
+        BackgroundCounter::contRail = 0;
     }
-    else {
+    else if (k < 66) {
         background = "Grass";
         BackgroundCounter::contGrass++;
+        BackgroundCounter::contRoad = 0;
+        BackgroundCounter::contRail = 0;
+    }
+    else {
+        background = "Rail";
+        BackgroundCounter::contRail++;
+        BackgroundCounter::contGrass = 0;
         BackgroundCounter::contRoad = 0;
     }
     filepath += background + ".png";

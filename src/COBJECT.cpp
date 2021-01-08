@@ -99,8 +99,11 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 	if (checkCollision(player, index)) {
 		cout << "Hit by " << type << endl;
 
-		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL)
+		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL) {
+			drawObject(window);
 			return 0;
+		}
+			
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -118,7 +121,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 
 void COBJECT::shiftObject() {
 	mX = mX - Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA);
-	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA) - 1;
+	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA) - 2;
 }
 
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {

@@ -104,6 +104,7 @@ void CGAME::resetGame() {
     clearSavedGame();
     level = 0;
     isGameOver = false;
+    pressed = false;
     coinMoveMark = 0;
     initLanes();
 }
@@ -479,12 +480,14 @@ void CGAME::pollEvents() {
 
                 break;
             case sf::Keyboard::Up:
+                
                 soundFactory->playSound(2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveUp();
                 else if (gameState == GAME_STATE::LEVEL_1) {
-                    if (clock.getElapsedTime().asSeconds() >= 0.1) {
+                    if (isGameOver) break;
+                    if (clock.getElapsedTime().asSeconds() >= 0.05) {
                         player->setSide(CPEOPLE::UP);
                        
                         if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
@@ -506,6 +509,7 @@ void CGAME::pollEvents() {
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
                 else if (gameState == GAME_STATE::LEVEL_1) {
+                    if (isGameOver) break;
                     player->setSide(CPEOPLE::DOWN);
                     
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
@@ -515,6 +519,7 @@ void CGAME::pollEvents() {
                     cgui->MoveDown();
                 break;
             case sf::Keyboard::Left:
+                if (isGameOver) break;
                 soundFactory->playSound(2);
                 player->setSide(CPEOPLE::LEFT);
 
@@ -522,7 +527,9 @@ void CGAME::pollEvents() {
                     player->moveLeft();
                 break;
             case sf::Keyboard::Right:
+                if (isGameOver) break;
                 soundFactory->playSound(2);
+               // if (isGameOver) break;
                 player->setSide(CPEOPLE::RIGHT);
 
                 if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
