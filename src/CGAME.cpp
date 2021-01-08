@@ -13,10 +13,47 @@ CGAME::CGAME() {
     //this->initVehicle();
     //this->player = getPlayer();
     //this->player->resetPlayer();
-    this->player = getPlayer(true);
+    player = nullptr;
     level = 0;
     coinMoveMark = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
+
+
+    dieTextTexture = &CASSET::GetInstance().textureMap["dietext"];
+    dieText.setTexture(*dieTextTexture);
+    dieText.setScale(1.5, 1.5);
+    dieText.setPosition(40, 250);
+
+    highscoreTexture = &CASSET::GetInstance().textureMap["highscore"];
+    highscore.setTexture(*highscoreTexture);
+    highscore.setScale(0.9, 0.9);
+    highscore.setPosition(60, 325);
+
+    yourScoreTexture = &CASSET::GetInstance().textureMap["yourscore"];
+    yourScore.setTexture(*yourScoreTexture);
+    yourScore.setScale(0.9, 0.9);
+    yourScore.setPosition(60, 375);
+    
+    font.loadFromFile(Constants::GetInstance().menuFont);
+    highscoreNum.setFont(font);
+    highscoreNum.setPosition(300, 325);
+    highscoreNum.setCharacterSize(30);
+    highscoreNum.setStyle(sf::Text::Bold);
+    highscoreNum.setFillColor(sf::Color::White);
+    highscoreNum.setOutlineColor(sf::Color::Black);
+    highscoreNum.setOutlineThickness(8);
+
+    yourscoreNum.setFont(font);
+    yourscoreNum.setPosition(300, 375);
+    yourscoreNum.setCharacterSize(30);
+    yourscoreNum.setStyle(sf::Text::Bold);
+    yourscoreNum.setFillColor(sf::Color::White);
+    yourscoreNum.setOutlineColor(sf::Color::Black);
+    yourscoreNum.setOutlineThickness(8);
+    
+    tryMessageTexture = &CASSET::GetInstance().textureMap["try"];
+    beatMessageTexture = &CASSET::GetInstance().textureMap["beaths"];
+    dieMessage.setPosition(68, 450);
 
     logoClock.restart();
 }
@@ -46,6 +83,20 @@ bool CGAME::hasCharacterGender() {
     return res;
 }
 
+void CGAME::changeGenderInFile(int newGender) {
+    ifstream playerConfig("game_log/player.txt");
+    int gender = -1e9, side = -1e9, index, score, level;
+    float x, y;
+    playerConfig >> gender >> side >> index >> score >> level >> x >> y;
+    playerConfig.close();
+    ofstream playerWrite("game_log/player.txt");
+    playerWrite << newGender;
+    if (side != -1e9)
+        playerWrite << "\n" << side << "\n" << index << "\n" << score << "\n" << level << "\n"
+        << x << " " << y;
+    playerWrite.close();
+}
+
 CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     fstream playerConfig("game_log/player.txt");
     if (!playerConfig) {
@@ -58,7 +109,7 @@ CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     if (newPlayer) {
         playerConfig >> gender;
         playerConfig.close();
-        clearSavedGame();
+        //clearSavedGame();
         CPEOPLE* p = new CPEOPLE(this->window, gender);
         p->resetPlayer();
         return p;
@@ -70,6 +121,7 @@ CPEOPLE* CGAME::getPlayer(bool newPlayer) {
     this->level = level;
     CPEOPLE* player = new CPEOPLE(this->window, gender, side, x, y, index);
     player->score = score;
+    player->level = level;
     return player;
 }
 
@@ -121,6 +173,7 @@ void CGAME::resetGame() {
         player = getPlayer(true);
     else
         player->resetPlayer();
+    player->isDead = false;
     clearSavedGame();
     level = 0;
     isGameOver = false;
@@ -143,7 +196,7 @@ void CGAME::resetGame() {
 
 bool CGAME::loadGame() {
     ifstream infile("game_log/game.txt");
-    if (!infile.is_open()) {
+    if (!infile) {
         cout << "Load file not found. Error." << endl;
         return false;
     }
@@ -155,11 +208,14 @@ bool CGAME::loadGame() {
     int index;
     string textureFile, texture, background;
     float x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, bX, bY, speed = -1e9;
-    int bushCount;
+    int bushCount, bushType;
     CLANE* lane = nullptr;
     COBJECTFACTORY* factory = nullptr;
-    vector<pair<float, float>> bushes;
+    float* bushes = new float[3];
     while (infile >> index >> background >> textureFile) {
+        x = -1e9, y = -1e9, cX = -1e9, cY = -1e9, bX = -1e9, bY = -1e9, speed = -1e9;
+        bushCount = 0;
+        bushType = 0;
         if (textureFile != "none") {
             infile >> x >> y >> speed;
             if (textureFile[0] == 'a')
@@ -174,16 +230,15 @@ bool CGAME::loadGame() {
             infile >> cX >> cY;
         infile >> texture;
         if (texture != "none") {
-            infile >> bushCount;
-            while (bushCount--) {
-                infile >> bX >> bY;
-                bushes.push_back(make_pair(bX, bY));
-            }
+            infile >> bushCount >> bushes[0] >> bushes[1] >> bushes[2];
         }
+        else
+            bushes[0] = -1e9;
         lane = new CLANE(index, background, this->window, factory, bushes, textureFile, x, y, speed, cX, cY);
         lanes.push_back(lane);
-        bushes.clear();
     }
+
+    delete[] bushes;
 
     if (lanes.empty())
         resetGame();
@@ -194,6 +249,9 @@ bool CGAME::loadGame() {
     }
 
     infile.close();
+    if (player != nullptr)
+        delete player;
+    player = getPlayer();
 
     cout << "Load successfully" << endl;
     return true;
@@ -252,20 +310,23 @@ void CGAME::updateLanes() {
     for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
         COLLISION_TYPE collision;
         int canUpdateLane = (*it)->updatePosObject(logLevel(level), logLevel(level),
-            *window, *player, *traffic, level, coinMoveMark, soundFactory, &collision);
+            *window, player, *traffic, level, coinMoveMark, soundFactory, &collision);
         if (canUpdateLane == 0 && !isGameOver) {
             //CTRANSITION::offset().stopAll();
             isGameOver = true;
             dieLane = it;
             dieClock.restart();
+            setScoreDisplay(score);
+            player->isDead = true;
+            //displayDieText();
             //player->disappear();
             if (score > hiScore)
               hiScore = score;
         };
     }
-
-    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 0.8) {
+    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= DIE_DELAY) {
         clearSavedGame();
+        //hideDieText();
         gameState = GAME_STATE::MENU;
         resetGame();
         cgui->isPause = false;
@@ -273,7 +334,8 @@ void CGAME::updateLanes() {
         // cgui->drawGameOverGUI(score, level, window, hiScore);
     }
     coinMoveMark++;
-    this->score = player->score;
+    if (player != nullptr)
+        this->score = player->score;
 
 }
 
@@ -360,8 +422,8 @@ bool CGAME::checkMove(CLANE* lane, CPEOPLE* player, int direction) {
 }
 
 CLANE* CGAME::findLane(int index) {
-    for (auto it = lanes.begin(); it != lanes.end(); ++it) {
-        if ((*it)->index == index) return (*it);
+    for (auto& lane : lanes) {
+        if (lane->index == index) return lane;
     }
 }
 
@@ -393,7 +455,8 @@ void CGAME::renderLanes() {
     CTRANSITION::offset().update();
     updateLanes();
     traffic->drawTraffic(window);
-    player->render(isGameOver);
+    if (player)
+        player->render(isGameOver);
     cgui->drawGUI(score, level, window);
 }
 
@@ -423,10 +486,22 @@ void CGAME::render() {
         CTRANSITION::offset().update();
         updateLanes();
         traffic->drawTraffic(window);
-        player->render(this->isGameOver);
+        if (player)
+            player->render(this->isGameOver);
         cgui->drawGUI(score, level, window);
         renderLanes();
         renderLogo();
+        float currentTime = dieClock.getElapsedTime().asSeconds();
+        if (isGameOver && currentTime >= TEXT_DELAY)
+            window->draw(dieText);
+        if (isGameOver && currentTime >= POINT_DISPLAY_DELAY) {
+            window->draw(highscore);
+            window->draw(yourScore);
+            window->draw(highscoreNum);
+            window->draw(yourscoreNum);
+        }
+        if (isGameOver && currentTime >= MESSAGE_DELAY)
+            window->draw(dieMessage);
         break;
     }
     case GAME_STATE::MENU: {
@@ -436,19 +511,21 @@ void CGAME::render() {
         break;
     }
     case GAME_STATE::PAUSE:
-
+        renderLanes();
         cgui->drawGUI(score, level, window);
-        //break;
+        break;
     case GAME_STATE::GENDER_CHOICE:
+        renderLanes();
         cgui->drawGUI(score, level, window);
-        //break;
+        break;
     case GAME_STATE::WARNING:
-
-        //cgui->drawWarningGUI(window, warning);
+        renderLanes();
         cgui->drawGUI(score, level, window);
-        //break;
+        break;
     case GAME_STATE::SETTINGS:
+        renderLanes();
         cgui->drawGUI(score, level, window);
+        break;
     case GAME_STATE::GAMEOVER: {
         renderLanes();
         soundFactory->playSound(4);
@@ -521,10 +598,10 @@ void CGAME::pollEvents() {
                         break;
                     if (clock.getElapsedTime().asSeconds() >= 0.05) {
                         player->setSide(CPEOPLE::UP);
-
-                        if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
+                        CLANE* foundLane = findLane(player->index - 1);
+                        if (player->canMoveUp() && checkMove(foundLane, player, 1))
                             player->moveUp(), level++;
-                        else if (checkMove(findLane(player->index - 1), player, 1)) {
+                        else if (checkMove(foundLane, player, 1)) {
                             level++;
                             shiftLanesUp();
                         }
@@ -548,7 +625,7 @@ void CGAME::pollEvents() {
                         player->moveDown();
                 }
                 else
-                    cgui->MoveDown() ;
+                    cgui->MoveDown();
                 break;
             case sf::Keyboard::A:
             case sf::Keyboard::Left:
@@ -565,7 +642,7 @@ void CGAME::pollEvents() {
                 if (isGameOver)
                     break;
                 soundFactory->playSound(2);
-               // if (isGameOver) break;
+                // if (isGameOver) break;
                 player->setSide(CPEOPLE::RIGHT);
 
                 if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
@@ -578,7 +655,7 @@ void CGAME::pollEvents() {
                         if (hasCharacterGender()) {
                             // Clear saved stuff when start new game.
                             clearSavedGame();
-
+                            this->player = getPlayer(true);
                             cout << "Started the game" << endl;
                             //this->initLanes();
                             soundFactory->playSound(1);
@@ -710,12 +787,14 @@ void CGAME::pollEvents() {
                         // soundFactory->playSound (2);
                         cout << "Set gender to boy" << endl;
                         this->player->setGender(0);
+                        changeGenderInFile(0);
                         break;
 
                     case 3:
                         // soundFactory->playSound (2);
                         cout << "Set gender to girl" << endl;
                         this->player->setGender(1);
+                        changeGenderInFile(1);
                         break;
 
                     case 4:
@@ -742,14 +821,42 @@ void CGAME::pollEvents() {
 
                 }
 
-
-
-
             }
         }
     }
 }
-    void CGAME::resizeImage(sf::Sprite& sprite) {
-        sprite.scale((float)window->getSize().x / (float)sprite.getTexture()->getSize().x,
-            (float)window->getSize().y / (float)sprite.getTexture()->getSize().y);
+void CGAME::resizeImage(sf::Sprite& sprite) {
+    sprite.scale((float)window->getSize().x / (float)sprite.getTexture()->getSize().x,
+        (float)window->getSize().y / (float)sprite.getTexture()->getSize().y);
+}
+void CGAME::displayDieText() {
+    dieText.setTexture(*dieTextTexture);
+    dieText.setScale(1.5, 1.5);
+    cout << "die text\n";
+    dieText.setPosition(0, 30);
+}
+void CGAME::hideDieText() {
+    dieText.setColor(sf::Color::Transparent);
+}
+
+void CGAME::setScoreDisplay(int yourScore) {
+    ifstream hsStream("game_log/highscore.txt");
+    if (!hsStream) {
+        cout << "Cannot load highscore\n";
+        return;
     }
+    int highscore;
+    hsStream >> highscore;
+    hsStream.close();
+    if (yourScore > highscore) {
+        ofstream hsOut("game_log/highscore.txt");
+        hsOut << yourScore << endl;
+        hsOut.close();
+    }
+    highscoreNum.setString(to_string(highscore));
+    yourscoreNum.setString(to_string(yourScore));
+    if (highscore >= yourScore)
+        dieMessage.setTexture(*tryMessageTexture, true);
+    else
+        dieMessage.setTexture(*beatMessageTexture, true);
+}

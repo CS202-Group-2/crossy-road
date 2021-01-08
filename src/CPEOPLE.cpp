@@ -188,9 +188,6 @@ bool CPEOPLE::isFinish() {
     return false;
 }
 
-bool CPEOPLE::isDead() {
-    return false;
-}
 
 void CPEOPLE::resetPlayer() {
     this->side = UP;

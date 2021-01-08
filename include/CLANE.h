@@ -46,13 +46,13 @@ protected:
     CGAMEOVERFIG* gameoverFig;
 
 public:
-    CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, vector<pair<float, float>>& bushes,
+    CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, float* bushes,
         string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9,
         float coinX = -1e9, float coinY = -1e9);
     CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow* window, bool isGrass = false, int level = 0);
     ~CLANE();
     void initObject(int level);
-    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player,
+    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE* player,
         CTRAFFIC &traffic, int level, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision = 0);
     void shiftLane();
     void shiftBackground();

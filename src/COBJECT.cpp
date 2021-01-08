@@ -67,13 +67,15 @@ void COBJECT::drawObject(sf::RenderWindow& window) {
 }
 
 
-bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collision) {
-	if (player.index != index) {
+bool COBJECT::checkCollision(CPEOPLE* player, int index, COLLISION_TYPE* collision) {
+	if (player == nullptr)
+		return false;
+	if (player->index != index) {
 		return false;
 	}
-	bool res = player.mSprite.getGlobalBounds().intersects(this->sprite.getGlobalBounds());
+	bool res = player->mSprite.getGlobalBounds().intersects(this->sprite.getGlobalBounds());
 	if (res && collision != 0) {
-		sf::FloatRect playerRect = player.mSprite.getGlobalBounds();
+		sf::FloatRect playerRect = player->mSprite.getGlobalBounds();
 		sf::FloatRect objectRect = sprite.getGlobalBounds();
 		if (playerRect.top <= objectRect.top
 			&& playerRect.top + playerRect.height > objectRect.top
@@ -90,8 +92,10 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collisi
 }
 
 // Detect if player is standing close on the moving way of object.
-bool COBJECT::checkCloseInteraction(CPEOPLE& player, int index) {
-	if (player.index != index)
+bool COBJECT::checkCloseInteraction(CPEOPLE* player, int index) {
+	if (player == nullptr)
+		return false;
+	if (player->index != index)
 		return false;
 	float offX = mX, offY = mY;
 	if (this->direction) {
@@ -104,10 +108,14 @@ bool COBJECT::checkCloseInteraction(CPEOPLE& player, int index) {
 	}
 	sf::FloatRect futureMovement(offX, offY, 
 		sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
-	return futureMovement.intersects(player.mSprite.getGlobalBounds());
+	bool res = futureMovement.intersects(player->mSprite.getGlobalBounds());
+	if (res) {
+		cout << "------------------HELLLOOOOOOOOOOOOO000000000OO\n";
+	}
+	return res;
 }
 
-int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
+int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE* player,
 	int index, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision) {
 	int oldX = mX, oldY = mY;
 	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK)
@@ -124,12 +132,10 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			tilted = true;
 		}
 	}
-	if (type == Constants::GetInstance().VEHICLE
+	if (type == Constants::GetInstance().VEHICLE && player != nullptr && !player->isDead
 		&& !playWarningSound && checkCloseInteraction(player, index)) {
 		playWarningSound = true;
-		sf::Sound sound;
-		sound.setBuffer(CASSET::GetInstance().soundBufferMap["car-alarm"]);
-		sound.play();
+		warningSound.play();
 	}
 
 	if (checkCollision(player, index, collision)) {
@@ -143,7 +149,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			return 0;
 		}
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
-			player.addScore(100);
+			player->addScore(100);
 			sprite.setColor(sf::Color::Transparent);
 			interacted = true;
 			soundFactory->playSound(3);

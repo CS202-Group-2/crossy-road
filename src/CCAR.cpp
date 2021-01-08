@@ -11,7 +11,9 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	soundFilename = "car";
 	cout << soundFilename << endl;
 	setupSound();
-
+	warningBuffer = &CASSET::GetInstance().soundBufferMap["car-alarm"];
+	warningSound.setBuffer(*warningBuffer);
+	warningSound.setVolume(30);
 	// Last character is '0' - backwards, or '1' - forwards.
 	direction = textureFile[textureFile.size() - 1] - '0';
 
@@ -35,6 +37,9 @@ CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 	type = Constants::GetInstance().VEHICLE;
 	soundFilename = "car";
 	setupSound();
+	warningBuffer = &CASSET::GetInstance().soundBufferMap["car-alarm"];
+	warningSound.setBuffer(*warningBuffer);
+	warningSound.setVolume(30);
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
 	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {

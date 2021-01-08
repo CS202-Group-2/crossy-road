@@ -10,7 +10,7 @@ CLANE::CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow * window, bool
 
 // For loading saved game.
 CLANE::CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, 
-	vector<pair<float, float>>& bushes, string textureFile, float objX, float objY, float objSpeed, 
+	float* bushes, string textureFile, float objX, float objY, float objSpeed, 
 	float coinX, float coinY) {
 
 	this->index = index;
@@ -29,14 +29,10 @@ CLANE::CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACT
 	}
 	else
 		this->object = nullptr;
-	for (auto& bush : bushes) {
-		blocks.push_back(new CTREE(bush.first, bush.second, index));
+	if (bushes[0] != -1e9) {
+		blocks.push_back(new CTREE(bushes[0], bushes[1], index, int(bushes[2])));
 	}
 
-	/*if (!textureLane.loadFromFile("assets/graphics/" + background + ".png")) {
-		cout << "Cannot load background " << background << endl;
-		return;
-	}*/
 	textureLane = &CASSET::GetInstance().textureMap[background];
 	gameoverFig = new CGAMEOVERFIG(index);
 	setupLaneBackground();
@@ -66,9 +62,6 @@ void CLANE::initObject(int level) {
 	// Create coin
 	CCOINFACTORY* coinFactory = new CCOINFACTORY();
 	coin = coinFactory->initObject(index, window, level);
-	if (coin != nullptr) {
-		cout << "coin lane " << index << endl;
-	}
 
 	// Create gameover character
 	gameoverFig = new CGAMEOVERFIG(index);
@@ -98,7 +91,7 @@ void CLANE::initObject(int level) {
 	setupLaneBackground();
 }
 
-bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, 
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE* player, CTRAFFIC &traffic, 
 	int level, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision) {
 	window.draw(laneBackground);
 	shiftBackground();
@@ -126,8 +119,8 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 
 	if (!object->update(x, y, window, player, index, rand, soundFactory, collision)) {
 		if (!gameoverFig->isActivated()) {
-			player.scream();
-			gameoverFig->activateFig(player.gender, object->mX, object->mY);
+			player->scream();
+			gameoverFig->activateFig(player->gender, object->mX, object->mY);
 		}
 		return false;
 	}
@@ -181,7 +174,8 @@ void CLANE::saveLane(ofstream& out) {
 	else {
 		out << "Tree " << blocks.size();
 		for (auto& treeBlock : blocks) {
-			out << " " << treeBlock->mX << " " << treeBlock->mY;
+			out << " " << treeBlock->mX << " " << treeBlock->mY << " " 
+				<< treeBlock->textureFile[treeBlock->textureFile.size() - 1] << " ";
 		}
 	}
 	out << endl;

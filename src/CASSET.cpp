@@ -50,6 +50,11 @@ CASSET::CASSET() {
 	initTexture("c_3_0");
 	initTexture("c_3_1");
 	initTexture("logo");
+	initTexture("dietext");
+	initTexture("highscore");
+	initTexture("yourscore");
+	initTexture("beaths");
+	initTexture("try");
 	initTexture("boy", true);
 	initTexture("die_boy", true);
 	initTexture("girl", true);

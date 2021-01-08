@@ -52,7 +52,25 @@ private:
     sf::Clock clock;
     sf::Clock logoClock;
     sf::Clock dieClock;
+
     bool isGameOver = false;
+
+    sf::Texture* dieTextTexture;
+    sf::Sprite dieText;
+
+    sf::Texture* highscoreTexture;
+    sf::Sprite highscore;
+    sf::Texture* yourScoreTexture;
+    sf::Sprite yourScore;
+    sf::Font font;
+
+    sf::Text highscoreNum;
+    sf::Text yourscoreNum;
+
+    sf::Texture* tryMessageTexture;
+    sf::Texture* beatMessageTexture;
+    sf::Sprite dieMessage;
+
     float dieX, dieY;
     deque<CLANE*>::reverse_iterator dieLane;
 
@@ -60,6 +78,10 @@ private:
     int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
+    const float DIE_DELAY = 7;
+    const float MESSAGE_DELAY = 3;
+    const float POINT_DISPLAY_DELAY = 1.5;
+    const float TEXT_DELAY = 0.5;
 
     void initVariables();
     void initWindow();
@@ -114,7 +136,11 @@ public:
     bool checkMove(CLANE* lane, CPEOPLE* player, int direction);
     CLANE* findLane(int index);
 
+    void displayDieText();
+    void hideDieText();
+    void setScoreDisplay(int yourScore);
     bool hasCharacterGender();
+    void changeGenderInFile(int gender);
     void update();
     void render();
     void pollEvents();

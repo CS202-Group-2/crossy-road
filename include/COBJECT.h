@@ -31,6 +31,9 @@ protected:
     sf::Texture *texture;
     sf::Sprite sprite;
 
+    sf::SoundBuffer* warningBuffer;
+    sf::Sound warningSound;
+
     bool interacted = false;
 
     // To make the crash sound play only once.
@@ -55,7 +58,7 @@ public:
     COBJECT(float x, float y);
     COBJECT(float x, float y, int index);
     void initSpeedMult(int level = 0);
-    virtual int update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, 
+    virtual int update(float x, float y, sf::RenderWindow& window, CPEOPLE* player, 
         int index, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision = 0);
     void shiftObject();
     bool checkOutWindow (sf::RenderWindow& window);
@@ -64,8 +67,8 @@ public:
     virtual void trafficStop(bool state) = 0;
     void crashSound();
     void setupSound();
-    bool checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collision = 0);
-    bool checkCloseInteraction(CPEOPLE& player, int index);
+    bool checkCollision(CPEOPLE* player, int index, COLLISION_TYPE* collision = 0);
+    bool checkCloseInteraction(CPEOPLE* player, int index);
     bool checkBlock(float x, float y);
     
 };

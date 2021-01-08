@@ -17,7 +17,7 @@ private:
     friend class CLANE;
     friend class COBJECT;
     float mX, mY;
-    bool mState;
+    bool isDead;
     int index;
     string textureFile = "Player.png";
     int gender, side, score, level;
@@ -57,7 +57,6 @@ public:
 
     bool isImpact(const COBJECT*&);
     bool isFinish();
-    bool isDead();
 
     void resetPlayer();
 
