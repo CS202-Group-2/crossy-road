@@ -2,7 +2,7 @@
 
 
 COBJECT* CTREEFACTORY::initObject(int index, sf::RenderWindow* window,int level) {
-    float x = rand() % (window->getSize().x - 25) + 25;
+    float x = (window->getSize().x) + window->getSize().x / 2;
     COBJECT* object = new CTREE(x, (index - 3) * Constants::GetInstance().LANE_WIDTH
         + abs(x * tan(Constants::GetInstance().BETA / 3.14 * 180)), index);
     // cout << "Spawned vehicle in row index " << index << endl;

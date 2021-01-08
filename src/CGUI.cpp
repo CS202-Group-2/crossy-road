@@ -185,7 +185,7 @@ void CGUI::drawGameOverGUI(int score, int level, sf::RenderWindow* window, int h
 
 	options[1].setFont(font);
 	options[1].setColor(sf::Color::White);
-	options[1].setString("Back to main menu");
+	options[1].setString("Main menu");
 	if (hiScore > score)
 	hiScoreText.setString("High score: " + to_string(hiScore));
 	else hiScoreText.setString("You beat your high score: " + to_string(score));
