@@ -245,7 +245,7 @@ void CGAME::updateSound() {
 }
 
 float logLevel(int level) {
-    return level > 3 ? 1.25 * log(level * 0.5) / log(2) : 1;
+    return level > 2 ? 0.65 * log(level * 0.5) / log(2) : 1;
 }
 
 void CGAME::updateLanes() {
@@ -264,7 +264,7 @@ void CGAME::updateLanes() {
         };
     }
 
-    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 0.8) {
+    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
         clearSavedGame();
         gameState = GAME_STATE::MENU;
         resetGame();
