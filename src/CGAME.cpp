@@ -508,7 +508,7 @@ void CGAME::pollEvents() {
 
                 break;
             case sf::Keyboard::W:
-                
+            case sf::Keyboard::Up:
                 soundFactory->playSound(2);
                 cout << "Pressed" << endl;
                 if (gameState == GAME_STATE::MENU)
@@ -533,6 +533,7 @@ void CGAME::pollEvents() {
                     cgui->MoveUp();
                 break;
             case sf::Keyboard::S:
+            case sf::Keyboard::Down:
                 soundFactory->playSound(2);
                 if (gameState == GAME_STATE::MENU)
                     menu->MoveDown();
@@ -547,6 +548,7 @@ void CGAME::pollEvents() {
                     cgui->MoveDown() ;
                 break;
             case sf::Keyboard::A:
+            case sf::Keyboard::Left:
                 if (isGameOver) break;
                 soundFactory->playSound(2);
                 player->setSide(CPEOPLE::LEFT);
@@ -555,6 +557,7 @@ void CGAME::pollEvents() {
                     player->moveLeft();
                 break;
             case sf::Keyboard::D:
+            case sf::Keyboard::Right:
                 if (isGameOver) break;
                 soundFactory->playSound(2);
                // if (isGameOver) break;
