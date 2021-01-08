@@ -35,6 +35,7 @@ protected:
 
     // To make the crash sound play only once.
     bool soundPlay = false;
+    bool playWarningSound = false;
 
     bool direction; // true: forward, false: backward
     float initY = 0;
@@ -49,6 +50,7 @@ protected:
     COBJECT(int level);
 public:
     static COLLISION_TYPE collisionType;
+    const float CLOSE_DIST = 200;
 
     COBJECT(float x, float y);
     COBJECT(float x, float y, int index);
@@ -63,6 +65,7 @@ public:
     void crashSound();
     void setupSound();
     bool checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collision = 0);
+    bool checkCloseInteraction(CPEOPLE& player, int index);
     bool checkBlock(float x, float y);
     
 };

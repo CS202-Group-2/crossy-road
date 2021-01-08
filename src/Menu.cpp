@@ -39,6 +39,7 @@ void Menu::draw(sf::RenderWindow& window) {
 		rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
 	rectangle.setPosition(window.getSize().x / 2, (window.getSize().y - titlePadding) / 2 + titlePadding + 25);
 	rectangle.setFillColor(sf::Color(0, 0, 0, 200));
+	//rectangle.setTexture ();
 	window.draw(rectangle);
 	sf::Sprite titleText(title);
 	titleText.setOrigin(titleText.getLocalBounds().left + titleText.getLocalBounds().width / 2,

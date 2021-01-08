@@ -38,6 +38,7 @@ CLANE::CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACT
 		return;
 	}*/
 	textureLane = &CASSET::GetInstance().textureMap[background];
+	gameoverFig = new CGAMEOVERFIG(index);
 	setupLaneBackground();
 }
 
