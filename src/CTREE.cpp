@@ -3,6 +3,10 @@
 CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
 	type = Constants::GetInstance().BLOCK;
+	soundFile = "assets/sound/bush.wav";
+	setupSound();
+
+	textureFile = "assets/graphics/Bush.png";
 	int choice = rand() % 6;
 	textureFile = "assets/graphics/b_" + to_string(choice) + ".png";
 	if (!texture.loadFromFile(textureFile)) {
@@ -18,5 +22,4 @@ CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 
 }
 
-void CTREE::tell() {}
 void CTREE::trafficStop(bool state) {}

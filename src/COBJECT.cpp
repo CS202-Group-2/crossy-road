@@ -67,11 +67,26 @@ void COBJECT::drawObject(sf::RenderWindow& window) {
 }
 
 
-bool COBJECT::checkCollision(CPEOPLE& player, int index) {
+bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collision) {
 	if (player.index != index) {
 		return false;
 	}
-	return player.mSprite.getGlobalBounds().intersects(this->sprite.getGlobalBounds());
+	bool res = player.mSprite.getGlobalBounds().intersects(this->sprite.getGlobalBounds());
+	if (res && collision != 0) {
+		sf::FloatRect playerRect = player.mSprite.getGlobalBounds();
+		sf::FloatRect objectRect = sprite.getGlobalBounds();
+		if (playerRect.top <= objectRect.top
+			&& playerRect.top + playerRect.height > objectRect.top
+			&& playerRect.left >= objectRect.left
+			&& playerRect.left + playerRect.width <= objectRect.left + objectRect.width)
+			*collision = COLLISION_TYPE::FROM_TOP;
+		else if (playerRect.top <= sprite.getGlobalBounds().top + sprite.getGlobalBounds().height
+			&& playerRect.top + playerRect.height > sprite.getGlobalBounds().top + sprite.getGlobalBounds().height)
+			*collision = COLLISION_TYPE::FROM_BOTTOM;
+		else
+			*collision = COLLISION_TYPE::FROM_SIDE;
+	}
+	return res;
 	//int padding = type == Constants::GetInstance().INTERACTABLE ? 0 : 25;
 	////else cout << "Same line" << endl;
 	//return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left
@@ -79,7 +94,8 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index) {
 	//	+ sprite.getGlobalBounds().width - padding);
 }
 
-int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, int index, int rand, CSOUNDFACTORY* soundFactory) {
+int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
+	int index, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision) {
 	int oldX = mX, oldY = mY;
 	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK)
 		move(x, y);
@@ -96,14 +112,16 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 		}
 	}
 
-	if (checkCollision(player, index)) {
-		cout << "Hit by " << type << endl;
-
+	if (checkCollision(player, index, collision)) {
+		//cout << "Hit by " << type << endl;
+		if (type != Constants::GetInstance().INTERACTABLE && !soundPlay) {
+			soundPlay = true;
+			crashSound();
+		}
 		if (type == Constants::GetInstance().VEHICLE || type == Constants::GetInstance().ANIMAL) {
 			drawObject(window);
 			return 0;
 		}
-			
 		else if (type == Constants::GetInstance().INTERACTABLE && interacted == false) {
 			player.addScore(100);
 			sprite.setColor(sf::Color::Transparent);
@@ -115,6 +133,8 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 
 		}
 	}
+	else
+		soundPlay = false;
 	drawObject(window);
 	return 1;
 }
@@ -149,4 +169,18 @@ void COBJECT::setupTexture() {
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
+}
+
+void COBJECT::setupSound() {
+	if (!buffer.loadFromFile(soundFile)) {
+		cout << "Cannot load " << soundFile << " from object\n";
+		return;
+	}
+	objSound.setBuffer(buffer);
+	objSound.setVolume(100);
+	objSound.setLoop(false);
+}
+
+void COBJECT::crashSound() {
+	objSound.play();
 }

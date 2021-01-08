@@ -1,6 +1,6 @@
 #include "../include/CCOIN.h"
 
-CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) {
+CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) { 
 	this->index = index;
 	type = Constants::GetInstance().INTERACTABLE;
 	textureFile = "assets/graphics/Coin.png";
@@ -17,5 +17,5 @@ CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) {
 	
 }
 
-void CCOIN::tell() {}
+void CCOIN::crashSound() {}
 void CCOIN::trafficStop(bool state) {}

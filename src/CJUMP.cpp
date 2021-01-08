@@ -6,6 +6,7 @@ CJUMP::CJUMP () {
 	}
 	jumpSound.setBuffer (jumpSoundBuffer);
 	jumpSound.setLoop(false);
+	jumpSound.setVolume(20);
 }
 void CJUMP::playJumpSound () {
 	jumpSound.play ();

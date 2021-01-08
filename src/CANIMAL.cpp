@@ -16,6 +16,10 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 	initY = y;
 	speedMult = speed;
 	this->textureFile = textureFile;
+	this->soundFile = "assets/sound/";
+	soundFile += textureFile[2];
+	soundFile += ".wav";
+	setupSound();
 
 	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find animal texture." << endl;
@@ -29,6 +33,10 @@ CANIMAL::CANIMAL(int index, int windowX, int level) : COBJECT(level) {
 	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().ANIMAL;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
+
+	this->soundFile = "assets/sound/" + to_string(choice) + ".wav";
+	setupSound();
+
 	textureFile = "a_" + to_string(choice) + "_" + to_string(direction);
 	if (direction) {
 		mX = -100;
@@ -46,46 +54,7 @@ CANIMAL::CANIMAL(int index, int windowX, int level) : COBJECT(level) {
 	setupTexture();
 }
 
-//CANIMAL::CANIMAL(float x, float y) : COBJECT(x, y) {
-//	//srand(time(NULL));
-//	int choice = rand() % 4;
-//	textureFile = "car" + to_string(choice);
-//	switch (choice) {
-//	case 0:
-//		textureFile = "Car";
-//		break;
-//	case 1:
-//		textureFile = "Car2";
-//		break;
-//	case 2:
-//		textureFile = "Bus";
-//		break;
-//	case 3:
-//		textureFile = "Truck";
-//		break;
-//	}
-//	if (x > 100) textureFile += "_back.png";
-//	else textureFile += "_front.png";
-//	type = Constants::GetInstance().VEHICLE;
-//
-//	if (!texture.loadFromFile(textureFile)) {
-//		cout << "Cannot find texture file" << endl;
-//		return;
-//	}
-//	sprite.setTexture(texture);
-//	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
-//		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
-//	sprite.setScale(sf::Vector2f(0.5f, 0.5f));
-//
-//	//sprite.rotate(Constants::GetInstance().ALPHA/(3.14)*180 - 90);
-//	//speedMult = rand() % 2 + 1;
-//}
-//
-//CANIMAL::CANIMAL(float x, float y, bool direction) : CANIMAL(x, y) {
-//	this->direction = direction;
-//}
-//
+
 void CANIMAL::trafficStop(bool state) {
 	// Animals don't stop.
 }
-

@@ -5,7 +5,8 @@ CSOUND::CSOUND() {
 		cout << "Sound file not found" << endl;
 	}
 	backgroundSound.setBuffer(backgroundSoundBuffer);
-	// backgroundSound.setLoop(false);
+	backgroundSound.setVolume(40);
+	backgroundSound.setLoop(true);
 }
 void CSOUND::playBackgroundSound() {
 	backgroundSound.play();
