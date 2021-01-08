@@ -38,3 +38,8 @@ void CGAMEOVERFIG::trafficStop(bool state) {
 bool CGAMEOVERFIG::isActivated() {
 	return activated;
 }
+
+void CGAMEOVERFIG::hide() {
+	activated = false;
+	sprite.setColor(sf::Color::Transparent);
+}

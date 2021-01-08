@@ -185,6 +185,10 @@ void CLANE::saveLane(ofstream& out) {
 	out << endl;
 }
 
+void CLANE::hideDieBody() {
+	gameoverFig->hide();
+}
+
 void CLANE::print() {
 	cout << index << endl;
 }

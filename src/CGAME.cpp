@@ -256,6 +256,7 @@ void CGAME::updateLanes() {
         if (canUpdateLane == 0 && !isGameOver) {
             //CTRANSITION::offset().stopAll();
             isGameOver = true;
+            dieLane = it;
             dieClock.restart();
             //player->disappear();
             if (score > hiScore)
@@ -268,6 +269,7 @@ void CGAME::updateLanes() {
         gameState = GAME_STATE::MENU;
         resetGame();
         cgui->isPause = false;
+        (*dieLane)->hideDieBody();
         // cgui->drawGameOverGUI(score, level, window, hiScore);
     }
     coinMoveMark++;

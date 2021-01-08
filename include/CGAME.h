@@ -53,6 +53,7 @@ private:
     sf::Clock dieClock;
     bool isGameOver = false;
     float dieX, dieY;
+    deque<CLANE*>::reverse_iterator dieLane;
 
     bool pressed = false;
     int score = 0, level = 1, hiScore = 0;

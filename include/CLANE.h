@@ -60,7 +60,7 @@ public:
     void saveLane(ofstream& out);
     void setupLaneBackground();
     bool eatCoin();
-
+    void hideDieBody();
     void print(); //debug only
 };
 

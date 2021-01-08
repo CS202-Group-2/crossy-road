@@ -11,4 +11,5 @@ public:
     void activateFig(int gender, float x, float y);
     void trafficStop(bool state);
     bool isActivated();
+    void hide();
 };
