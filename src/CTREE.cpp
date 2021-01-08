@@ -3,7 +3,7 @@
 CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
 	type = Constants::GetInstance().BLOCK;
-	soundFile = "assets/sound/bush.wav";
+	soundFilename = "bush";
 	setupSound();
 
 	textureFile = "assets/graphics/Bush.png";
