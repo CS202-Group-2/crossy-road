@@ -3,7 +3,7 @@
 CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
 	type = Constants::GetInstance().BLOCK;
-	int choice = rand() % 5;
+	int choice = rand() % 6;
 	textureFile = "assets/graphics/b_" + to_string(choice) + ".png";
 	if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
