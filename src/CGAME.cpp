@@ -21,9 +21,9 @@ CGAME::CGAME() {
     logoClock.restart();
 }
 
-void CGAME::drawGame() {
+//void CGAME::drawGame() {
 
-}
+//}
 
 CGAME::~CGAME() {
     delete window;
@@ -88,9 +88,9 @@ bool CGAME::haveSavedGame() {
     return true;
 }
 
-COBJECT* CGAME::getVehicle() {
-    return nullptr;
-}
+//COBJECT* CGAME::getVehicle() {
+//    return nullptr;
+//}
 
 //COBJECT* CGAME::getAnimal() {
 //    return nullptr;
@@ -133,13 +133,13 @@ void CGAME::resetGame() {
     lanes.push_back(lane);*/
 }
 
-void CGAME::exitGame(HANDLE) {
+//void CGAME::exitGame(HANDLE) {
 
-}
+//}
 
-void CGAME::startGame() {
+//void CGAME::startGame() {
 
-}
+//}
 
 bool CGAME::loadGame() {
     ifstream infile("game_log/game.txt");
@@ -227,17 +227,17 @@ bool CGAME::saveGame() {
     return true;
 }
 
-void CGAME::pauseGame(HANDLE) {
+//void CGAME::pauseGame(HANDLE) {
 
-}
+//}
 
-void CGAME::resumeGame(HANDLE) {
+//void CGAME::resumeGame(HANDLE) {
 
-}
+//}
 
-void CGAME::updatePosPeople(char) {
+//void CGAME::updatePosPeople(char) {
 
-}
+//}
 
 void CGAME::updateSound() {
     //int r = rand() % 30 + 1;

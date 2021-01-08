@@ -6,7 +6,7 @@ CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	soundFilename = "bush";
 	setupSound();
 
-	textureFile = "Bush.png";
+	//textureFile = "Bush.png";
 	int choice = rand() % 6;
 	textureFile = "b_" + to_string(choice);
 	/*if (!texture.loadFromFile(textureFile)) {
