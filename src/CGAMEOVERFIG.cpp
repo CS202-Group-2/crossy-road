@@ -14,8 +14,8 @@ CGAMEOVERFIG::CGAMEOVERFIG(int index) {
 		cout << "Cannot load " << textureFile << " in GAMEOVERFIG\n";
 		return;
 	}*/
-	boyTexture = &CASSET::GetInstance().textureMap[textureFile + "boy.png"];
-	girlTexture = &CASSET::GetInstance().textureMap[textureFile + "girl.png"];
+	boyTexture = &CASSET::GetInstance().textureMap[textureFile + "boy"];
+	girlTexture = &CASSET::GetInstance().textureMap[textureFile + "girl"];
 	//texture->setSmooth(true);
 }
 

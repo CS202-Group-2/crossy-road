@@ -87,11 +87,24 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collisi
 			*collision = COLLISION_TYPE::FROM_SIDE;
 	}
 	return res;
-	//int padding = type == Constants::GetInstance().INTERACTABLE ? 0 : 25;
-	////else cout << "Same line" << endl;
-	//return (player.mSprite.getPosition().x >= sprite.getGlobalBounds().left
-	//	&& player.mSprite.getPosition().x + padding <= sprite.getGlobalBounds().left
-	//	+ sprite.getGlobalBounds().width - padding);
+}
+
+// Detect if player is standing close on the moving way of object.
+bool COBJECT::checkCloseInteraction(CPEOPLE& player, int index) {
+	if (player.index != index)
+		return false;
+	float offX = mX, offY = mY;
+	if (this->direction) {
+		offX += CLOSE_DIST * cos(Constants::GetInstance().ALPHA);
+		offY += CLOSE_DIST * sin(Constants::GetInstance().ALPHA);
+	}
+	else {
+		offX -= CLOSE_DIST * cos(Constants::GetInstance().ALPHA);
+		offY -= CLOSE_DIST * sin(Constants::GetInstance().ALPHA);
+	}
+	sf::FloatRect futureMovement(offX, offY, 
+		sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
+	return futureMovement.intersects(player.mSprite.getGlobalBounds());
 }
 
 int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
@@ -110,6 +123,13 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 			move(0, -30);
 			tilted = true;
 		}
+	}
+	if (type == Constants::GetInstance().VEHICLE
+		&& !playWarningSound && checkCloseInteraction(player, index)) {
+		playWarningSound = true;
+		sf::Sound sound;
+		sound.setBuffer(CASSET::GetInstance().soundBufferMap["car-alarm"]);
+		sound.play();
 	}
 
 	if (checkCollision(player, index, collision)) {
