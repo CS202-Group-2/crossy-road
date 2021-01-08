@@ -34,7 +34,7 @@ public:
 	const double PLAYER_STEP_HORIZONTAL = 25;
 	const int FPS = 60;
 	const int ANIMAL = 1, VEHICLE = 2, INTERACTABLE = 3, BLOCK = 4, DIE_FIG = 5;
-	const string menuFont = "assets/fonts/karma future.ttf";
+	const string menuFont = "assets/fonts/eras.ttf";
 	const int NUMBER_OF_CARS = 4, NUMBER_OF_ANIMALS = 4;
 
 	// Constants(Constants const&) = delete;

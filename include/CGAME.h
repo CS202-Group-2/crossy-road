@@ -78,7 +78,7 @@ private:
     int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
-    const float DIE_DELAY = 7;
+    const float DIE_DELAY = 5.5;
     const float MESSAGE_DELAY = 3;
     const float POINT_DISPLAY_DELAY = 1.5;
     const float TEXT_DELAY = 0.5;
