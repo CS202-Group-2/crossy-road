@@ -18,6 +18,7 @@ private:
 	float maxLaneX, maxLaneY, maxObjectX, maxObjectY;
 	
 	const float base = 0.1;
+	const float slowBase = 0.3;
 	const float constLaneX = Constants::GetInstance().LANE_WIDTH / (tan(Constants::GetInstance().ALPHA) + tan(Constants::GetInstance().BETA));
 	const float constLaneY = Constants::GetInstance().LANE_WIDTH / (tan(Constants::GetInstance().ALPHA) + tan(Constants::GetInstance().BETA)) * tan(Constants::GetInstance().ALPHA) 
 						   - Constants::GetInstance().LANE_WIDTH;
@@ -27,12 +28,12 @@ private:
 
 	CTRANSITION();
 	CTRANSITION(const CTRANSITION& x) {}
-	float getOffset(float maxOffset);
+	float getOffset(float maxOffset, bool isSlow);
 
 public:
 	static CTRANSITION& offset();
-	void update();
-	void reset();
+	void update(bool isSlow = false);
+	void reset(int times = 1);
 	float getLaneX();
 	float getLaneY();
 	float getObjectX();

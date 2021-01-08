@@ -25,23 +25,23 @@ float CTRANSITION::getObjectY() {
 	return activated ? objectY : 0;
 }
 
-void CTRANSITION::reset() {
+void CTRANSITION::reset(int times) {
 	//reset time here
 	cout << "reset\n";
-	maxLaneX = laneX + constLaneX; //const offset
-	maxLaneY = laneY + constLaneY;
-	maxObjectX = objectX + constObjectX;
-	maxObjectY = objectY + constObjectY;
+	maxLaneX = laneX + constLaneX * times; //const offset
+	maxLaneY = laneY + constLaneY * times;
+	maxObjectX = objectX + constObjectX * times;
+	maxObjectY = objectY + constObjectY * times;
 	clock.restart();
 }
 
-void CTRANSITION::update() {
-	laneX = getOffset(maxLaneX);
-	laneY = getOffset(maxLaneY);
-	objectX = getOffset(maxObjectX);
-	objectY = getOffset(maxObjectY);
+void CTRANSITION::update(bool isSlow) {
+	laneX = getOffset(maxLaneX, isSlow);
+	laneY = getOffset(maxLaneY, isSlow);
+	objectX = getOffset(maxObjectX, isSlow);
+	objectY = getOffset(maxObjectY, isSlow);
 }
 
-float CTRANSITION::getOffset(float maxOffset) {
-	return maxOffset * pow(base, clock.getElapsedTime().asSeconds());
+float CTRANSITION::getOffset(float maxOffset, bool isSlow) {
+	return maxOffset * pow(isSlow ? slowBase : base, clock.getElapsedTime().asSeconds());
 }

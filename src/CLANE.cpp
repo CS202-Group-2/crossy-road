@@ -165,3 +165,7 @@ void CLANE::saveLane(ofstream& out) {
 	}
 	out << endl;
 }
+
+void CLANE::print() {
+	cout << index << endl;
+}

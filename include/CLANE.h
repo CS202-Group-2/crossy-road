@@ -55,6 +55,8 @@ public:
     void saveLane(ofstream& out);
     void setupLaneBackground();
     bool eatCoin();
+
+    void print(); //debug only
 };
 
 #endif

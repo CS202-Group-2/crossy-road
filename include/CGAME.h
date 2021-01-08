@@ -62,6 +62,7 @@ private:
     void initWindow();
     //void initVehicle();
     void initLanes();
+    friend void resetLanes(CGAME &cgame);
     void initSound();
 
     sf::RenderWindow* window;
@@ -81,6 +82,7 @@ public:
     CPEOPLE* getPlayer(bool newPlayer = false);
     COBJECT* getVehicle();
   //  COBJECT* getAnimal(); 
+
     void resetGame(); 
     void exitGame(HANDLE); 
     void startGame(); 
@@ -98,6 +100,8 @@ public:
     void updateSound();
 //    void updateSoundJump ();
 
+    void renderLanes();
+    void renderLogo();
     //void updatePosVehicle(); 
     void drawLane();
    // void updatePosAnimal();
