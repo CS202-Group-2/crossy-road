@@ -21,10 +21,11 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	speedMult = speed;
 	this->textureFile = textureFile;
 
-	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
+	/*if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find car texture." << endl;
 		return;
-	}
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
 
 	setupTexture();
 }
@@ -45,10 +46,11 @@ CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 		mY = windowX * tan(Constants::GetInstance().ALPHA) + (index - 2) * Constants::GetInstance().LANE_WIDTH - 25;
 	}
 	initY = mY;
-	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
+	/*if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find car texture." << endl;
 		return;
-	}
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
 	setupTexture();
 }
 

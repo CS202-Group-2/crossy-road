@@ -3,12 +3,13 @@
 CGUI::CGUI(float width, float height) {
 	this->width = width;
 	this->height = height;
-	if (!pauseButtonTexture.loadFromFile("assets/graphics/Pause.png")) {
+	/*if (!pauseButtonTexture.loadFromFile("assets/graphics/Pause.png")) {
 		cout << "Cannot find texture file" << endl;
 		return;
-	}
-	pauseButtonTexture.setSmooth(true);
-	pauseButton.setTexture(pauseButtonTexture);
+	}*/
+	pauseButtonTexture = &CASSET::GetInstance().textureMap["Pause"];
+	//pauseButtonTexture.setSmooth(true);
+	pauseButton.setTexture(*pauseButtonTexture);
 	pauseButton.setPosition(0, 0);
 	pauseButton.setScale(0.2f, 0.2f);
 	sf::FloatRect textRect = hiScoreText.getLocalBounds();

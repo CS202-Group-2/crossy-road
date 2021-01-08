@@ -6,15 +6,16 @@ CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	soundFilename = "bush";
 	setupSound();
 
-	textureFile = "assets/graphics/Bush.png";
+	textureFile = "Bush.png";
 	int choice = rand() % 6;
-	textureFile = "assets/graphics/b_" + to_string(choice) + ".png";
-	if (!texture.loadFromFile(textureFile)) {
+	textureFile = "b_" + to_string(choice);
+	/*if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
 		return;
-	}
-	texture.setSmooth(true);
-	sprite.setTexture(texture);
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
+	//texture->setSmooth(true);
+	sprite.setTexture(*texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height);
 

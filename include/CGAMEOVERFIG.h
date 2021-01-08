@@ -5,7 +5,7 @@
 class CGAMEOVERFIG : public COBJECT {
 private:
     bool activated;
-    sf::Texture girlTexture, boyTexture;
+    sf::Texture *girlTexture, *boyTexture;
 public:
     CGAMEOVERFIG(int index);
     void activateFig(int gender, float x, float y);

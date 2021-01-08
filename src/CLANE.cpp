@@ -33,16 +33,17 @@ CLANE::CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACT
 		blocks.push_back(new CTREE(bush.first, bush.second, index));
 	}
 
-	if (!textureLane.loadFromFile("assets/graphics/" + background + ".png")) {
+	/*if (!textureLane.loadFromFile("assets/graphics/" + background + ".png")) {
 		cout << "Cannot load background " << background << endl;
 		return;
-	}
+	}*/
+	textureLane = &CASSET::GetInstance().textureMap[background];
 	setupLaneBackground();
 }
 
 void CLANE::setupLaneBackground() {
-	textureLane.setSmooth(true);
-	laneBackground.setTexture(textureLane);
+	//textureLane->setSmooth(true);
+	laneBackground.setTexture(*textureLane);
 	float scaleX = (window->getSize().x * 2 + 100) / laneBackground.getGlobalBounds().width;
 	laneBackground.setScale(scaleX, scaleX);
 	laneBackground.setPosition(0, (index - 3) * Constants::GetInstance().LANE_WIDTH);
