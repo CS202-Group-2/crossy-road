@@ -8,8 +8,8 @@ void CCAR::move(float x, float y) {
 // THIS IS FOR LOADING SAVED GAME.
 CCAR::CCAR(string textureFile, float x, float y, float speed) {
 	type = Constants::GetInstance().VEHICLE;
-	soundFile = "assets/sound/car.wav";
-	cout << soundFile << endl;
+	soundFilename = "car";
+	cout << soundFilename << endl;
 	setupSound();
 
 	// Last character is '0' - backwards, or '1' - forwards.
@@ -32,7 +32,7 @@ CCAR::CCAR(string textureFile, float x, float y, float speed) {
 CCAR::CCAR(int index, int windowX, int level) : COBJECT(level) {
 	direction = (rand() % 100) < 50;
 	type = Constants::GetInstance().VEHICLE;
-	soundFile = "assets/sound/car.wav";
+	soundFilename = "car";
 	setupSound();
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_CARS;
 	textureFile = "c_" + to_string(choice) + "_" + to_string(direction);

@@ -366,7 +366,8 @@ CLANE* CGAME::findLane(int index) {
 }
 
 void CGAME::initSound() {
-    this->soundFactory = new CSOUNDFACTORY ();
+    CASSET::GetInstance();
+    this->soundFactory = new CSOUNDFACTORY();
 }
 
 void CGAME::drawBackground(const string& backgroundIMG) {

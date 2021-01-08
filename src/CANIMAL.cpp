@@ -16,9 +16,10 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 	initY = y;
 	speedMult = speed;
 	this->textureFile = textureFile;
-	this->soundFile = "assets/sound/";
+	/*this->soundFile = "assets/sound/";
 	soundFile += textureFile[2];
-	soundFile += ".wav";
+	soundFile += ".wav";*/
+	soundFilename = textureFile[2];
 	setupSound();
 
 	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
@@ -34,7 +35,7 @@ CANIMAL::CANIMAL(int index, int windowX, int level) : COBJECT(level) {
 	type = Constants::GetInstance().ANIMAL;
 	int choice = rand() % Constants::GetInstance().NUMBER_OF_ANIMALS;
 
-	this->soundFile = "assets/sound/" + to_string(choice) + ".wav";
+	this->soundFilename = to_string(choice);
 	setupSound();
 
 	textureFile = "a_" + to_string(choice) + "_" + to_string(direction);

@@ -4,6 +4,7 @@
 #pragma once
 
 #include <iostream>
+#include <unordered_map>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "../include/CPEOPLE.h"
@@ -12,6 +13,7 @@
 #include "Constants.h"
 #include "CTRANSITION.h"
 #include "CSOUNDFACTORY.h"
+#include "CASSET.h"
 
 using namespace std;
 
@@ -22,9 +24,9 @@ protected:
     friend class CLANE;
     string textureFile;
 
-    sf::SoundBuffer buffer;
+    sf::SoundBuffer *buffer;
     sf::Sound objSound;
-    string soundFile;
+    string soundFilename;
 
     sf::Texture texture;
     sf::Sprite sprite;

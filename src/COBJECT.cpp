@@ -172,11 +172,12 @@ void COBJECT::setupTexture() {
 }
 
 void COBJECT::setupSound() {
-	if (!buffer.loadFromFile(soundFile)) {
+	/*if (!buffer.loadFromFile(soundFile)) {
 		cout << "Cannot load " << soundFile << " from object\n";
 		return;
-	}
-	objSound.setBuffer(buffer);
+	}*/
+	buffer = &CASSET::GetInstance().soundBufferMap[soundFilename];
+	objSound.setBuffer(*buffer);
 	objSound.setVolume(100);
 	objSound.setLoop(false);
 }
