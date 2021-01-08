@@ -82,7 +82,7 @@ void CLANE::initObject(int level) {
 	if (factory->isGrass()) {
 		cout << "Acas" << endl;
 
-		float x = rand() % (window->getSize().x - 25) + 25;
+		float x = rand() % (window->getSize().x - 50) + 25;
 		for (int i = 0; i < Constants::GetInstance().MAX_TREE_PER_LANE; ++i) {
 			tree = treeFactory->initObject(index, window, level);
 			blocks.push_back(tree);
@@ -183,4 +183,8 @@ void CLANE::saveLane(ofstream& out) {
 		}
 	}
 	out << endl;
+}
+
+void CLANE::print() {
+	cout << index << endl;
 }

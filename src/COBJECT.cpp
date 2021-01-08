@@ -21,7 +21,7 @@ COBJECT::COBJECT(float x, float y) {
 }
 
 float logXFactor(int level) {
-	return log((float) level / 3) / log(1.3);
+	return log(1 + (float) level / 3) / log(1.25);
 }
 
 void COBJECT::initSpeedMult(int level) {
@@ -30,7 +30,7 @@ void COBJECT::initSpeedMult(int level) {
 	speedMult = max((float)(rand() % m) / 100, (float)2);*/
 
 
-	speedMult = (float) (rand() % 200) / 100 + 2;
+	speedMult = (float) (rand() % 350) / 100 + 2;
 
 	bool xFactor = ((rand() % 1000) < 10 * logXFactor(level));
 	if (xFactor) speedMult = 20;
@@ -75,7 +75,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collisi
 	if (res && collision != 0) {
 		sf::FloatRect playerRect = player.mSprite.getGlobalBounds();
 		sf::FloatRect objectRect = sprite.getGlobalBounds();
-		if (playerRect.top <= objectRect.top 
+		if (playerRect.top <= objectRect.top
 			&& playerRect.top + playerRect.height > objectRect.top
 			&& playerRect.left >= objectRect.left
 			&& playerRect.left + playerRect.width <= objectRect.left + objectRect.width)
@@ -94,7 +94,7 @@ bool COBJECT::checkCollision(CPEOPLE& player, int index, COLLISION_TYPE* collisi
 	//	+ sprite.getGlobalBounds().width - padding);
 }
 
-int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player, 
+int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 	int index, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision) {
 	int oldX = mX, oldY = mY;
 	if (type != Constants::GetInstance().INTERACTABLE && type != Constants::GetInstance().BLOCK)
@@ -141,7 +141,7 @@ int COBJECT::update(float x, float y, sf::RenderWindow& window, CPEOPLE& player,
 
 void COBJECT::shiftObject() {
 	mX = mX - Constants::GetInstance().LANE_WIDTH * cos(Constants::GetInstance().BETA);
-	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA) - 1;
+	mY = mY + Constants::GetInstance().LANE_WIDTH * sin(Constants::GetInstance().BETA) - 2;
 }
 
 bool COBJECT::checkOutWindow (sf::RenderWindow& window) {

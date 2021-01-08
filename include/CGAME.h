@@ -1,3 +1,4 @@
+#pragma once
 
 
 #include "CLANE.h"
@@ -24,13 +25,14 @@
 #include <wtypes.h>
 #include <stdio.h>      /* printf, scanf, puts, NULL */
 #include <stdlib.h>     /* srand, rand */
-#include <time.h> 
+#include <time.h>
 #include <vector>
 #include <deque>
+#include <thread>
 
 using namespace std;
 
-enum class GAME_STATE{MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE, SETTINGS};
+enum class GAME_STATE{LOGO, MENU, LEVEL_1, LEVEL_2, LEVEL_3, GAMEOVER, PAUSE, WARNING, GENDER_CHOICE, SETTINGS};
 
 typedef void* HANDLE;
 
@@ -47,8 +49,7 @@ private:
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
     sf::Clock clock;
-
-    // Gameover
+    sf::Clock logoClock;
     sf::Clock dieClock;
     bool isGameOver = false;
     float dieX, dieY;
@@ -57,11 +58,12 @@ private:
     int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
-    
+
     void initVariables();
     void initWindow();
     //void initVehicle();
     void initLanes();
+    friend void resetLanes(CGAME &cgame);
     void initSound();
 
     sf::RenderWindow* window;
@@ -71,25 +73,27 @@ private:
     sf::RectangleShape enemy;
     sf::Texture texture;
     sf::Sprite background;
+    sf::Sprite logo;
     sf::Texture textureRoad;
 
 public:
-    CGAME(); 
-    void drawGame(); 
-    ~CGAME(); 
+    CGAME();
+    void drawGame();
+    ~CGAME();
     CPEOPLE* getPlayer(bool newPlayer = false);
     COBJECT* getVehicle();
-  //  COBJECT* getAnimal(); 
-    void resetGame(); 
-    void exitGame(HANDLE); 
-    void startGame(); 
-    bool loadGame(); 
+  //  COBJECT* getAnimal();
+
+    void resetGame();
+    void exitGame(HANDLE);
+    void startGame();
+    bool loadGame();
     void clearSavedGame();
     bool saveGame();
     bool haveSavedGame();
-    void pauseGame(HANDLE); 
+    void pauseGame(HANDLE);
 
-    void resumeGame(HANDLE); 
+    void resumeGame(HANDLE);
     void updatePosPeople(char);
     void createNewLane(int index, int level);
     void updateLanes();
@@ -97,14 +101,17 @@ public:
     void updateSound();
 //    void updateSoundJump ();
 
-    //void updatePosVehicle(); 
+    void renderLanes();
+    void renderLogo();
+    //void updatePosVehicle();
     void drawLane();
    // void updatePosAnimal();
     void drawBackground(const string &backgroundIMG);
+    void drawLogo(const string& logoIMG);
     void resizeImage(sf::Sprite& sprite);
     bool checkMove(CLANE* lane, CPEOPLE* player, int direction);
     CLANE* findLane(int index);
-    
+
     bool hasCharacterGender();
     void update();
     void render();

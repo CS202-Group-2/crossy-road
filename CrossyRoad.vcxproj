@@ -112,17 +112,18 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>C:\Users\tamng\Downloads\SFML-2.5.1\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\include</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>SFML_STATIC</PreprocessorDefinitions>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>C:\Users\tamng\Downloads\SFML-2.5.1\lib</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>\\Mac\Home\Documents\Assignments\CS202\crossy-road\SFML-2.5.1\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics-s.lib;sfml-graphics-s-d.lib;sfml-system-s.lib;sfml-system-s-d.lib;sfml-window-s.lib;sfml-window-s-d.lib;sfml-audio-s.lib;sfml-audio-s-d.lib;sfml-network-s.lib;sfml-network-s-d.lib;freetype.lib;opengl32.lib;winmm.lib;gdi32.lib;openal32.lib;flac.lib;vorbisenc.lib;vorbisfile.lib;vorbis.lib;ogg.lib;ws2_32.lib;Winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="src\BackgroundCounter.cpp" />
     <ClCompile Include="src\CANIMAL.cpp" />
     <ClCompile Include="src\CANIMALFACTORY.cpp" />
     <ClCompile Include="src\CCARFACTORY.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="src\Menu.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="include\BackgroundCounter.h" />
     <ClInclude Include="include\CANIMAL.h" />
     <ClInclude Include="include\CANIMALFACTORY.h" />
     <ClInclude Include="include\CCARFACTORY.h" />

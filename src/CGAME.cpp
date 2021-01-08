@@ -4,14 +4,21 @@ CGAME::CGAME() {
     //srand(time(NULL));
     this->initVariables();
     this->initWindow();
+
+    window->draw(logo);
+    window->display();
+
     this->initSound ();
+    this->initLanes();
     //this->initVehicle();
     //this->player = getPlayer();
     //this->player->resetPlayer();
-    this->player = nullptr;
+    this->player = getPlayer(true);
     level = 0;
     coinMoveMark = 0;
     this->cgui = new CGUI(window->getSize().x, window->getSize().y);
+
+    logoClock.restart();
 }
 
 void CGAME::drawGame() {
@@ -89,6 +96,26 @@ COBJECT* CGAME::getVehicle() {
 //    return nullptr;
 //}
 
+void resetLanes(CGAME& cgame) {
+    cout << "here";
+    for (int i = 0; i < 10; i++) cgame.lanes.pop_back();
+    for (int i = -1; i >= -20; i--) cgame.createNewLane(i, cgame.level);
+    for (int i = 0; i < 10; i++) {
+        for (auto it = cgame.lanes.rbegin(); it != cgame.lanes.rend(); ++it) {
+            (*it)->shiftLane();
+        }
+    }
+
+    //cout << "Called" << endl;
+
+
+    for (auto it = cgame.lanes.rbegin(); it != cgame.lanes.rend(); ++it) {
+        (*it)->print();
+    }
+
+    CTRANSITION::offset().reset(10);
+}
+
 void CGAME::resetGame() {
     if (player == nullptr)
         player = getPlayer(true);
@@ -96,8 +123,14 @@ void CGAME::resetGame() {
         player->resetPlayer();
     clearSavedGame();
     level = 0;
+    isGameOver = false;
+    pressed = false;
     coinMoveMark = 0;
-    initLanes();
+    //initLanes();
+    resetLanes(*this);
+
+    /*lane = new CLANE(0, new CCARFACTORY(), window);
+    lanes.push_back(lane);*/
 }
 
 void CGAME::exitGame(HANDLE) {
@@ -218,7 +251,7 @@ float logLevel(int level) {
 void CGAME::updateLanes() {
     for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it) {
         COLLISION_TYPE collision;
-        int canUpdateLane = (*it)->updatePosObject(logLevel(level), logLevel(level), 
+        int canUpdateLane = (*it)->updatePosObject(logLevel(level), logLevel(level),
             *window, *player, *traffic, level, coinMoveMark, soundFactory, &collision);
         if (canUpdateLane == 0 && !isGameOver) {
             //CTRANSITION::offset().stopAll();
@@ -229,14 +262,13 @@ void CGAME::updateLanes() {
               hiScore = score;
         };
     }
-    //if (!isGameOver) {
-    //    for (deque<CLANE*>::reverse_iterator it = lanes.rbegin(); it != lanes.rend(); ++it)
-    //        (*it)->shiftBackground();
-    //}
-    if (isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
-        gameState = GAME_STATE::GAMEOVER;
-        cgui->isPause = true;
-        cgui->drawGameOverGUI(score, level, window, hiScore);
+
+    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
+        clearSavedGame();
+        gameState = GAME_STATE::MENU;
+        resetGame();
+        cgui->isPause = false;
+        // cgui->drawGameOverGUI(score, level, window, hiScore);
     }
     coinMoveMark++;
     this->score = player->score;
@@ -248,12 +280,16 @@ void CGAME::createNewLane(int index, int level) {
     int k = rand() % 100;
 
     CLANE* lane;
-    if (index == 7 || k < 30) // Initially, players always stand on grass
+    if (BackgroundCounter::contGrass >= 2)
+        lane = new CLANE(index, new CCARFACTORY(), window, true, level);
+    else if (BackgroundCounter::contRoad >= 3 + (level / 10))
+        lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
+    else if (index == 7 || k < 20) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
-        lane = new CLANE(index, new CANIMALFACTORY(), window, level);
+        lane = new CLANE(index, new CANIMALFACTORY(), window, true, level);
     else
-        lane = new CLANE(index, new CCARFACTORY(), window, level);
+        lane = new CLANE(index, new CCARFACTORY(), window, true, level);
 
     lanes.push_back(lane);
 }
@@ -265,9 +301,11 @@ void CGAME::shiftLanesUp() {
     for (auto it = lanes.rbegin(); it != lanes.rend(); ++it) {
         (*it)->shiftLane();
     }
-    CLANE* lane = lanes.front();
-    delete lane;
-    lanes.pop_front();
+    while (lanes.size() > Constants::GetInstance().MAX_NUMBER_OF_LANES) {
+        CLANE* lane = lanes.front();
+        delete lane;
+        lanes.pop_front();
+    }
     /*lane = new CLANE(0, new CCARFACTORY(), window);
     lanes.push_back(lane);*/
     createNewLane(-10, level);
@@ -334,9 +372,31 @@ void CGAME::drawBackground(const string& backgroundIMG) {
         return;
     }
     texture.setSmooth(true);
-    background.setTexture(texture);
-    resizeImage(background);
+    //background.setTexture(texture);
+    //resizeImage(background);
 
+}
+
+void CGAME::drawLogo(const string& logoIMG) {
+    static sf::Texture textureLogo;
+    if (!textureLogo.loadFromFile(logoIMG)) {
+        return;
+    }
+    textureLogo.setSmooth(true);
+    logo.setTexture(textureLogo);
+}
+
+void CGAME::renderLanes() {
+    CTRANSITION::offset().update();
+    updateLanes();
+    traffic->drawTraffic(window);
+    player->render(isGameOver);
+    cgui->drawGUI(score, level, window);
+}
+
+void CGAME::renderLogo() {
+    logo.setColor(sf::Color(255, 255, 255, min(255.f, max(0.f, 500 - 500 * logoClock.getElapsedTime().asSeconds()))));
+    window->draw(logo);
 }
 
 
@@ -349,8 +409,11 @@ void CGAME::render() {
     sprites.clear();
     window->draw(background);
     switch (gameState) {
-    case GAME_STATE::MENU: {
-        menu->draw(*window);
+    case GAME_STATE::LOGO: {
+        window->draw(logo);
+        window->display();
+        window->draw(background);
+        gameState = GAME_STATE::MENU;
         break;
     }
     case GAME_STATE::LEVEL_1: {
@@ -359,6 +422,14 @@ void CGAME::render() {
         traffic->drawTraffic(window);
         player->render(this->isGameOver);
         cgui->drawGUI(score, level, window);
+        renderLanes();
+        renderLogo();
+        break;
+    }
+    case GAME_STATE::MENU: {
+        renderLanes();
+        menu->draw(*window);
+        renderLogo();
         break;
     }
     case GAME_STATE::PAUSE:
@@ -373,10 +444,10 @@ void CGAME::render() {
         //cgui->drawWarningGUI(window, warning);
         cgui->drawGUI(score, level, window);
         //break;
-    case GAME_STATE::GAMEOVER: {
-        //cout << "Is pausing" << endl;
+    case GAME_STATE::SETTINGS:
         cgui->drawGUI(score, level, window);
-
+    case GAME_STATE::GAMEOVER: {
+        renderLanes();
         soundFactory->playSound(4);
         break;
     }
@@ -402,7 +473,7 @@ void CGAME::initWindow() {
     window->setFramerateLimit(Constants::GetInstance().FPS);
     menu = new Menu(window->getSize().x, window->getSize().y);
     drawBackground("assets/graphics/menu.jpg");
-
+    drawLogo("assets/graphics/logo.png");
 }
 
 void CGAME::GetDesktopResolution()
@@ -436,6 +507,7 @@ void CGAME::pollEvents() {
                 }
 
                 break;
+            case sf::Keyboard::W:
             case sf::Keyboard::Up:
                 soundFactory->playSound(2);
                 cout << "Pressed" << endl;
@@ -444,23 +516,22 @@ void CGAME::pollEvents() {
                 else if (gameState == GAME_STATE::LEVEL_1) {
                     if (isGameOver)
                         break;
-                    if (clock.getElapsedTime().asSeconds() >= 0.1) {
+                    if (clock.getElapsedTime().asSeconds() >= 0.05) {
+                        player->setSide(CPEOPLE::UP);
+
+                        if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
+                            player->moveUp(), level++;
+                        else if (checkMove(findLane(player->index - 1), player, 1)) {
+                            level++;
+                            shiftLanesUp();
+                        }
                         clock.restart();
-                    }
-                    else 
-                        break;
-                    player->setSide(CPEOPLE::UP);
-                    pressed = true;
-                    if (player->canMoveUp() && checkMove(findLane(player->index - 1), player, 1))
-                        player->moveUp(), level++;
-                    else if (checkMove(findLane(player->index - 1), player, 1)) {
-                        level++;
-                        shiftLanesUp();
                     }
                 }
                 else
                     cgui->MoveUp();
                 break;
+            case sf::Keyboard::S:
             case sf::Keyboard::Down:
                 soundFactory->playSound(2);
                 if (gameState == GAME_STATE::MENU)
@@ -469,13 +540,14 @@ void CGAME::pollEvents() {
                     if (isGameOver)
                         break;
                     player->setSide(CPEOPLE::DOWN);
-                    pressed = true;
+
                     if (player->canMoveDown() && checkMove(findLane(player->index + 1), player, 4))
                         player->moveDown();
                 }
                 else
-                    cgui->MoveDown();
+                    cgui->MoveDown() ;
                 break;
+            case sf::Keyboard::A:
             case sf::Keyboard::Left:
                 if (isGameOver)
                     break;
@@ -485,10 +557,12 @@ void CGAME::pollEvents() {
                 if (player->canMoveLeft() && checkMove(findLane(player->index), player, 2))
                     player->moveLeft();
                 break;
+            case sf::Keyboard::D:
             case sf::Keyboard::Right:
                 if (isGameOver)
                     break;
                 soundFactory->playSound(2);
+               // if (isGameOver) break;
                 player->setSide(CPEOPLE::RIGHT);
 
                 if (player->canMoveRight() && checkMove(findLane(player->index), player, 3))
@@ -503,10 +577,10 @@ void CGAME::pollEvents() {
                             clearSavedGame();
 
                             cout << "Started the game" << endl;
-                            this->initLanes();
+                            //this->initLanes();
                             soundFactory->playSound(1);
-                            this->player = getPlayer(true);
-                            level = 0;
+                            //this->player = getPlayer(true);
+                            //level = 0;
                             gameState = GAME_STATE::LEVEL_1;
                         }
                         else {
@@ -614,6 +688,7 @@ void CGAME::pollEvents() {
                         break;
                     }
                     cgui->isPause = false;
+                    cgui->disableHighScore(window);
                 }
                 else if (gameState == GAME_STATE::SETTINGS) {
                     switch (cgui->getPressedItem()) {
@@ -627,7 +702,7 @@ void CGAME::pollEvents() {
                         cout << "Enable sound" << endl;
                         this->soundFactory->muted = false;
                         break;
-                    }
+
                     case 2:
                         // soundFactory->playSound (2);
                         cout << "Set gender to boy" << endl;
@@ -646,27 +721,32 @@ void CGAME::pollEvents() {
                         gameState = GAME_STATE::MENU;
                         cgui->isPause = false;
                         break;
+                    }
                 }
-            }
-        case sf::Event::MouseButtonPressed:
-            switch (event.mouseButton.button) {
-            case sf::Mouse::Left: {
-                soundFactory->playSound (2);
-                cout << "Mouse clicked" << endl;
-                if (cgui->GUICheck(event.mouseButton.x, event.mouseButton.y)) {
-                    cout << "Paused the game" << endl;
-                    gameState = GAME_STATE::PAUSE;
-                    cgui->drawPauseGUI(score, level, window);
-                    break;
+            case sf::Event::MouseButtonPressed:
+                switch (event.mouseButton.button) {
+                case sf::Mouse::Left: {
+                    soundFactory->playSound(2);
+                    cout << "Mouse clicked" << endl;
+                    if (cgui->GUICheck(event.mouseButton.x, event.mouseButton.y)) {
+                        cout << "Paused the game" << endl;
+                        gameState = GAME_STATE::PAUSE;
+                        cgui->drawPauseGUI(score, level, window);
+                        break;
+                    }
+
                 }
 
-            }
+                }
+
+
+
+
             }
         }
-
     }
 }
-void CGAME::resizeImage(sf::Sprite& sprite) {
-    sprite.scale((float)window->getSize().x / (float)sprite.getTexture()->getSize().x,
-        (float)window->getSize().y / (float)sprite.getTexture()->getSize().y);
-}
+    void CGAME::resizeImage(sf::Sprite& sprite) {
+        sprite.scale((float)window->getSize().x / (float)sprite.getTexture()->getSize().x,
+            (float)window->getSize().y / (float)sprite.getTexture()->getSize().y);
+    }
