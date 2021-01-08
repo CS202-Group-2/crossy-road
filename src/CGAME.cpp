@@ -264,7 +264,7 @@ void CGAME::updateLanes() {
         };
     }
 
-    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 3) {
+    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 4) {
         clearSavedGame();
         gameState = GAME_STATE::MENU;
         resetGame();
@@ -286,7 +286,7 @@ void CGAME::createNewLane(int index, int level) {
         lane = new CLANE(index, new CCARFACTORY(), window, true, level);
     else if (BackgroundCounter::contRoad >= 3 + (level / 10))
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
-    else if (index == 7 || k < 20) // Initially, players always stand on grass
+    else if (index == -3 || k < 20) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, true, level);
