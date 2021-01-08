@@ -37,23 +37,26 @@ void Menu::draw(sf::RenderWindow& window) {
 	sf::RectangleShape rectangle(sf::Vector2f(250, 350));
 	rectangle.setOrigin(rectangle.getLocalBounds().left + rectangle.getLocalBounds().width / 2,
 		rectangle.getLocalBounds().top + rectangle.getLocalBounds().height / 2);
-	rectangle.setPosition(window.getSize().x / 2, (window.getSize().y - titlePadding) / 2 + titlePadding + 25);
+	rectangle.setPosition(window.getSize().x / 2 + CTRANSITION::offset().getLaneX(), 
+						 (window.getSize().y - titlePadding) / 2 + titlePadding + 25 + CTRANSITION::offset().getLaneY());
 	rectangle.setFillColor(sf::Color(0, 0, 0, 200));
+	//rectangle.setTexture ();
 	window.draw(rectangle);
 	sf::Sprite titleText(title);
 	titleText.setOrigin(titleText.getLocalBounds().left + titleText.getLocalBounds().width / 2,
 		titleText.getLocalBounds().top + titleText.getLocalBounds().height / 2);
 	titleText.setScale(sf::Vector2f(0.4, 0.4));
-	titleText.setPosition(window.getSize().x / 2, titlePadding/2 + 50);
+	titleText.setPosition(window.getSize().x / 2 + CTRANSITION::offset().getLaneX(), 
+						  titlePadding/2 + 50 + CTRANSITION::offset().getLaneY());
 	window.draw(titleText);
 	for (int i = 0; i < Constants::GetInstance().NUMBER_OF_MENU_ITEMS; ++i) {
 		sf::FloatRect textRect = menu[i].getLocalBounds();
 		menu[i].setOrigin(textRect.left + textRect.width / 2.0f,
 			textRect.top + textRect.height / 2.0f);
-		menu[i].setPosition(sf::Vector2f(window.getSize().x / 2.0f, 
+		menu[i].setPosition(sf::Vector2f(window.getSize().x / 2.0f + CTRANSITION::offset().getLaneX(),
 			(window.getSize().y-titlePadding - 50) / 
 			(Constants::GetInstance().NUMBER_OF_MENU_ITEMS + 1) * 
-			(i+1) + titlePadding + 50));
+			(i+1) + titlePadding + 50 + CTRANSITION::offset().getLaneY()));
 		window.draw(menu[i]);
 	}
 }

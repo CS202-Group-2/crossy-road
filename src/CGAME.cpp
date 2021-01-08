@@ -33,7 +33,7 @@ CGAME::CGAME() {
     yourScore.setTexture(*yourScoreTexture);
     yourScore.setScale(0.9, 0.9);
     yourScore.setPosition(60, 375);
-    
+
     font.loadFromFile(Constants::GetInstance().menuFont);
     highscoreNum.setFont(font);
     highscoreNum.setPosition(300, 325);
@@ -50,7 +50,7 @@ CGAME::CGAME() {
     yourscoreNum.setFillColor(sf::Color::White);
     yourscoreNum.setOutlineColor(sf::Color::Black);
     yourscoreNum.setOutlineThickness(8);
-    
+
     tryMessageTexture = &CASSET::GetInstance().textureMap["try"];
     beatMessageTexture = &CASSET::GetInstance().textureMap["beaths"];
     dieMessage.setPosition(68, 450);
@@ -303,7 +303,7 @@ void CGAME::updateSound() {
 }
 
 float logLevel(int level) {
-    return level > 3 ? 1.25 * log(level * 0.5) / log(2) : 1;
+    return level > 2 ? 0.65 * log(level * 0.5) / log(2) : 1;
 }
 
 void CGAME::updateLanes() {
@@ -324,6 +324,7 @@ void CGAME::updateLanes() {
               hiScore = score;
         };
     }
+
     if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= DIE_DELAY) {
         clearSavedGame();
         //hideDieText();

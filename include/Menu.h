@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <fstream>
 #include "Constants.h"
+#include "CTRANSITION.h"
 
 
 class Menu {
