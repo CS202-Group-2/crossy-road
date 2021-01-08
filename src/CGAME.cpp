@@ -21,9 +21,9 @@ CGAME::CGAME() {
     logoClock.restart();
 }
 
-void CGAME::drawGame() {
+//void CGAME::drawGame() {
 
-}
+//}
 
 CGAME::~CGAME() {
     delete window;
@@ -88,9 +88,9 @@ bool CGAME::haveSavedGame() {
     return true;
 }
 
-COBJECT* CGAME::getVehicle() {
-    return nullptr;
-}
+//COBJECT* CGAME::getVehicle() {
+//    return nullptr;
+//}
 
 //COBJECT* CGAME::getAnimal() {
 //    return nullptr;
@@ -133,13 +133,13 @@ void CGAME::resetGame() {
     lanes.push_back(lane);*/
 }
 
-void CGAME::exitGame(HANDLE) {
+//void CGAME::exitGame(HANDLE) {
 
-}
+//}
 
-void CGAME::startGame() {
+//void CGAME::startGame() {
 
-}
+//}
 
 bool CGAME::loadGame() {
     ifstream infile("game_log/game.txt");
@@ -227,17 +227,17 @@ bool CGAME::saveGame() {
     return true;
 }
 
-void CGAME::pauseGame(HANDLE) {
+//void CGAME::pauseGame(HANDLE) {
 
-}
+//}
 
-void CGAME::resumeGame(HANDLE) {
+//void CGAME::resumeGame(HANDLE) {
 
-}
+//}
 
-void CGAME::updatePosPeople(char) {
+//void CGAME::updatePosPeople(char) {
 
-}
+//}
 
 void CGAME::updateSound() {
     //int r = rand() % 30 + 1;
@@ -286,7 +286,7 @@ void CGAME::createNewLane(int index, int level) {
         lane = new CLANE(index, new CCARFACTORY(), window, true, level);
     else if (BackgroundCounter::contRoad >= 3 + (level / 10))
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
-    else if (index == 7 || k < 20) // Initially, players always stand on grass
+    else if (index == -3 || k < 20) // Initially, players always stand on grass
         lane = new CLANE(index, new CGRASSFACTORY(), window, true, level);
     else if (k < 40)
         lane = new CLANE(index, new CANIMALFACTORY(), window, true, level);
