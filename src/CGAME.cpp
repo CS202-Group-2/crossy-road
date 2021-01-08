@@ -264,7 +264,7 @@ void CGAME::updateLanes() {
         };
     }
 
-    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 4) {
+    if (!pressed && isGameOver && dieClock.getElapsedTime().asSeconds() >= 0.8) {
         clearSavedGame();
         gameState = GAME_STATE::MENU;
         resetGame();
