@@ -17,5 +17,5 @@ CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) {
 	
 }
 
-void CCOIN::tell() {}
+void CCOIN::crashSound() {}
 void CCOIN::trafficStop(bool state) {}

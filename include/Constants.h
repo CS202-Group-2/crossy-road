@@ -33,7 +33,7 @@ public:
 	const double PLAYER_STEP = 100;
 	const double PLAYER_STEP_HORIZONTAL = 25;
 	const int FPS = 60;
-	const int ANIMAL = 1, VEHICLE = 2, INTERACTABLE = 3, BLOCK = 4;
+	const int ANIMAL = 1, VEHICLE = 2, INTERACTABLE = 3, BLOCK = 4, DIE_FIG = 5;
 	const string menuFont = "arial.ttf";
 	const int NUMBER_OF_CARS = 4, NUMBER_OF_ANIMALS = 4;
 

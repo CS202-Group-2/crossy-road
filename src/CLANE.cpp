@@ -54,6 +54,7 @@ CLANE::~CLANE() {
 	delete coin;
 	for (int i = 0; i < blocks.size(); ++i) 
 		if(blocks[i] != nullptr) delete blocks[i];
+	delete gameoverFig;
 }
 
 void CLANE::initObject(int level) {
@@ -66,6 +67,9 @@ void CLANE::initObject(int level) {
 	if (coin != nullptr) {
 		cout << "coin lane " << index << endl;
 	}
+
+	// Create gameover character
+	gameoverFig = new CGAMEOVERFIG(index);
 
 	// Create object
 	object = factory->initObject(index, window, level);
@@ -92,16 +96,24 @@ void CLANE::initObject(int level) {
 	setupLaneBackground();
 }
 
-bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level, int rand, CSOUNDFACTORY* soundFactory) {
+bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, 
+	int level, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision) {
 	window.draw(laneBackground);
 	shiftBackground();
-
 	if (object == nullptr) {
 		for (int i = 0; i < blocks.size(); ++i)
 			if (blocks[i] != nullptr)
 				blocks[i]->update(x, y, window, player, index, rand, soundFactory);
+		//shiftBackground();
 		return true;
 	}
+
+	// Gameover figure must move with the lane.
+	if (gameoverFig->isActivated()) {
+		gameoverFig->update(x, y, window, player, index, rand, soundFactory, collision);
+	}
+
+	// Delete obstacles that is out of the window and replace it with a new one.
 	if (object->checkOutWindow(window)) {
 		delete object;
 		object = factory->initObject(index, this->window, level);
@@ -110,10 +122,17 @@ bool CLANE::updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE 
 	if (coin != nullptr)
 		coin->update(x, y, window, player, index, rand, soundFactory);
 
-	if (!object->update(x, y, window, player, index, rand, soundFactory))
+	if (!object->update(x, y, window, player, index, rand, soundFactory, collision)) {
+		if (!gameoverFig->isActivated()) {
+			player.scream();
+			gameoverFig->activateFig(player.gender, object->mX, object->mY);
+		}
 		return false;
+	}
+	//shiftBackground();
 	return true;
 }
+
 
 bool CLANE::eatCoin() {
 	return coin->interacted;

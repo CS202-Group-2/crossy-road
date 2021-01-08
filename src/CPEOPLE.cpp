@@ -3,17 +3,24 @@
 int CPEOPLE::RIGHT = 0, CPEOPLE::UP = 1, CPEOPLE::LEFT = 2, CPEOPLE::DOWN = 3;
 int CPEOPLE::MALE = 0, CPEOPLE::FEMALE = 1;
 int CPEOPLE::FIG_WIDTH = 167, CPEOPLE::FIG_HEIGHT = 373;
+int CPEOPLE::DIE_WIDTH = 268, CPEOPLE::DIE_HEIGHT = 134;
 float CPEOPLE::FIG_SCALE = 0.2;
+float CPEOPLE::DIE_SCALE = 0.3;
 float CPEOPLE::MOVEABLE_DIST = 300;
 
 //float CPEOPLE::ALPHA = 30 * 3.14 / 180, CPEOPLE::BETA = 40 * 3.14 / 180;
 //float CPEOPLE::PLAYER_STEP = 5;
 
 CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, int index) {
+    this->side = side;
     setGender(gender);
+    if (!buffer.loadFromFile("assets/sound/scream.wav"))
+        cout << "Cannot load scream sound" << endl;
+    cout << "hihi buffer\n";
+    screamSound.setBuffer(buffer);
+    screamSound.setVolume(100);
+    screamSound.setLoop(false);
     mTexture.setSmooth(true);
-    mSprite.setTexture(mTexture);
-    mSprite.setScale(FIG_SCALE, FIG_SCALE);
     if (x != -1) {
         mX = x;
         mY = y;
@@ -22,7 +29,6 @@ CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, i
         mX = window->getSize().x / 2;
         mY = window->getSize().y - FIG_HEIGHT * FIG_SCALE;
     }
-    setSide(side);
     mWindow = window;
     this->index = index;
 }
@@ -80,42 +86,57 @@ bool CPEOPLE::canMoveLeft() {
     return canDecreaseX && canDecreaseY; //&& !lane->checkBlock(dx, 0);
 }
 
+// Reload the figure based on given gender.
 void CPEOPLE::setGender(int gender) {
     this->gender = gender;
     // Get the corresponding texture.
-    if (gender == MALE)
+    if (gender == MALE) {
         mTexture.loadFromFile("assets/player/boy.png");
-    else
+        dieTexture.loadFromFile("assets/player/die_boy.png");
+    }
+    else {
         mTexture.loadFromFile("assets/player/girl.png");
+        dieTexture.loadFromFile("assets/player/die_girl.png");
+    }
+    mSprite.setTexture(mTexture);
+    mSprite.setScale(FIG_SCALE, FIG_SCALE);
+    setSide(this->side);
 }
 
+// Change the bound based on side.
 void CPEOPLE::setSide(int side) {
     // Move the rectangle to the corresponding figure.
     this->side = side;
     mSprite.setTextureRect(sf::IntRect(FIG_WIDTH * side, 0, FIG_WIDTH, FIG_HEIGHT));
 }
 
-void CPEOPLE::setDie() {
-    sf::Texture dieTexture;
-    string dieFile = "assets/graphics/die_";
-    if (gender == MALE)
-        dieFile += "boy";
-    else
-        dieFile += "girl";
-    dieFile += ".png";
-    if (!dieTexture.loadFromFile(dieFile)) {
-        cout << "Cannot load " << dieFile << endl;
-        return;
-    }
+void CPEOPLE::setDie(COLLISION_TYPE type) {
     mSprite.setTexture(dieTexture);
+    mSprite.setTextureRect(sf::IntRect(0, 0, DIE_WIDTH, DIE_HEIGHT));
+    mSprite.setScale(DIE_SCALE, DIE_SCALE);
+    //if (type == COLLISION_TYPE::FROM_SIDE)
+    //    mSprite.move(0, 20);
+    //else if (type == COLLISION_TYPE::FROM_BOTTOM)
+    //    mSprite.move(0, 100);
+    mSprite.move(0, 20);
+}
+
+void CPEOPLE::disappear() {
+    mSprite.setColor(sf::Color::Transparent);
+}
+
+void CPEOPLE::scream() {
+    screamSound.play();
+    cout << "Screaminggggggg" << endl;
 }
 
 void CPEOPLE::render(bool isGameOver) {
     if (!isGameOver) {
         mSprite.setPosition(mX + CTRANSITION::offset().getObjectX(),
             mY + CTRANSITION::offset().getObjectY());
+
+        mWindow->draw(mSprite);
     }
-    mWindow->draw(mSprite);
 }
 
 void CPEOPLE::moveUp() {
@@ -167,8 +188,8 @@ bool CPEOPLE::isDead() {
 }
 
 void CPEOPLE::resetPlayer() {
+    this->side = UP;
     setGender(this->gender);
-    side = 1;
     index = 7;
     score = 0;
     level = 0;

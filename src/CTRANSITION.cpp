@@ -35,6 +35,12 @@ void CTRANSITION::reset() {
 	clock.restart();
 }
 
+void CTRANSITION::stopAll() {
+	laneX = 0, laneY = 0, objectX = 0, objectY = 0,
+		maxLaneX = 0, maxLaneY = 0, maxObjectX = 0, maxObjectY = 0;
+	clock.restart();
+}
+
 void CTRANSITION::update() {
 	laneX = getOffset(maxLaneX);
 	laneY = getOffset(maxLaneY);

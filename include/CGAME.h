@@ -47,13 +47,17 @@ private:
     Menu *menu = nullptr;
     CGUI* cgui = nullptr;
     sf::Clock clock;
+
+    // Gameover
     sf::Clock dieClock;
     bool isGameOver = false;
+    float dieX, dieY;
+
     bool pressed = false;
     int score = 0, level = 1, hiScore = 0;
     int coinMoveMark = 0;
     string warning;
-        
+    
     void initVariables();
     void initWindow();
     //void initVehicle();

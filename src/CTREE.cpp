@@ -3,6 +3,8 @@
 CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 	this->index = index;
 	type = Constants::GetInstance().BLOCK;
+	soundFile = "assets/sound/bush.wav";
+	setupSound();
 	textureFile = "assets/graphics/Bush.png";
 	if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
@@ -17,5 +19,4 @@ CTREE::CTREE(float x, float y, int index) : COBJECT(x, y) {
 
 }
 
-void CTREE::tell() {}
 void CTREE::trafficStop(bool state) {}

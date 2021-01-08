@@ -12,6 +12,7 @@
 #include "Constants.h"
 #include "CTRAFFIC.h"
 #include "CTRANSITION.h"
+#include "CGAMEOVERFIG.h"
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
@@ -40,6 +41,9 @@ protected:
     sf::RenderWindow* window;
     bool isGrass;
     string background;
+
+    CGAMEOVERFIG* gameoverFig;
+
 public:
     CLANE(int index, string background, sf::RenderWindow* window, COBJECTFACTORY* factory, vector<pair<float, float>>& bushes, 
         string textureFile = "none", float objX = -1e9, float objY = -1e9, float objSpeed = -1e9, 
@@ -47,7 +51,8 @@ public:
     CLANE(int index, COBJECTFACTORY* factory, sf::RenderWindow* window, bool isGrass = false, int level = 0);
     ~CLANE();
     void initObject(int level);
-    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, CTRAFFIC &traffic, int level, int rand, CSOUNDFACTORY* soundFactory);
+    bool updatePosObject(float x, float y, sf::RenderWindow &window, CPEOPLE &player, 
+        CTRAFFIC &traffic, int level, int rand, CSOUNDFACTORY* soundFactory, COLLISION_TYPE* collision = 0);
     void shiftLane();
     void shiftBackground();
     bool checkBlock(float x, float y);

@@ -21,7 +21,7 @@ void CSOUNDFACTORY::playSound (int state) {
         break;
     case 4: //game over
         soundLose->playJumpSound ();
-        cout << "haha" << endl;
+        //cout << "haha" << endl;
         break;
     }
 }

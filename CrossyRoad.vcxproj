@@ -130,6 +130,7 @@
     <ClCompile Include="src\CCOINFACTORY.cpp" />
     <ClCompile Include="src\CEAT.cpp" />
     <ClCompile Include="src\CGAMEOVER.cpp" />
+    <ClCompile Include="src\CGAMEOVERFIG.cpp" />
     <ClCompile Include="src\CGRASSFACTORY.cpp" />
     <ClCompile Include="src\CGUI.cpp" />
     <ClCompile Include="src\CJUMP.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="include\CCOINFACTORY.h" />
     <ClInclude Include="include\CEAT.h" />
     <ClInclude Include="include\CGAMEOVER.h" />
+    <ClInclude Include="include\CGAMEOVERFIG.h" />
     <ClInclude Include="include\CGRASSFACTORY.h" />
     <ClInclude Include="include\CGUI.h" />
     <ClInclude Include="include\CJUMP.h" />

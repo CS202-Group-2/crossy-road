@@ -33,6 +33,7 @@ public:
 	static CTRANSITION& offset();
 	void update();
 	void reset();
+	void stopAll();
 	float getLaneX();
 	float getLaneY();
 	float getObjectX();
