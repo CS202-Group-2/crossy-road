@@ -3,13 +3,14 @@
 CCOIN::CCOIN(float x, float y, int index) : COBJECT(x, y) { 
 	this->index = index;
 	type = Constants::GetInstance().INTERACTABLE;
-	textureFile = "assets/graphics/Coin.png";
-	if (!texture.loadFromFile(textureFile)) {
+	textureFile = "Coin";
+	/*if (!texture.loadFromFile(textureFile)) {
 		cout << "Cannot find texture file" << endl;
 		return;
-	}
-	texture.setSmooth(true);
-	sprite.setTexture(texture);
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
+	//texture->setSmooth(true);
+	sprite.setTexture(*texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 

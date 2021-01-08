@@ -22,11 +22,11 @@ CANIMAL::CANIMAL(string textureFile, float x, float y, float speed) {
 	soundFilename = textureFile[2];
 	setupSound();
 
-	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
+	/*if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find animal texture." << endl;
 		return;
-	}
-
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
 	setupTexture();
 }
 
@@ -48,10 +48,11 @@ CANIMAL::CANIMAL(int index, int windowX, int level) : COBJECT(level) {
 		mY = windowX * tan(Constants::GetInstance().ALPHA) + (index - 2) * Constants::GetInstance().LANE_WIDTH - 25;
 	}
 	initY = mY;
-	if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
+	/*if (!texture.loadFromFile("assets/graphics/" + textureFile + ".png")) {
 		cout << "Cannot find animal texture." << endl;
 		return;
-	}
+	}*/
+	texture = &CASSET::GetInstance().textureMap[textureFile];
 	setupTexture();
 }
 

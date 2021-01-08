@@ -14,13 +14,14 @@ float CPEOPLE::MOVEABLE_DIST = 300;
 CPEOPLE::CPEOPLE(sf::RenderWindow* window, int gender, int side, int x, int y, int index) {
     this->side = side;
     setGender(gender);
-    if (!buffer.loadFromFile("assets/sound/scream.wav"))
-        cout << "Cannot load scream sound" << endl;
+    /*if (!buffer.loadFromFile("assets/sound/scream.wav"))
+        cout << "Cannot load scream sound" << endl;*/
+    buffer = &CASSET::GetInstance().soundBufferMap["scream"];
     cout << "hihi buffer\n";
-    screamSound.setBuffer(buffer);
+    screamSound.setBuffer(*buffer);
     screamSound.setVolume(100);
     screamSound.setLoop(false);
-    mTexture.setSmooth(true);
+    //mTexture.setSmooth(true);
     if (x != -1) {
         mX = x;
         mY = y;
@@ -91,14 +92,18 @@ void CPEOPLE::setGender(int gender) {
     this->gender = gender;
     // Get the corresponding texture.
     if (gender == MALE) {
-        mTexture.loadFromFile("assets/player/boy.png");
-        dieTexture.loadFromFile("assets/player/die_boy.png");
+        //mTexture.loadFromFile("assets/player/boy.png");
+        //dieTexture.loadFromFile("assets/player/die_boy.png");
+        mTexture = &CASSET::GetInstance().textureMap["boy"];
+        dieTexture = &CASSET::GetInstance().textureMap["die_boy"];
     }
     else {
-        mTexture.loadFromFile("assets/player/girl.png");
-        dieTexture.loadFromFile("assets/player/die_girl.png");
+       /* mTexture.loadFromFile("assets/player/girl.png");
+        dieTexture.loadFromFile("assets/player/die_girl.png");*/
+        mTexture = &CASSET::GetInstance().textureMap["girl"];
+        dieTexture = &CASSET::GetInstance().textureMap["die_girl"];
     }
-    mSprite.setTexture(mTexture);
+    mSprite.setTexture(*mTexture);
     mSprite.setScale(FIG_SCALE, FIG_SCALE);
     setSide(this->side);
 }
@@ -111,7 +116,7 @@ void CPEOPLE::setSide(int side) {
 }
 
 void CPEOPLE::setDie(COLLISION_TYPE type) {
-    mSprite.setTexture(dieTexture);
+    mSprite.setTexture(*dieTexture);
     mSprite.setTextureRect(sf::IntRect(0, 0, DIE_WIDTH, DIE_HEIGHT));
     mSprite.setScale(DIE_SCALE, DIE_SCALE);
     //if (type == COLLISION_TYPE::FROM_SIDE)

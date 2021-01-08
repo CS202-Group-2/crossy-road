@@ -374,7 +374,7 @@ void CGAME::drawBackground(const string& backgroundIMG) {
     if (!texture.loadFromFile(backgroundIMG)) {
         return;
     }
-    texture.setSmooth(true);
+    //texture.setSmooth(true);
     //background.setTexture(texture);
     //resizeImage(background);
 
@@ -385,7 +385,7 @@ void CGAME::drawLogo(const string& logoIMG) {
     if (!textureLogo.loadFromFile(logoIMG)) {
         return;
     }
-    textureLogo.setSmooth(true);
+    //textureLogo.setSmooth(true);
     logo.setTexture(textureLogo);
 }
 

@@ -3,6 +3,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Constants.h"
+#include "CASSET.h"
 #include "CTRANSITION.h"
 #include <fstream>
 #include <math.h>
@@ -21,9 +22,9 @@ private:
     string textureFile = "Player.png";
     int gender, side, score, level;
     sf::Sound screamSound;
-    sf::SoundBuffer buffer;
-    sf::Texture mTexture;
-    sf::Texture dieTexture;
+    sf::SoundBuffer* buffer;
+    sf::Texture* mTexture;
+    sf::Texture* dieTexture;
     sf::Sprite mSprite;
     sf::RenderWindow* mWindow;
 public:

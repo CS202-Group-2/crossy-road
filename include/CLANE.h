@@ -38,7 +38,7 @@ protected:
     vector<COBJECT*> blocks;
     COBJECTFACTORY* factory;
     sf::Sprite laneBackground;
-    sf::Texture textureLane;
+    sf::Texture* textureLane;
     sf::RenderWindow* window;
     bool isGrass;
     string background;

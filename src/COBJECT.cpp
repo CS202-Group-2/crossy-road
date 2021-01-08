@@ -163,9 +163,9 @@ string COBJECT::getTextureFile() {
 	return textureFile;
 }
 
-void COBJECT::setupTexture() {
-	texture.setSmooth(true);
-	sprite.setTexture(texture);
+void COBJECT::setupTexture() {;
+	//texture->setSmooth(true);
+	sprite.setTexture(*texture);
 	sprite.setOrigin(sprite.getLocalBounds().left + sprite.getLocalBounds().width / 2.0f,
 		sprite.getLocalBounds().top + sprite.getLocalBounds().height / 2.0f);
 	sprite.setScale(sf::Vector2f(0.5f, 0.5f));

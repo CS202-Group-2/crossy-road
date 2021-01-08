@@ -6,11 +6,12 @@ COBJECT* CGRASSFACTORY::initObject(int index, sf::RenderWindow* window, int leve
 
 }
 
-void CGRASSFACTORY::initBackground(int index, sf::Texture& textureLane, bool& isGrass, string& background) {
+void CGRASSFACTORY::initBackground(int index, sf::Texture*& textureLane, bool& isGrass, string& background) {
     background = "Grass";
-    if (!textureLane.loadFromFile("assets/graphics/Grass.png")) {
+    /*if (!textureLane.loadFromFile("assets/graphics/Grass.png")) {
         return;
-    }
+    }*/
+    textureLane = &CASSET::GetInstance().textureMap["Grass"];
     isGrass = true;
 
     BackgroundCounter::contGrass++;

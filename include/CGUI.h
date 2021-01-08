@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "../include/Constants.h"
+#include "CASSET.h"
 
 using namespace std;
 
@@ -14,7 +15,7 @@ private:
     friend class CGAME;
     bool isPause = false, drawn = false;
     sf::Sprite pauseButton;
-    sf::Texture pauseButtonTexture;
+    sf::Texture* pauseButtonTexture;
 	sf::Font font;
     sf::Text scoreText;
     sf::Text levelText;

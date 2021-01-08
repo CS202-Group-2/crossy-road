@@ -28,7 +28,7 @@ protected:
     sf::Sound objSound;
     string soundFilename;
 
-    sf::Texture texture;
+    sf::Texture *texture;
     sf::Sprite sprite;
 
     bool interacted = false;

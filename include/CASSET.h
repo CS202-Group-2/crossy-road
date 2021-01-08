@@ -17,7 +17,7 @@ private:
 	CASSET& operator=(const CASSET&) {};
 
 	void initSoundBuffer(string soundFilename);
-	void initTexture(string textureFilename);
+	void initTexture(string textureFilename, bool isPlayer = false);
 public:
 	static CASSET& GetInstance() {
 		static CASSET instance;

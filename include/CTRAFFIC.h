@@ -5,7 +5,7 @@
 class CTRAFFIC {
 private:
 	sf::Clock clock;
-	sf::Texture texture;
+	sf::Texture* texture;
 	sf::Sprite sprite;
 	float curTime = 0;
 	float timeTrafficStop = Constants::GetInstance().MAX_TRAFFIC_STOP;
