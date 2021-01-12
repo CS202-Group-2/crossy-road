@@ -1,12 +1,12 @@
 #include "../include/CEAT.h"
 
 CEAT::CEAT () {
-	if (!jumpSoundBuffer.loadFromFile ("assets/sound/coin.wav")) {
+	if (!soundBuffer.loadFromFile ("assets/sound/coin.wav")) {
 		cout << "Sound file not found" << endl;
 	}
-	jumpSound.setBuffer (jumpSoundBuffer);
-	jumpSound.setLoop (false);
+	sound.setBuffer (soundBuffer);
+	sound.setLoop (false);
 }
-void CEAT::playJumpSound () {
-	jumpSound.play ();
+void CEAT::playSound () {
+	sound.play ();
 }

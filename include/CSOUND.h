@@ -2,12 +2,11 @@
 
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "CSOUNDEFFECT.h"
 using namespace std;
 
-class CSOUND {
-	sf::SoundBuffer backgroundSoundBuffer;
-	sf::Sound backgroundSound;
+class CSOUND : public CSOUNDEFFECT {
 public:
 	CSOUND();
-	void playBackgroundSound();
+	void playSound();
 };

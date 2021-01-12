@@ -316,6 +316,7 @@ void CGAME::updateLanes() {
             isGameOver = true;
             dieLane = it;
             dieClock.restart();
+            score += this->level;
             setScoreDisplay(score);
             player->isDead = true;
             //displayDieText();

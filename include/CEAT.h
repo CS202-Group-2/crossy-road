@@ -2,12 +2,11 @@
 
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "CSOUNDEFFECT.h"
 using namespace std;
 
-class CEAT {
-	sf::SoundBuffer jumpSoundBuffer;
-	sf::Sound jumpSound;
+class CEAT : public CSOUNDEFFECT {
 public:
 	CEAT ();
-	void playJumpSound ();
+	void playSound ();
 };

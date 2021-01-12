@@ -2,12 +2,11 @@
 
 #include <SFML/Audio.hpp>
 #include <iostream>
+#include "CSOUNDEFFECT.h"
 using namespace std;
 
-class CGAMEOVER {
-	sf::SoundBuffer jumpSoundBuffer;
-	sf::Sound jumpSound;
+class CGAMEOVER : public CSOUNDEFFECT {
 public:
 	CGAMEOVER ();
-	void playJumpSound ();
+	void playSound ();
 };

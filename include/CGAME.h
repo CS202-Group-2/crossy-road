@@ -54,7 +54,7 @@ private:
     sf::Clock dieClock;
 
     bool isGameOver = false;
-
+    
     sf::Texture* dieTextTexture;
     sf::Sprite dieText;
 

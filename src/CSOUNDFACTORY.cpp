@@ -11,16 +11,16 @@ void CSOUNDFACTORY::playSound (int state) {
     if (muted) return;
     switch (state) {
     case 1: //background sound
-        soundSystem->playBackgroundSound ();
+        soundSystem->playSound ();
         break;
     case 2: //jump of player
-        soundJump->playJumpSound ();
+        soundJump->playSound ();
         break;
     case 3: //coin 
-        soundCoin->playJumpSound ();
+        soundCoin->playSound ();
         break;
     case 4: //game over
-        soundLose->playJumpSound ();
+        soundLose->playSound ();
         //cout << "haha" << endl;
         break;
     }

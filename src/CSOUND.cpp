@@ -1,13 +1,13 @@
 #include "../include/CSOUND.h"
 
 CSOUND::CSOUND() {
-	if (!backgroundSoundBuffer.loadFromFile("assets/sound/powerup.wav")) {
+	if (!soundBuffer.loadFromFile("assets/sound/powerup.wav")) {
 		cout << "Sound file not found" << endl;
 	}
-	backgroundSound.setBuffer(backgroundSoundBuffer);
-	backgroundSound.setVolume(40);
-	backgroundSound.setLoop(true);
+	sound.setBuffer(soundBuffer);
+	sound.setVolume(40);
+	sound.setLoop(true);
 }
-void CSOUND::playBackgroundSound() {
-	backgroundSound.play();
+void CSOUND::playSound() {
+	sound.play();
 }

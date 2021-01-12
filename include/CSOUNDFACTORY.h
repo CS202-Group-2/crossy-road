@@ -13,10 +13,7 @@
 
 class CSOUNDFACTORY {
 protected:
-	CSOUND* soundSystem;
-	CJUMP* soundJump;
-	CEAT* soundCoin;
-	CGAMEOVER* soundLose;
+	CSOUNDEFFECT* soundSystem, * soundJump, * soundCoin, * soundLose;
 	friend class CGAME;
 	bool muted = false;
 public:

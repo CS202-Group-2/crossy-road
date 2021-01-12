@@ -1,13 +1,13 @@
 #include "../include/CJUMP.h"
 
 CJUMP::CJUMP () {
-	if (!jumpSoundBuffer.loadFromFile ("assets/sound/jump.wav")) {
+	if (!soundBuffer.loadFromFile ("assets/sound/jump.wav")) {
 		cout << "Sound file not found" << endl;
 	}
-	jumpSound.setBuffer (jumpSoundBuffer);
-	jumpSound.setLoop(false);
-	jumpSound.setVolume(20);
+	sound.setBuffer (soundBuffer);
+	sound.setLoop(false);
+	sound.setVolume(20);
 }
-void CJUMP::playJumpSound () {
-	jumpSound.play ();
+void CJUMP::playSound () {
+	sound.play ();
 }
